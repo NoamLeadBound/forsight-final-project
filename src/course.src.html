@@ -1,0 +1,1525 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>קורס הכנה ליום האפיון</title>
+<style>
+:root{
+  --bg:#f6f6f3; --surface:#ffffff; --surface-2:#f0f0eb; --text:#1c1c1e; --muted:#5d5f66; --border:#e1e1da;
+  --accent:#2f5d8a; --accent-soft:#e7eef6; --ok:#2e7d4f; --ok-soft:#e6f3eb; --no:#b3412e; --no-soft:#fbeae6;
+  --warn:#8a6100; --warn-soft:#fbf2dc; --cA:#2f5d8a; --cB:#7a5ea8; --cC:#2f8a73;
+  --radius:12px; --shadow:0 1px 2px rgba(0,0,0,.04),0 3px 10px rgba(0,0,0,.04);
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#141517; --surface:#1d1f22; --surface-2:#26292d; --text:#ececec; --muted:#a4a8af; --border:#34373c;
+    --accent:#86b5e3; --accent-soft:#1f3346; --ok:#71c895; --ok-soft:#1d3327; --no:#ef8e7a; --no-soft:#3b231e;
+    --warn:#e3bb57; --warn-soft:#382f19; --cA:#86b5e3; --cB:#b79de2; --cC:#6fc9b0;
+    --shadow:none; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#141517; --surface:#1d1f22; --surface-2:#26292d; --text:#ececec; --muted:#a4a8af; --border:#34373c;
+  --accent:#86b5e3; --accent-soft:#1f3346; --ok:#71c895; --ok-soft:#1d3327; --no:#ef8e7a; --no-soft:#3b231e;
+  --warn:#e3bb57; --warn-soft:#382f19; --cA:#86b5e3; --cB:#b79de2; --cC:#6fc9b0;
+  --shadow:none; color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Arial Hebrew",Arial,sans-serif;font-size:17px;line-height:1.7}
+a{color:var(--accent)}
+h2{font-size:26px;line-height:1.3;margin:0 0 8px}
+h3{font-size:19px;margin:32px 0 8px}
+h4{font-size:16px;margin:18px 0 6px}
+p{margin:0 0 12px}
+ul,ol{margin:0 0 12px;padding-inline-start:22px}
+li{margin:3px 0}
+.lead{font-size:18px;color:var(--muted);margin-bottom:20px}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+bdi,.ltr{direction:ltr;unicode-bidi:isolate}
+
+/* top bar */
+.topbar{position:sticky;top:0;z-index:30;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;padding:10px 16px;height:56px}
+.topbar h1{font-size:15px;margin:0;font-weight:650;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.icon-btn{font:inherit;font-size:14px;background:var(--surface-2);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:6px 10px;cursor:pointer;white-space:nowrap}
+.icon-btn:hover{border-color:var(--accent)}
+.prog-text{font-size:13px;color:var(--muted);white-space:nowrap}
+.progress{position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--border)}
+#progBar{height:100%;width:0;background:var(--accent);transition:width .3s}
+
+/* layout */
+.layout{display:grid;grid-template-columns:minmax(0,1fr);max-width:1240px;margin:0 auto}
+#nav{display:none;background:var(--surface);padding:12px 10px 40px}
+body.nav-open #nav{display:block;position:fixed;top:56px;right:0;left:0;bottom:0;overflow:auto;z-index:25}
+#nav a{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;text-decoration:none;color:var(--text);font-size:15px;line-height:1.35}
+#nav a:hover{background:var(--surface-2)}
+#nav a.active{background:var(--accent-soft);color:var(--accent);font-weight:600}
+#nav .n{flex:0 0 26px;height:26px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:var(--surface-2);font-size:13px;color:var(--muted)}
+#nav a.done .n{background:var(--ok);color:var(--surface)}
+#nav .sep{height:1px;background:var(--border);margin:10px 8px}
+main{padding:28px 16px 80px;min-width:0}
+.page{max-width:800px;margin:0 auto}
+@media (min-width:960px){
+  .layout{grid-template-columns:290px minmax(0,1fr)}
+  #nav{display:block;position:sticky;top:56px;height:calc(100vh - 56px);overflow:auto;border-left:1px solid var(--border)}
+  body.nav-open #nav{position:sticky;top:56px;bottom:auto}
+  #menuBtn{display:none}
+  main{padding:36px 40px 96px}
+}
+
+/* blocks */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;margin:14px 0;box-shadow:var(--shadow)}
+.callout{border-radius:var(--radius);padding:14px 18px;margin:18px 0;border:1px solid var(--border);background:var(--surface)}
+.callout h4{margin:0 0 6px}
+.callout.ask{background:var(--accent-soft);border-color:transparent}
+.callout.ask h4{color:var(--accent)}
+.callout.key{background:var(--warn-soft);border-color:transparent}
+.callout.key h4{color:var(--warn)}
+.callout.note{background:var(--surface-2);border-color:transparent}
+.formula{direction:ltr;unicode-bidi:isolate;display:block;text-align:left;font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:15px;background:var(--surface-2);border-radius:8px;padding:10px 14px;margin:8px 0;overflow-x:auto}
+.formula .c{color:var(--muted);font-family:-apple-system,"Segoe UI",Arial,sans-serif;font-size:13px;direction:rtl;unicode-bidi:isolate;display:block;text-align:right}
+.concepts{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin:14px 0}
+.concept{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 14px}
+.concept b{display:block;margin-bottom:2px}
+.concept .en{font-size:13px;color:var(--muted);direction:ltr;unicode-bidi:isolate}
+.concept p{font-size:15px;margin:6px 0 0}
+.table-wrap{overflow-x:auto;margin:12px 0;border:1px solid var(--border);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{text-align:right;padding:9px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+th{background:var(--surface-2);font-weight:600;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr.hl td{background:var(--warn-soft)}
+td.num,th.num{text-align:left;direction:ltr;white-space:nowrap}
+.steps{list-style:none;padding:0;margin:14px 0;counter-reset:s}
+.steps li{position:relative;padding:4px 44px 12px 0;margin:0;border-right:2px solid var(--border);margin-right:14px}
+.steps li:last-child{border-right-color:transparent}
+.steps li::before{counter-increment:s;content:counter(s);position:absolute;right:-15px;top:2px;width:28px;height:28px;border-radius:50%;background:var(--accent);color:var(--surface);font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center}
+.steps li b{display:block}
+.pill{display:inline-block;font-size:12px;padding:1px 8px;border-radius:99px;background:var(--surface-2);color:var(--muted);margin-inline-start:6px;vertical-align:middle}
+details.method{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin:10px 0;box-shadow:var(--shadow)}
+details.method summary{cursor:pointer;padding:14px 18px;font-weight:600;list-style:none;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+details.method summary::-webkit-details-marker{display:none}
+details.method summary::before{content:"+";color:var(--accent);font-weight:700;width:14px}
+details.method[open] summary::before{content:"−"}
+details.method summary span{font-weight:400;color:var(--muted);font-size:15px}
+.method-body{padding:0 18px 14px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px 18px}
+.method-body h5{margin:6px 0 2px;font-size:14px;color:var(--muted)}
+.method-body ul{font-size:15px;margin:0;padding-inline-start:18px}
+.method-body .full{grid-column:1/-1}
+
+/* quiz */
+.quiz{margin:28px 0 8px;border-top:2px solid var(--border);padding-top:18px}
+.quiz-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+.quiz-head h3{margin:0}
+.q{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin:12px 0}
+.q-text{font-weight:600;margin-bottom:10px}
+.opts{display:grid;gap:8px}
+.opt{font:inherit;font-size:16px;text-align:right;background:var(--surface-2);color:var(--text);border:1px solid var(--border);border-radius:9px;padding:9px 12px;cursor:pointer;line-height:1.5}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt:disabled{cursor:default}
+.opt.right{background:var(--ok-soft);border-color:var(--ok)}
+.opt.wrong{background:var(--no-soft);border-color:var(--no)}
+.fb{margin-top:10px;font-size:15px;padding:9px 12px;border-radius:9px}
+.fb.ok{background:var(--ok-soft)}
+.fb.no{background:var(--no-soft)}
+.score{font-size:15px;color:var(--muted)}
+.score.final{font-size:18px;color:var(--text);font-weight:600}
+.btn{font:inherit;font-size:15px;background:var(--accent);color:var(--surface);border:none;border-radius:9px;padding:9px 16px;cursor:pointer}
+.btn.ghost{background:var(--surface-2);color:var(--text);border:1px solid var(--border)}
+.btn:hover{filter:brightness(1.06)}
+
+/* drill */
+.drill-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin:10px 0}
+.drill-card p{font-weight:600;margin-bottom:8px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:inherit;font-size:14px;background:var(--surface-2);color:var(--text);border:1px solid var(--border);border-radius:99px;padding:5px 12px;cursor:pointer}
+.chip:hover:not(:disabled){border-color:var(--accent)}
+.chip:disabled{cursor:default;opacity:.75}
+.chip.right{background:var(--ok-soft);border-color:var(--ok);opacity:1}
+.chip.wrong{background:var(--no-soft);border-color:var(--no);opacity:1}
+
+/* calculators */
+.calc{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;margin:16px 0;box-shadow:var(--shadow)}
+.calc h4{margin:0 0 10px}
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px 14px}
+.fields label{display:flex;flex-direction:column;font-size:14px;color:var(--muted);gap:4px}
+.fields input[type=number]{font:inherit;font-size:16px;padding:7px 10px;border:1px solid var(--border);border-radius:8px;background:var(--surface-2);color:var(--text);width:100%;direction:ltr;text-align:left}
+.fields input[type=range]{width:100%}
+.result{margin-top:14px;background:var(--surface-2);border-radius:10px;padding:12px 14px;font-size:15px}
+.result .big{font-size:22px;font-weight:700;color:var(--accent);margin-bottom:4px}
+.result ul{margin:6px 0 0}
+
+/* ABC */
+.abc-controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:10px 0}
+.abc-controls label{font-size:14px;color:var(--muted);display:flex;flex-direction:column;gap:4px}
+.badge{display:inline-block;min-width:26px;text-align:center;font-weight:700;font-size:13px;border-radius:6px;padding:1px 6px;color:#fff}
+.badge.A{background:var(--cA)} .badge.B{background:var(--cB)} .badge.C{background:var(--cC)}
+:root[data-theme="dark"] .badge{color:#111}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .badge{color:#111}}
+.cumbar{position:relative;height:8px;background:var(--surface-2);border-radius:4px;min-width:80px;margin-top:4px}
+.cumbar span{position:absolute;top:0;bottom:0;right:0;border-radius:4px}
+.abc-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin:12px 0}
+.abc-sum{border:1px solid var(--border);border-radius:10px;padding:10px 12px;background:var(--surface)}
+.abc-sum .badge{margin-left:6px}
+.abc-sum div{font-size:14px;color:var(--muted)}
+
+/* helper */
+.helper fieldset{border:none;padding:0;margin:0 0 12px}
+.helper legend{font-weight:600;margin-bottom:6px;padding:0}
+.helper .radios{display:flex;flex-wrap:wrap;gap:8px}
+.helper .radios label{display:flex;align-items:center;gap:6px;background:var(--surface-2);border:1px solid var(--border);border-radius:99px;padding:4px 12px;font-size:15px;cursor:pointer}
+.rec h4{margin:0 0 6px;color:var(--accent);font-size:18px}
+
+/* diagram */
+.diagram{overflow-x:auto;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:8px;margin:14px 0}
+.diagram svg{display:block;width:100%;min-width:680px;height:auto}
+.sv-lane{fill:var(--surface)} .sv-lane2{fill:var(--surface-2)}
+.sv-lab{fill:var(--accent-soft)}
+.sv-labt{fill:var(--accent);font-size:15px;font-weight:700}
+.sv-box{fill:var(--surface);stroke:var(--muted);stroke-width:1.2}
+.sv-t{fill:var(--text);font-size:13px}
+.sv-title{fill:var(--text);font-size:15px;font-weight:700}
+.sv-note{fill:var(--muted);font-size:12px}
+.sv-line{stroke:var(--muted);stroke-width:1.4;fill:none}
+.sv-loop{stroke:var(--no);stroke-width:1.4;fill:none;stroke-dasharray:5 4}
+.sv-loopt{fill:var(--no);font-size:12.5px;font-weight:600}
+.sv-head{fill:var(--muted)} .sv-headr{fill:var(--no)}
+
+/* glossary */
+.gsearch{font:inherit;width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:10px;background:var(--surface);color:var(--text);margin:8px 0 6px}
+.ggrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-top:10px}
+.gcard{font:inherit;text-align:right;background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:10px;padding:12px 14px;cursor:pointer;display:flex;flex-direction:column;gap:2px;min-height:76px}
+.gcard:hover{border-color:var(--accent)}
+.g-term{font-weight:700}
+.g-en{font-size:13px;color:var(--muted);direction:ltr;unicode-bidi:isolate;text-align:right}
+.g-def{display:none;font-size:15px;margin-top:6px;line-height:1.55}
+.gcard.open .g-def,.ggrid.show-all .g-def{display:block}
+.gcard.open,.ggrid.show-all .gcard{background:var(--accent-soft);border-color:transparent}
+
+/* home + pager */
+.mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin:16px 0}
+.mcard{display:block;text-decoration:none;color:var(--text);background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px}
+.mcard:hover{border-color:var(--accent)}
+.mcard .mt{font-weight:600;display:block}
+.mcard .mm{font-size:13px;color:var(--muted)}
+.mcard.done{border-color:var(--ok)}
+.mcard.done .mm::after{content:" · הושלם ✓";color:var(--ok)}
+.pager{margin-top:40px;padding-top:18px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:14px}
+.pager-links{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.pager-links a{text-decoration:none;font-size:15px;padding:8px 12px;border:1px solid var(--border);border-radius:9px;background:var(--surface)}
+.pager-links a.next{margin-right:auto}
+.done-btn{align-self:flex-start}
+.done-btn.is-done{background:var(--ok)}
+
+/* cheat sheet */
+.cheat{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:12px}
+.cheat .card{margin:0}
+.cheat h4{margin:0 0 6px;color:var(--accent)}
+.cheat ul,.cheat ol{font-size:15px;margin:0}
+
+@media print{
+  .topbar,#nav,.pager,.no-print{display:none!important}
+  .layout{display:block}
+  main{padding:0}
+  body{background:#fff;color:#000;font-size:12pt}
+  .card,.callout{box-shadow:none;break-inside:avoid}
+}
+
+/* links to the other project pages */
+.xlinks{display:none;gap:4px}
+.xlinks a{font-size:14px;text-decoration:none;color:var(--text);padding:5px 12px;border-radius:999px;border:1px solid var(--border);white-space:nowrap}
+.xlinks a:hover{border-color:var(--accent);color:var(--accent)}
+@media (min-width:960px){.xlinks{display:flex}}
+.home-links{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 0}
+.home-links a{font-size:14.5px;text-decoration:none;color:var(--accent);background:var(--accent-soft);border-radius:999px;padding:4px 14px}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <button id="menuBtn" class="icon-btn" type="button" aria-expanded="false" aria-controls="nav">☰ פרקים</button>
+  <h1>קורס הכנה · ניהול פריטי C ו-Lean · ForSight Robotics</h1>
+  <nav class="xlinks" aria-label="דפים נוספים">
+    <a href="../ניהול%20הפרויקט.html">ניהול הפרויקט</a>
+    <a href="../טיימליין%20ותוכנית%20הכנה.html">טיימליין</a>
+    <a href="הכרת%20החברה%20-%20ForSight%20Robotics.html">הכרת החברה</a>
+    <a href="תיק%20עבודה%20-%20יום%20האפיון.html">תיק עבודה</a>
+    <a href="מצגת%20פתיחה%20-%20יום%20האפיון.html">מצגת פתיחה</a>
+  </nav>
+  <span id="progText" class="prog-text">0/10</span>
+  <button id="themeBtn" class="icon-btn" type="button" aria-label="החלפת מצב בהיר/כהה" title="מצב בהיר/כהה">◐</button>
+  <div class="progress" aria-hidden="true"><div id="progBar"></div></div>
+</header>
+
+<div class="layout">
+<nav id="nav" aria-label="פרקי הקורס"></nav>
+<main id="main">
+
+<!-- ===================== HOME ===================== -->
+<section class="page" id="home">
+  <h2>קורס הכנה ליום האפיון</h2>
+  <p class="lead">כל מה שצריך כדי להגיע ל-ForSight Robotics מוכנים: המושגים, החלופות, כלי הניתוח, ואיך מנהלים ראיון ותצפית. עשרה פרקים קצרים, וכל פרק נגמר בבוחן.</p>
+  <div class="home-links">
+    <a href="../ניהול%20הפרויקט.html">ניהול הפרויקט</a>
+    <a href="../טיימליין%20ותוכנית%20הכנה.html">טיימליין ותוכנית הכנה</a>
+    <a href="הכרת%20החברה%20-%20ForSight%20Robotics.html">הכרת החברה</a>
+    <a href="תיק%20עבודה%20-%20יום%20האפיון.html">תיק עבודה ליום האפיון</a>
+    <a href="מצגת%20פתיחה%20-%20יום%20האפיון.html">מצגת פתיחה</a>
+  </div>
+  <div class="callout note">
+    <h4>איך לעבוד עם הקורס</h4>
+    <ul>
+      <li>הולכים לפי הסדר. כל פרק לוקח 10 עד 25 דקות.</li>
+      <li>בכל פרק יש תיבה כחולה, <b>"מה לשאול ביום האפיון"</b>. אלה השאלות שנכנסות לתיק העבודה של היום.</li>
+      <li>בסוף כל פרק לוחצים על "סיימתי את הפרק", וכך רואים את ההתקדמות למעלה.</li>
+      <li>ערב לפני הביקור: <a href="#cheat">דף לפני שיוצאים</a>, ואפשר להדפיס אותו.</li>
+    </ul>
+    <p class="small muted" style="margin:0">ההתקדמות נשמרת רק בדפדפן הזה. כל המספרים בדוגמאות ובמחשבונים הם להמחשה בלבד. את המספרים האמיתיים נאסוף ב-ForSight.</p>
+  </div>
+  <h3>הפרקים</h3>
+  <div class="mgrid" id="homeGrid"></div>
+  <p class="small muted">הבסיס לתוכן: הצעת הפרויקט שהארגון אישר (20.7.2026) וספר ההנחיות לפרויקט הגמר, תשפ"ז. שאר התוכן הוא ידע מקצועי כללי בניהול מלאי ו-Lean.</p>
+</section>
+
+<!-- ===================== M1 ===================== -->
+<section class="page" id="m1" hidden>
+  <h2>פרק 1 · הקשר: הארגון, הבעיה ומה מצופה מאיתנו</h2>
+  <p class="lead">לפני שלומדים כלים, צריך להבין על מה בדיוק עובדים ולמה זה חשוב לארגון ולציון.</p>
+
+  <h3>הארגון</h3>
+  <p>ForSight Robotics מקיסריה מפתחת ומייצרת מערכת רובוטית לניתוחי קטרקט. איש הקשר שלנו הוא רן עציוני, סמנכ"ל תפעול.</p>
+  <p>הפרויקט יושב במחלקת שרשרת האספקה (Supply Chain), ומשלב את הרכש, המחסן והייצור. המוקד הוא הממשק בין המחסן לרצפת הייצור, והקשר עם הספקים.</p>
+
+  <h3>הבעיה במשפט אחד</h3>
+  <div class="callout key"><h4>מאות פריטים זולים וקריטיים מנוהלים באותה שיטה כבדה כמו פריטים יקרים.</h4>
+  <p style="margin:0">פריטי C הם ברגים, אומים, שייבות, מחברים, אזיקונים ושאר חומרה. כל אחד שווה מעט, אבל בלי בורג אחד המערכת לא מורכבת.</p></div>
+  <p>היום לכל פריט יש מק"ט, רמות מלאי מוגדרות והזמנות רכש לפי צריכה. לפי הצעת הפרויקט, התוצאה היא:</p>
+  <ul>
+    <li><b>עומס אדמיניסטרטיבי:</b> ספירות, מעקב אחרי מאות פריטים, והרבה הזמנות רכש בערך נמוך.</li>
+    <li><b>מלאי עודף לצד חוסרים נקודתיים.</b></li>
+    <li><b>זמן של הרכש והמחסן</b> שהולך על פעילויות שלא מוסיפות ערך, ופגיעה ביעילות שרשרת האספקה.</li>
+  </ul>
+
+  <h3>מטרת הפרויקט</h3>
+  <p>לנתח את תהליך ניהול פריטי C, לבחון חלופות לפי עקרונות Lean, כמו VMI, Kanban, Two-Bin ו-Visual Management, ולבחור מודל עבודה עתידי. המודל כולל את השיטה, חלוקת האחריות, תדירות האספקה, אופן בקרת המלאי ומדדי ההצלחה.</p>
+
+  <h3>מה מצופה מאיתנו לאורך השנה</h3>
+  <ol class="steps">
+    <li><b>מצגת אוריינטציה (אמצע סמסטר א')</b>5–6 שקפים, 7 דקות הצגה ו-5 דקות שאלות. רקע, מצב קיים, בעיות ומטרה, כיווני פתרון. בלי ציון, אבל נוכחות והצגה חובה.</li>
+    <li><b>מצגת סיכום סמסטר א', הצגה לארגון ודוח ביניים</b>אחרי ההצגה לארגון שולחים את נספח 1. בלי הטופס הציון לא מתפרסם. בדוח הביניים צריך גם סקירת ספרות.</li>
+    <li><b>פוסטר ליום האקדמי</b>20% מהציון הם על התשובות לשאלות.</li>
+    <li><b>מצגת סיכום סמסטר ב' ודוח מסכם</b>הפתרון הנבחר שווה 25%. הדגש הוא על תועלת כמותית ועל מדדי הארגון ששופרו.</li>
+    <li><b>מסירה לארגון</b>פגישת מסירה, סיכום כתוב, ונספחים 2 ו-3.</li>
+  </ol>
+
+  <h3>איפה הציון נמצא בסמסטר א'</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>רכיב במצגת סיכום סמסטר א'</th><th class="num">משקל</th></tr></thead>
+    <tbody>
+      <tr><td>תיאור הארגון: רקע, תוצרים, משאבים</td><td class="num">20%</td></tr>
+      <tr class="hl"><td><b>ניתוח מצב קיים:</b> זיהוי בעיות, כימות עוצמת הבעיות, מידול תהליכים בכלים סטנדרטיים, מדדי הארגון</td><td class="num"><b>30%</b></td></tr>
+      <tr><td>הגדרת מטרות הפרויקט</td><td class="num">10%</td></tr>
+      <tr><td>איסוף נתונים, שיטות סטטיסטיות וכיווני פתרון</td><td class="num">20%</td></tr>
+      <tr><td>מבנה ונראות המצגת</td><td class="num">10%</td></tr>
+      <tr><td>אופן ההצגה ומענה לשאלות</td><td class="num">10%</td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout key"><h4>המסקנה ליום האפיון</h4><p style="margin:0">כל בעיה שנשמע צריכה לצאת איתנו עם מספר: כמה פעמים בחודש, כמה זמן, כמה כסף. בלי מספר אין כימות, ובלי כימות מאבדים חלק גדול מה-30%.</p></div>
+
+  <div class="callout ask"><h4>מה לשאול ביום האפיון</h4><ul>
+    <li>מה גרם לכם להעלות את הנושא דווקא עכשיו?</li>
+    <li>איך תיראה הצלחה מבחינתך בעוד שנה? באיזה מספר תסתכל?</li>
+    <li>את מי חייבים לפגוש כדי להבין את התהליך עד הסוף?</li>
+    <li>מה כבר ניסיתם, ולמה זה לא החזיק?</li>
+  </ul></div>
+  <div class="quiz" data-quiz="m1"></div>
+</section>
+
+<!-- ===================== M2 ===================== -->
+<section class="page" id="m2" hidden>
+  <h2>פרק 2 · יסודות ניהול מלאי</h2>
+  <p class="lead">עשרה מושגים שיחזרו בכל ראיון ובכל ניתוח. כדאי להכיר אותם עד שהם יוצאים בלי לחשוב.</p>
+
+  <div class="concepts">
+    <div class="concept"><b>מק"ט</b><span class="en">SKU · Stock Keeping Unit</span><p>מזהה ייחודי לפריט. בורג M3×8 ובורג M3×10 הם שני מק"טים שונים.</p></div>
+    <div class="concept"><b>זמן אספקה</b><span class="en">Lead Time · L</span><p>מזיהוי הצורך ועד שהפריט זמין לשימוש. כולל זמנים פנימיים: אישור, הפקת הזמנה, קבלה, בדיקה וקליטה. לא רק את המשלוח.</p></div>
+    <div class="concept"><b>צריכה / ביקוש</b><span class="en">Demand · D</span><p>כמה יחידות נצרכות ביחידת זמן. בפריטי C נגזרת בדרך כלל מכמות המערכות שמיוצרות ומעץ המוצר (BOM).</p></div>
+    <div class="concept"><b>מלאי ביטחון</b><span class="en">Safety Stock · SS</span><p>כרית נגד שונות בצריכה או בזמן האספקה.</p></div>
+    <div class="concept"><b>נקודת הזמנה מחדש</b><span class="en">Reorder Point · ROP</span><p>רמת המלאי שבה יוצאת הזמנה.</p></div>
+    <div class="concept"><b>Min/Max</b><span class="en">Min/Max</span><p>כשהמלאי יורד ל-Min, מזמינים עד ה-Max. ה-Min ממלא בפועל את תפקיד ה-ROP.</p></div>
+    <div class="concept"><b>חוסר</b><span class="en">Stockout</span><p>צריכה שאין מלאי לספק אותה. בייצור זה יכול להיות עמדה שעומדת.</p></div>
+    <div class="concept"><b>מחזור מלאי</b><span class="en">Inventory Turnover</span><p>כמה פעמים בשנה המלאי "מתחלף". מחזור נמוך מעיד על מלאי עודף.</p></div>
+    <div class="concept"><b>ימי מלאי</b><span class="en">Days of Supply</span><p>לכמה ימים המלאי הנוכחי יספיק בקצב הצריכה הממוצע.</p></div>
+    <div class="concept"><b>רמת שירות ושיעור מילוי</b><span class="en">Service Level · Fill Rate</span><p>רמת שירות: הסיכוי שלא יהיה חוסר במחזור הזמנה. שיעור מילוי: איזה חלק מהבקשות סופק מיד מהמלאי.</p></div>
+  </div>
+
+  <h3>הנוסחאות שצריך להכיר</h3>
+  <span class="formula">ROP = D × L + SS<span class="c">נקודת הזמנה = צריכה ליחידת זמן × זמן אספקה + מלאי ביטחון</span></span>
+  <span class="formula">SS ≈ z × σd × √L<span class="c">כשהצריכה משתנה וזמן האספקה קבוע. z ≈ 1.65 לרמת שירות של כ-95%. σd = סטיית התקן של הצריכה ליחידת זמן.</span></span>
+  <span class="formula">Turnover = annual usage value ÷ average inventory value<span class="c">מחזור מלאי = עלות הצריכה השנתית ÷ ערך המלאי הממוצע</span></span>
+  <span class="formula">Days of Supply = on-hand ÷ average daily usage<span class="c">ימי מלאי = מלאי נוכחי ÷ צריכה יומית ממוצעת</span></span>
+
+  <div class="callout note"><h4>דוגמה (מספרים מומצאים)</h4><p style="margin:0">בורג שנצרך 50 יחידות ביום, זמן אספקה כולל 10 ימים, מלאי ביטחון 200 יחידות: ROP = 50×10 + 200 = 700. כשהמלאי יורד ל-700, מזמינים. אם בפועל לוקחים עוד 5 ימים של אישורים וקבלה, ה-ROP האמיתי הוא 950. מכאן חוסרים "מפתיעים".</p></div>
+
+  <h3>EOQ: למה פריטים זולים "רוצים" הזמנות גדולות ונדירות</h3>
+  <p>שתי עלויות מושכות לכיוונים הפוכים. <b>עלות הזמנה (S)</b>: הזמן של הקניין, האישורים, הקבלה והחשבונית. היא קבועה לכל הזמנה, בלי קשר לערך שלה. <b>עלות החזקה (H)</b>: הון, מקום, התיישנות. היא גדלה עם כמות המלאי.</p>
+  <span class="formula">EOQ = √(2 × D × S ÷ H)<span class="c">D = צריכה שנתית · S = עלות טיפול בהזמנה אחת · H = עלות החזקת יחידה לשנה</span></span>
+  <p>בפריט C עלות ההחזקה ליחידה זעירה, ועלות ההזמנה לא. לכן ה-EOQ יוצא גדול: עדיף להזמין לעיתים רחוקות ובכמויות גדולות. זה ההיגיון התיאורטי מאחורי הזמנות מסגרת, VMI ומיכלים גדולים. המגבלות בפועל: מקום, תוקף, ושינויי תכנון שמייתרים מלאי של גרסה ישנה.</p>
+
+  <div class="calc" id="eoqCalc">
+    <h4>מחשבון EOQ (להמחשה)</h4>
+    <div class="fields">
+      <label>צריכה שנתית (D), יחידות<input type="number" id="eoqD" value="2000" min="1" inputmode="decimal"></label>
+      <label>עלות טיפול בהזמנה (S), ₪<input type="number" id="eoqS" value="100" min="0" inputmode="decimal"></label>
+      <label>עלות החזקה ליחידה לשנה (H), ₪<input type="number" id="eoqH" value="0.1" min="0" step="0.01" inputmode="decimal"></label>
+    </div>
+    <div class="result" id="eoqOut" aria-live="polite"></div>
+  </div>
+
+  <div class="callout ask"><h4>מה לשאול ביום האפיון</h4><ul>
+    <li>האם מוגדרים ב-ERP ערכי Min/Max או ROP לפריטי C? מי קבע אותם, ומתי עודכנו לאחרונה?</li>
+    <li>כמה זמן עובר בפועל מזיהוי צורך ועד שהפריט על המדף? לפרק לשלבים: אישור, הזמנה, משלוח, קבלה, קליטה.</li>
+    <li>יש אצל הספקים כמות מינימום להזמנה (MOQ)?</li>
+    <li>איך מזהים היום שמשהו עומד להיגמר: דוח מהמערכת, ספירה, או כשמישהו מגלה מגירה ריקה?</li>
+  </ul></div>
+  <div class="quiz" data-quiz="m2"></div>
+</section>
+
+<!-- ===================== M3 ===================== -->
+<section class="page" id="m3" hidden>
+  <h2>פרק 3 · ניתוח ABC ולמה פריטי C הם בעיית טרנזקציות</h2>
+  <p class="lead">ניתוח ABC הוא הכלי הראשון שנריץ על נתוני ה-ERP. הוא מראה במספרים מה כולם מרגישים: מעט פריטים מחזיקים את רוב הכסף, והרבה פריטים מחזיקים את רוב העבודה.</p>
+
+  <h3>איך עושים ABC</h3>
+  <ol>
+    <li>לכל מק"ט מחשבים <b>ערך צריכה שנתי</b> = כמות שנתית × מחיר ליחידה.</li>
+    <li>ממיינים מהגבוה לנמוך ומחשבים אחוז מצטבר מהערך הכולל.</li>
+    <li>חותכים לפי ספים. ספים מקובלים: A עד כ-80% מהערך המצטבר, B עד כ-95%, והשאר C. הספים הם החלטה, לא חוק טבע.</li>
+  </ol>
+  <p>כלל אצבע נפוץ: קבוצה קטנה של פריטים מחזיקה את רוב הערך, ורוב המק"טים נמצאים ב-C. זו השערה שנבדוק על הנתונים של ForSight, לא עובדה שנכתוב במצגת.</p>
+
+  <h3>למה הבעיה של פריטי C היא לא הכסף</h3>
+  <p>הכסף שקשור בפריטי C קטן. מה שיקר הוא הזמן: הפקת הזמנה, אישור, קבלה, קליטה, חשבונית, ספירה, חיפוש. העלויות האלה הן <b>לכל טרנזקציה</b>, לא לפי ערך. בהזמנה של פריטים זולים, עלות הטיפול עלולה לעלות על ערך הפריטים עצמם. גם את זה נבדוק במספרים.</p>
+  <div class="callout key"><h4>המשמעות לפתרון</h4><p style="margin:0">המטרה בפריטי C היא <b>פחות טרנזקציות ופחות תשומת לב</b>, עם זמינות גבוהה. לא בהכרח פחות מלאי. לפעמים הפתרון הנכון מחזיק קצת יותר מלאי, בתמורה להרבה פחות עבודה.</p></div>
+
+  <h3>ABC לא מודד קריטיות</h3>
+  <p>בורג של 30 אגורות שחסר עוצר את ההרכבה בדיוק כמו מנוע. לכן משלבים את ABC עם סיווג קריטיות, למשל VED (Vital, Essential, Desirable). פריט C קריטי צריך פתרון שמבטיח זמינות כמעט מלאה, במינימום מאמץ.</p>
+
+  <h3>XYZ: כמה הצריכה יציבה</h3>
+  <p>XYZ מסווג לפי שונות הצריכה (מקדם השונות, CV = סטיית תקן ÷ ממוצע, על צריכה חודשית למשל). X יציב, Y משתנה, Z ספורדי. הספים משתנים בין מקורות, וקובעים אותם לפי הנתונים.</p>
+  <ul>
+    <li><b>CX</b> (זול ויציב): המועמד הטבעי ל-Two-Bin, Kanban ו-VMI.</li>
+    <li><b>CZ</b> (זול וספורדי): מיכל עלול לשבת שנה או להיגמר בבת אחת. לפעמים עדיף להזמין לפי צורך או להחזיק כמות קטנה קבועה.</li>
+  </ul>
+
+  <h3>תרגול: סיווג ABC</h3>
+  <p class="small muted"><b>נתונים מומצאים להמחשה.</b> 15 פריטים של חברה רובוטית דמיונית, כולל עמודה של מספר הזמנות רכש בשנה. שנו את הספים וראו מה קורה.</p>
+  <div class="calc">
+    <div class="abc-controls">
+      <label>סף A (אחוז מצטבר מהערך): <b id="thrAOut">80%</b><input type="range" id="thrA" min="50" max="90" value="80"></label>
+      <label>סף B (אחוז מצטבר מהערך): <b id="thrBOut">95%</b><input type="range" id="thrB" min="80" max="99" value="95"></label>
+    </div>
+    <div class="abc-summary" id="abcSummary"></div>
+    <div class="table-wrap"><table id="abcTable">
+      <thead><tr><th>#</th><th>פריט</th><th class="num">כמות שנתית</th><th class="num">מחיר ₪</th><th class="num">ערך שנתי ₪</th><th>% מצטבר</th><th>סיווג</th><th class="num">הזמנות בשנה</th></tr></thead>
+      <tbody></tbody>
+    </table></div>
+    <p class="small muted" style="margin:8px 0 0">שימו לב לעמודה האחרונה: בדוגמה, רוב הזמנות הרכש הולכות על פריטים שמחזיקים חלק קטן מהערך. את התמונה האמיתית נבנה מהזמנות הרכש של ForSight.</p>
+  </div>
+
+  <div class="callout ask"><h4>מה לשאול ביום האפיון</h4><ul>
+    <li>קיים היום סיווג ABC במערכת? איך מוגדר "פריט C" אצלכם: לפי מחיר, לפי קבוצת פריט, לפי משהו אחר?</li>
+    <li>כמה מק"טים בערך בקבוצה הזו, ואצל כמה ספקים?</li>
+    <li>יש פריטי C שחוסר בהם עוצר את הקו? אפשר לקבל דוגמה?</li>
+    <li>יש פריטים עם צריכה ספורדית, למשל רק בדגמים מסוימים או רק בשירות?</li>
+  </ul></div>
+  <div class="quiz" data-quiz="m3"></div>
+</section>
+
+<!-- ===================== M4 ===================== -->
+<section class="page" id="m4" hidden>
+  <h2>פרק 4 · עקרונות Lean</h2>
+  <p class="lead">Lean היא דרך לראות את העבודה דרך עיני הלקוח: מה מוסיף ערך, ומה רק צורך זמן. זו גם השפה שהשופטים יחפשו במצגת.</p>
+
+  <h3>ערך, ומה שאינו ערך</h3>
+  <ul>
+    <li><b>מוסיף ערך (VA, Value Added):</b> משנה את המוצר בדרך שהלקוח מוכן לשלם עליה. למשל, הרכבת הבורג במערכת.</li>
+    <li><b>לא מוסיף ערך אבל הכרחי (Business NVA):</b> נדרש מסיבות עסקיות או רגולטוריות. למשל, תיעוד עקיבות במכשור רפואי. מצמצמים, לא מבטלים.</li>
+    <li><b>בזבוז (NVA, Muda):</b> כל השאר. חיפוש, המתנה, אישור כפול, ספירה מיותרת.</li>
+  </ul>
+
+  <h3>שמונת הבזבוזים, עם דוגמאות מפריטי C</h3>
+  <p class="small muted">ראשי התיבות המוכרים: DOWNTIME או TIMWOODS. אותה רשימה.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>בזבוז</th><th>דוגמה אפשרית בפריטי C</th></tr></thead>
+    <tbody>
+      <tr><td><b>פגמים</b> <span class="muted">Defects</span></td><td>רישום מלאי שגוי, ניפוק מק"ט לא נכון, ספירה שלא תואמת למערכת</td></tr>
+      <tr><td><b>ייצור יתר</b> <span class="muted">Overproduction</span></td><td>ליקוט ערכות או הפקת הזמנות לפני שצריך</td></tr>
+      <tr><td><b>המתנה</b> <span class="muted">Waiting</span></td><td>עמדה שעומדת עד שמגיע חלק חסר; הזמנה שמחכה לאישור</td></tr>
+      <tr><td><b>כישרון לא מנוצל</b> <span class="muted">Non-utilized talent</span></td><td>קניין מנוסה שמבלה שעות בהזמנות שגרתיות במקום בניהול ספקים</td></tr>
+      <tr><td><b>שינוע</b> <span class="muted">Transportation</span></td><td>העברת חומר ממחסן ראשי למחסן משנה ורק אז לקו</td></tr>
+      <tr><td><b>מלאי</b> <span class="muted">Inventory</span></td><td>שנים של מלאי בגלל MOQ או הזמנות "ליתר ביטחון"</td></tr>
+      <tr><td><b>תנועה</b> <span class="muted">Motion</span></td><td>מרכיב שהולך למחסן לחפש בורג; חיפוש במגירות לא מסומנות</td></tr>
+      <tr><td><b>עיבוד יתר</b> <span class="muted">Extra-processing</span></td><td>שלושה אישורים להזמנה של 40 ₪; ספירה פרטנית של שייבות</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>תרגול: איזה בזבוז זה?</h3>
+  <p class="small muted">לכל תרחיש בחרו את הבזבוז העיקרי.</p>
+  <div class="drill" data-drill="waste"></div>
+
+  <h3>דחיפה מול משיכה</h3>
+  <p><b>דחיפה (Push):</b> מזמינים ומייצרים לפי תחזית או תוכנית (למשל MRP). <b>משיכה (Pull):</b> ההשלמה מופעלת מצריכה בפועל. מיכל שהתרוקן או כרטיס Kanban הם אות המשיכה. בפריטי C עם צריכה יציבה, משיכה בדרך כלל פשוטה וזולה יותר מתכנון פרטני.</p>
+
+  <h3>עוד ארבעה מושגים שחייבים להכיר</h3>
+  <div class="concepts">
+    <div class="concept"><b>Gemba</b><span class="en">"the real place"</span><p>ללכת למקום שבו העבודה קורית ולראות בעיניים. יום האפיון הוא Gemba walk.</p></div>
+    <div class="concept"><b>5S</b><span class="en">Sort · Set in order · Shine · Standardize · Sustain</span><p>מיון, סידור, ניקיון, תקנון, שימור. בסיס לכל פתרון ויזואלי: אי אפשר לנהל Two-Bin במגירה מבולגנת.</p></div>
+    <div class="concept"><b>ניהול חזותי</b><span class="en">Visual Management</span><p>המצב גלוי במבט: מגירות מסומנות, תווית עם מק"ט ותמונה, קו מינימום, צבעים.</p></div>
+    <div class="concept"><b>עבודה מתוקננת</b><span class="en">Standard Work</span><p>דרך אחת מוגדרת לבצע משימה, למשל סבב השלמה. בלעדיה אין יציבות, ואין מול מה לשפר.</p></div>
+  </div>
+
+  <div class="callout ask"><h4>מה לשאול ביום האפיון</h4><ul>
+    <li>אפשר לראות ניפוק של פריט C, מהרגע שהמרכיב צריך אותו ועד שהוא בידיים?</li>
+    <li>איפה פריטי C מאוחסנים ליד העמדות? מי ממלא ומתי?</li>
+    <li>מה קורה כשמשהו נגמר באמצע עבודה? מי מגלה, ולמי פונים?</li>
+    <li>איזה שלב בתהליך הכי מתסכל אתכם?</li>
+  </ul></div>
+  <div class="quiz" data-quiz="m4"></div>
+</section>
+
+<!-- ===================== M5 ===================== -->
+<section class="page" id="m5" hidden>
+  <h2>פרק 5 · חלופות לניהול פריטי C</h2>
+  <p class="lead">זה לב הפרויקט: אילו שיטות קיימות, מה כל אחת דורשת, ומה צריך לבדוק ב-ForSight כדי לבחור. הבחירה עצמה תגיע רק אחרי הנתונים.</p>
+
+  <details class="method" open><summary>הזמנת מסגרת <span>Blanket Order · הצעד הקל ביותר</span></summary>
+    <div class="method-body">
+      <div class="full"><h5>איך זה עובד</h5><p style="margin:0">הזמנת רכש אחת לתקופה (למשל שנה) עם מחיר וכמות כוללת. המשיכות נעשות לפי צורך, בלי הזמנה חדשה כל פעם.</p></div>
+      <div><h5>יתרונות</h5><ul><li>מצמצם מאוד את מספר הזמנות הרכש</li><li>לא משנה את התהליך הפיזי</li></ul></div>
+      <div><h5>חסרונות</h5><ul><li>לא פותר חוסרים או בלגן במגירות</li><li>דורש תחזית שנתית סבירה</li></ul></div>
+      <div><h5>תנאים מקדימים</h5><ul><li>ספק יציב ומחירון מוסכם</li></ul></div>
+      <div><h5>מה לבדוק ב-ForSight</h5><ul><li>קיימים כבר הסכמי מסגרת? עם מי?</li></ul></div>
+    </div>
+  </details>
+
+  <details class="method"><summary>Two-Bin <span>שני מיכלים לכל פריט</span></summary>
+    <div class="method-body">
+      <div class="full"><h5>איך זה עובד</h5><p style="margin:0">לכל פריט שני מיכלים בנקודת השימוש. עובדים מהראשון. כשהוא מתרוקן, הוא (או התווית שלו) הוא אות ההשלמה, ועוברים לשני. המיכל השני מכסה את הצריכה עד שההשלמה מגיעה.</p></div>
+      <div><h5>יתרונות</h5><ul><li>פשוט, ויזואלי וזול</li><li>אין צורך לספור פריטים בודדים</li><li>הפריט ליד המרכיב, בלי הליכה</li></ul></div>
+      <div><h5>חסרונות</h5><ul><li>דורש מקום בעמדה</li><li>דורש משמעת: מיכל ריק חייב לחזור</li><li>סיכון לערבוב אצוות אם לא מתכננים</li></ul></div>
+      <div><h5>תנאים מקדימים</h5><ul><li>צריכה יציבה יחסית</li><li>סבב השלמה מוגדר</li><li>גודל מיכל ≥ צריכה בזמן ההשלמה + ביטחון</li></ul></div>
+      <div><h5>מה לבדוק ב-ForSight</h5><ul><li>יש מקום ליד העמדות?</li><li>אילו פריטים מנוהלים לפי אצווה?</li></ul></div>
+    </div>
+  </details>
+
+  <details class="method"><summary>Kanban <span>כרטיסים כאות השלמה</span></summary>
+    <div class="method-body">
+      <div class="full"><h5>איך זה עובד</h5><p style="margin:0">כל מיכל מגיע עם כרטיס. כשמיכל נפתח או מתרוקן, הכרטיס חוזר למי שמשלים (מחסן או ספק). מספר הכרטיסים קובע כמה מלאי יש במעגל. Two-Bin הוא מקרה פרטי של Kanban עם שני כרטיסים.</p></div>
+      <div><h5>יתרונות</h5><ul><li>שליטה מדויקת בכמות המלאי במעגל</li><li>מתאים גם לסופרמרקט מרכזי ליד הקו</li></ul></div>
+      <div><h5>חסרונות</h5><ul><li>כרטיסים הולכים לאיבוד</li><li>צריך לחשב מחדש כשהצריכה משתנה</li></ul></div>
+      <div><h5>תנאים מקדימים</h5><ul><li>צריכה יציבה, זמן השלמה ידוע</li></ul></div>
+      <div><h5>מה לבדוק ב-ForSight</h5><ul><li>קצב ייצור צפוי ושינויים בו</li><li>זמן השלמה פנימי בין מחסן לקו</li></ul></div>
+    </div>
+  </details>
+
+  <details class="method"><summary>VMI <span>Vendor Managed Inventory · הכיוון המרכזי בהצעה</span></summary>
+    <div class="method-body">
+      <div class="full"><h5>איך זה עובד</h5><p style="margin:0">הספק אחראי לנטר את המלאי ולהשלים אותו בין גבולות Min/Max מוסכמים, לפי ביקורים או לפי נתונים. בגרסה שבהצעת הפרויקט: מגירות או מיכלים מסומנים באזור הייצור, הספק מבקר מדי פעם, מנטר ומשלים לפי צריכה בפועל. בדרך כלל מגיע עם הסכם מסגרת וחשבונית מרוכזת.</p></div>
+      <div><h5>יתרונות</h5><ul><li>ירידה גדולה בהזמנות ובעבודה אדמיניסטרטיבית</li><li>הניטור עובר למי שמומחה בזה</li><li>מתאים לתיאור הבעיה בהצעה</li></ul></div>
+      <div><h5>חסרונות</h5><ul><li>תלות בספק</li><li>הספק עלול להחזיק יותר מלאי מהנדרש</li><li>מחיר שירות, גישה לשטח, שיתוף נתונים</li></ul></div>
+      <div><h5>תנאים מקדימים</h5><ul><li>ספק עם נוכחות מקומית ונכונות</li><li>היקף מספיק כדי שישתלם לו</li><li>חוזה עם מדדים: רמת מילוי, זמני תגובה</li></ul></div>
+      <div><h5>מה לבדוק ב-ForSight</h5><ul><li>יש ספק שכבר מספק חלק גדול מפריטי C?</li><li>איך משתלבת בדיקת הקבלה ודרישות האיכות?</li></ul></div>
+    </div>
+  </details>
+
+  <details class="method"><summary>מגירות בניהול ספק <span>Breadbox · VMI עם Two-Bin בקו</span></summary>
+    <div class="method-body">
+      <div class="full"><h5>איך זה עובד</h5><p style="margin:0">נציג הספק עובר בתדירות קבועה (למשל שבועית) בין עמדות הייצור וממלא מגירות. זה השילוב של VMI ו-Two-Bin, והוא קרוב מאוד למה שמתואר בהצעת הפרויקט.</p></div>
+      <div><h5>יתרונות</h5><ul><li>אפס הזמנות שוטפות, אפס ניפוקים מהמחסן</li></ul></div>
+      <div><h5>חסרונות</h5><ul><li>אדם חיצוני על רצפת הייצור</li><li>צריך לתכנן מחדש קבלה ובקרה</li></ul></div>
+      <div><h5>תנאים מקדימים</h5><ul><li>אישור גישה לאזור הייצור</li></ul></div>
+      <div><h5>מה לבדוק ב-ForSight</h5><ul><li>יש מגבלות גישה, ניקיון או ESD באזור ההרכבה?</li></ul></div>
+    </div>
+  </details>
+
+  <details class="method"><summary>מלאי קונסיגנציה <span>Consignment</span></summary>
+    <div class="method-body">
+      <div class="full"><h5>איך זה עובד</h5><p style="margin:0">המלאי יושב אצל ForSight אבל נשאר בבעלות הספק עד שנצרך. החיוב לפי צריכה בפועל.</p></div>
+      <div><h5>יתרונות</h5><ul><li>לא קושר הון</li></ul></div>
+      <div><h5>חסרונות</h5><ul><li>צריך מנגנון התחשבנות על הצריכה</li><li>התערבות של הנהלת חשבונות</li></ul></div>
+      <div><h5>תנאים מקדימים</h5><ul><li>אמון ומדידת צריכה אמינה</li></ul></div>
+      <div><h5>מה לבדוק ב-ForSight</h5><ul><li>האם קשירת ההון בכלל מעניינת אותם בפריטים זולים?</li></ul></div>
+    </div>
+  </details>
+
+  <details class="method"><summary>מגירות חכמות <span>e-Kanban · חיישני משקל או RFID</span></summary>
+    <div class="method-body">
+      <div class="full"><h5>איך זה עובד</h5><p style="margin:0">חיישן במגירה (משקל, RFID או מצלמה) מזהה ירידה ברמת המלאי ושולח אות אוטומטי לספק או למחסן. ישנם כמה ספקי פתרונות כאלה בשוק.</p></div>
+      <div><h5>יתרונות</h5><ul><li>נתוני צריכה בזמן אמת</li><li>אין צורך בביקורים או סריקות</li></ul></div>
+      <div><h5>חסרונות</h5><ul><li>עלות חומרה ואינטגרציה ל-IT</li><li>אישורים פנימיים ותחזוקה</li></ul></div>
+      <div><h5>תנאים מקדימים</h5><ul><li>תקציב, תמיכת IT, נפח שמצדיק</li></ul></div>
+      <div><h5>מה לבדוק ב-ForSight</h5><ul><li>פתיחות להשקעה? מגבלות IT ואבטחת מידע?</li></ul></div>
+    </div>
+  </details>
+
+  <details class="method"><summary>מלאי רצפה וניפוק חופשי <span>Floor stock · Free issue · Backflush</span></summary>
+    <div class="method-body">
+      <div class="full"><h5>איך זה עובד</h5><p style="margin:0">פריטים זולים נרשמים כהוצאה בקבלה ועומדים פתוחים בקו, בלי ניפוק לכל פקודת עבודה. גרסה אחרת: <b>Backflush</b>, שבה המערכת מורידה את הצריכה אוטומטית לפי עץ המוצר כשמדווחים על ייצור.</p></div>
+      <div><h5>יתרונות</h5><ul><li>מבטל את טרנזקציות הניפוק</li><li>פשוט מאוד לעובדים</li></ul></div>
+      <div><h5>חסרונות</h5><ul><li>רישום מלאי פחות מדויק</li><li>עלול להתנגש בדרישות עקיבות</li></ul></div>
+      <div><h5>תנאים מקדימים</h5><ul><li>BOM מדויק (ב-Backflush)</li><li>בדיקות תקופתיות</li></ul></div>
+      <div><h5>מה לבדוק ב-ForSight</h5><ul><li>אילו פריטים חייבים עקיבות אצווה ולכן לא מתאימים?</li></ul></div>
+    </div>
+  </details>
+
+  <h3>השוואה במבט אחד</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>שיטה</th><th>אות להשלמה</th><th>מי משלים</th><th>השפעה על מספר הזמנות הרכש</th><th>השקעה בהקמה</th><th>דרישה עיקרית</th></tr></thead>
+    <tbody>
+      <tr><td><b>Min/Max ב-ERP</b> <span class="pill">השיטה היום לפי ההצעה</span></td><td>ירידה מתחת ל-Min במערכת</td><td>רכש</td><td>הזמנה לכל צורך</td><td>אין</td><td>רישום מדויק ופרמטרים מעודכנים</td></tr>
+      <tr><td><b>הזמנת מסגרת</b></td><td>לוח משיכות או קריאה</td><td>רכש פעם בתקופה + מחסן</td><td>יורד משמעותית</td><td>נמוכה</td><td>תחזית וספק יציב</td></tr>
+      <tr><td><b>Two-Bin</b></td><td>מיכל ריק</td><td>מחסן</td><td>יורד בשילוב עם מסגרת</td><td>נמוכה</td><td>מקום ומשמעת</td></tr>
+      <tr><td><b>Kanban</b></td><td>כרטיס</td><td>מחסן או ספק</td><td>יורד בשילוב עם מסגרת</td><td>נמוכה–בינונית</td><td>צריכה יציבה, חישוב גדלים</td></tr>
+      <tr><td><b>VMI / Breadbox</b></td><td>ביקור או נתונים</td><td>ספק</td><td>יורד מאוד</td><td>בינונית: חוזה והטמעה</td><td>ספק מתאים, אמון, מדדים</td></tr>
+      <tr><td><b>קונסיגנציה</b></td><td>צריכה בפועל</td><td>ספק</td><td>יורד</td><td>בינונית</td><td>התחשבנות על צריכה</td></tr>
+      <tr><td><b>מגירות חכמות</b></td><td>חיישן, אוטומטי</td><td>ספק או מחסן</td><td>יורד מאוד</td><td>גבוהה</td><td>IT, תקציב, אישורים</td></tr>
+      <tr><td><b>מלאי רצפה / Backflush</b></td><td>ללא / דיווח ייצור</td><td>מחסן</td><td>לא משנה רכש, חוסך ניפוקים</td><td>נמוכה</td><td>BOM מדויק, לא לפריטים עם עקיבות</td></tr>
+    </tbody>
+  </table></div>
+  <p class="small muted">ההערכות בטבלה איכותיות וכלליות. בפרויקט נכמת אותן על הנתונים של ForSight. שילוב של שיטות הוא לגיטימי ונפוץ, למשל VMI לפריטים היציבים והזמנת מסגרת לשאר.</p>
+
+  <h3>גודל מעגל Kanban</h3>
+  <span class="formula">N = D × L × (1 + α) ÷ C<span class="c">N = מספר כרטיסים (מעגלים כלפי מעלה) · D = צריכה ליחידת זמן · L = זמן השלמה באותן יחידות · α = מקדם ביטחון · C = כמות במיכל</span></span>
+  <div class="calc" id="kbCalc">
+    <h4>מחשבון Kanban</h4>
+    <div class="fields">
+      <label>צריכה ביום (D)<input type="number" id="kbD" value="200" min="0" inputmode="decimal"></label>
+      <label>זמן השלמה בימים (L)<input type="number" id="kbL" value="2" min="0" step="0.5" inputmode="decimal"></label>
+      <label>מקדם ביטחון α (%)<input type="number" id="kbA" value="25" min="0" inputmode="decimal"></label>
+      <label>יחידות במיכל (C)<input type="number" id="kbC" value="100" min="1" inputmode="decimal"></label>
+    </div>
+    <div class="result" id="kbOut" aria-live="polite"></div>
+  </div>
+
+  <h3>איזו שיטה מתאימה? כלי עזר לחשיבה</h3>
+  <p class="small muted">התשובות כאן הן השערות. "לא יודעים" היא תשובה מצוינת: היא מסמנת מה לברר ביום האפיון.</p>
+  <div class="calc helper" id="helper">
+    <fieldset><legend>1. הצריכה של רוב פריטי C יציבה וצפויה?</legend><div class="radios">
+      <label><input type="radio" name="h-stable" value="yes">כן</label><label><input type="radio" name="h-stable" value="no">לא</label><label><input type="radio" name="h-stable" value="unk" checked>לא יודעים</label></div></fieldset>
+    <fieldset><legend>2. יש ספק אחד או מעטים שמספקים את רוב פריטי C, עם נוכחות מקומית?</legend><div class="radios">
+      <label><input type="radio" name="h-supplier" value="yes">כן</label><label><input type="radio" name="h-supplier" value="no">לא</label><label><input type="radio" name="h-supplier" value="unk" checked>לא יודעים</label></div></fieldset>
+    <fieldset><legend>3. יש מקום ליד עמדות העבודה לאחסון גלוי?</legend><div class="radios">
+      <label><input type="radio" name="h-space" value="yes">כן</label><label><input type="radio" name="h-space" value="no">לא</label><label><input type="radio" name="h-space" value="unk" checked>לא יודעים</label></div></fieldset>
+    <fieldset><legend>4. חלק מהפריטים מנוהלים לפי אצווה (Lot) או דורשים עקיבות?</legend><div class="radios">
+      <label><input type="radio" name="h-lot" value="yes">כן</label><label><input type="radio" name="h-lot" value="no">לא</label><label><input type="radio" name="h-lot" value="unk" checked>לא יודעים</label></div></fieldset>
+    <fieldset><legend>5. יש תקציב ותמיכת IT לפתרון ממוחשב או חיישנים?</legend><div class="radios">
+      <label><input type="radio" name="h-budget" value="yes">כן</label><label><input type="radio" name="h-budget" value="no">לא</label><label><input type="radio" name="h-budget" value="unk" checked>לא יודעים</label></div></fieldset>
+    <button type="button" class="btn" id="helperBtn">מה מתאים?</button>
+    <div class="result rec" id="helperOut" aria-live="polite" hidden></div>
+  </div>
+
+  <div class="callout ask"><h4>מה לשאול ביום האפיון</h4><ul>
+    <li>יש ספק שכבר היום מספק חלק גדול מפריטי C? יש איתו הסכם מסגרת?</li>
+    <li>ספקים כבר הציעו לכם שירות VMI או מגירות? למה זה לא קרה?</li>
+    <li>כמה מקום יש ליד העמדות? אפשר לראות?</li>
+    <li>מה החשש הכי גדול שלכם מהעברת האחריות לספק?</li>
+  </ul></div>
+  <div class="quiz" data-quiz="m5"></div>
+</section>
+
+<!-- ===================== M6 ===================== -->
+<section class="page" id="m6" hidden>
+  <h2>פרק 6 · רגולציה במכשור רפואי ומה זה אומר לפריטי C</h2>
+  <p class="lead">ForSight מייצרת מכשור רפואי. פתרון Lean שנראה מצוין במפעל רגיל יכול להתנגש בדרישות איכות. לכן הפרק הזה הוא בעיקר רשימת שאלות לבדוק, לא קביעות.</p>
+
+  <h3>הרקע בקצרה</h3>
+  <p>יצרני מכשור רפואי עובדים בדרך כלל לפי מערכת ניהול איכות בתקן <b>ISO 13485</b>. לתקן יש פרק רכש (7.4), שעוסק בהערכה ובחירה של ספקים ובאימות של מה שנרכש, וסעיפים על זיהוי ועקיבות (7.5.8, 7.5.9). בארה"ב, תקנת ה-QMSR של ה-FDA, שמפנה ל-ISO 13485, נכנסה לתוקף בפברואר 2026. מה שחשוב לנו: על אילו תקנים ונהלים ForSight עובדת בפועל, ומה הם דורשים מפריטי C. את זה בודקים מול מחלקת האיכות.</p>
+
+  <h3>שבעה נושאים לבדוק</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>נושא</th><th>למה זה משנה לפתרון</th><th>השאלה לשאול</th></tr></thead>
+    <tbody>
+      <tr><td><b>עקיבות</b> <span class="muted">Traceability</span></td><td>מילוי מיכל חלקי מערבב אצוות. ניפוק חופשי לא מתעד איזו אצווה נכנסה לאיזו מערכת.</td><td>אילו פריטי C מנוהלים לפי אצווה? האם האצווה נרשמת ברשומת הייצור של המערכת?</td></tr>
+      <tr><td><b>ספקים מאושרים</b> <span class="muted">Approved Supplier List</span></td><td>מעבר למפיץ שנותן שירות VMI עשוי לדרוש הערכה ואישור של ספק חדש.</td><td>איך מאשרים ספק חדש? כמה זמן זה לוקח?</td></tr>
+      <tr><td><b>בדיקת קבלה</b> <span class="muted">Incoming Inspection</span></td><td>אם הספק ממלא ישר בקו, שלב הקבלה במחסן נעקף.</td><td>האם פריטי C נבדקים בקבלה? נדרשת תעודת התאמה (CoC)?</td></tr>
+      <tr><td><b>בקרת שינויים</b> <span class="muted">Change Control</span></td><td>שינוי בשיטה, בספק או במקור החלק עשוי לעבור תהליך מסודר.</td><td>מה נחשב שינוי שדורש אישור? מי מאשר?</td></tr>
+      <tr><td><b>FIFO ותוקף</b></td><td>אם בהיקף יש דבקים או חומרי סיכה, יש תאריכי תפוגה.</td><td>יש פריטים עם תוקף? איך מנהלים FIFO היום?</td></tr>
+      <tr><td><b>ESD</b></td><td>מחברים אלקטרוניים עשויים להיות רגישים לחשמל סטטי. מיכלים וטיפול חייבים להתאים.</td><td>אילו פריטים רגישים ל-ESD? מה הדרישות לאחסון?</td></tr>
+      <tr><td><b>ניקיון וגישה</b></td><td>באזור מבוקר יכולות להיות מגבלות על אריזות קרטון ועל כניסת אנשים חיצוניים.</td><td>יש דרישות ניקיון באזור ההרכבה? ספק יכול להיכנס?</td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout key"><h4>הכלל</h4><p style="margin:0">מערבים את אבטחת האיכות (QA/RA) מההתחלה. פתרון שנבנה בלי האיכות ייעצר בסוף, ואיתו הציון על "שלבי הטמעה".</p></div>
+
+  <div class="callout ask"><h4>מה לשאול ביום האפיון</h4><ul>
+    <li>מי מאבטחת האיכות יכול לשבת איתנו לחצי שעה?</li>
+    <li>אילו פריטי C דורשים עקיבות אצווה, ואילו לא?</li>
+    <li>איך נראה היום תהליך הקבלה והבדיקה של חומרה?</li>
+    <li>מה יידרש כדי שספק ימלא מגירות ישירות באזור הייצור?</li>
+  </ul></div>
+  <div class="quiz" data-quiz="m6"></div>
+</section>
+
+<!-- ===================== M7 ===================== -->
+<section class="page" id="m7" hidden>
+  <h2>פרק 7 · כלי מיפוי וניתוח</h2>
+  <p class="lead">ספר ההנחיות דורש "מידול וניתוח התהליכים על ידי כלים סטנדרטיים שנלמדו במהלך התואר". הנה הכלים שמתאימים לפרויקט, ומה כל אחד עונה.</p>
+
+  <div class="table-wrap"><table>
+    <thead><tr><th>כלי</th><th>על מה הוא עונה</th><th>מתי בפרויקט</th></tr></thead>
+    <tbody>
+      <tr><td><b>SIPOC</b></td><td>מה גבולות התהליך: ספקים, קלטים, שלבים, פלטים, לקוחות</td><td>ביום האפיון ומיד אחריו</td></tr>
+      <tr><td><b>תרשים זרימה עם מסלולים</b> <span class="muted">Swimlane</span></td><td>מי עושה מה, ואיפה ההעברות בין רכש, מחסן, ייצור וספק</td><td>מיפוי ה-As-Is ותכנון ה-To-Be</td></tr>
+      <tr><td><b>מפת זרם ערך</b> <span class="muted">VSM</span></td><td>זרימת חומר ומידע עם זמנים: זמן כולל מול זמן שמוסיף ערך, ונקודות מלאי</td><td>כימות הבזבוז</td></tr>
+      <tr><td><b>תרשים ספגטי</b> <span class="muted">Spaghetti</span></td><td>מסלולי ההליכה והשינוע על מפת השטח</td><td>בתצפית</td></tr>
+      <tr><td><b>אישיקאווה</b> <span class="muted">Fishbone</span></td><td>הסיבות האפשריות לבעיה (למשל חוסרים) לפי קטגוריות: אנשים, שיטה, חומר, מדידה, ציוד, סביבה</td><td>ניתוח בעיות</td></tr>
+      <tr><td><b>5 למה</b> <span class="muted">5 Whys</span></td><td>שורש הבעיה, ולא הסימפטום</td><td>בראיונות ובניתוח</td></tr>
+      <tr><td><b>תרשים פארטו</b></td><td>מה המעטים שגורמים לרוב: אילו מק"טים או סיבות אחראים לרוב החוסרים</td><td>ניתוח נתונים</td></tr>
+    </tbody>
+  </table></div>
+  <p>על הנתונים עצמם נשתמש גם בסטטיסטיקה תיאורית (ממוצע, סטיית תקן, מקדם שונות לצריכה), שהיא חלק מהקריטריון "אילו שיטות סטטיסטיות שימשו אתכם" בסמסטר א'.</p>
+
+  <h3>דוגמה: Swimlane של פריט C, מהזמנה ועד הרכבה</h3>
+  <div class="diagram">
+    <svg viewBox="0 0 900 400" role="img" aria-label="השערה: זרימת פריט C מהזמנה ועד הרכבה">
+      <defs>
+        <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="sv-head"/></marker>
+        <marker id="arrR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="sv-headr"/></marker>
+      </defs>
+      <text x="450" y="26" text-anchor="middle" class="sv-title">השערה: זרימת פריט C מהזמנה ועד הרכבה (לאמת בשטח)</text>
+      <rect x="20" y="40" width="860" height="80" class="sv-lane"/>
+      <rect x="20" y="120" width="860" height="80" class="sv-lane2"/>
+      <rect x="20" y="200" width="860" height="80" class="sv-lane"/>
+      <rect x="20" y="280" width="860" height="80" class="sv-lane2"/>
+      <rect x="780" y="40" width="100" height="320" class="sv-lab"/>
+      <text x="830" y="85" text-anchor="middle" class="sv-labt">ספק</text>
+      <text x="830" y="165" text-anchor="middle" class="sv-labt">רכש</text>
+      <text x="830" y="245" text-anchor="middle" class="sv-labt">מחסן</text>
+      <text x="830" y="325" text-anchor="middle" class="sv-labt">ייצור</text>
+
+      <path d="M700 216V160H642" class="sv-line" marker-end="url(#arr)"/>
+      <path d="M520 160H492" class="sv-line" marker-end="url(#arr)"/>
+      <path d="M430 136V80H352" class="sv-line" marker-end="url(#arr)"/>
+      <path d="M290 104V214" class="sv-line" marker-end="url(#arr)"/>
+      <path d="M230 240H202" class="sv-line" marker-end="url(#arr)"/>
+      <path d="M140 264V294" class="sv-line" marker-end="url(#arr)"/>
+      <path d="M200 320H580V186" class="sv-loop" marker-end="url(#arrR)"/>
+      <text x="400" y="311" text-anchor="middle" class="sv-loopt">חוסר בעמדה? הזמנה דחופה</text>
+
+      <rect x="640" y="216" width="120" height="48" rx="8" class="sv-box"/>
+      <text x="700" y="236" text-anchor="middle" class="sv-t">המלאי ירד</text>
+      <text x="700" y="253" text-anchor="middle" class="sv-t">מתחת למינימום</text>
+      <rect x="520" y="136" width="120" height="48" rx="8" class="sv-box"/>
+      <text x="580" y="156" text-anchor="middle" class="sv-t">דרישת רכש</text>
+      <text x="580" y="173" text-anchor="middle" class="sv-t">ואישורים</text>
+      <rect x="370" y="136" width="120" height="48" rx="8" class="sv-box"/>
+      <text x="430" y="156" text-anchor="middle" class="sv-t">הזמנת רכש</text>
+      <text x="430" y="173" text-anchor="middle" class="sv-t">לספק</text>
+      <rect x="230" y="56" width="120" height="48" rx="8" class="sv-box"/>
+      <text x="290" y="76" text-anchor="middle" class="sv-t">ליקוט ומשלוח</text>
+      <text x="290" y="93" text-anchor="middle" class="sv-t">אצל הספק</text>
+      <rect x="230" y="216" width="120" height="48" rx="8" class="sv-box"/>
+      <text x="290" y="236" text-anchor="middle" class="sv-t">קבלה, בדיקה</text>
+      <text x="290" y="253" text-anchor="middle" class="sv-t">וקליטה ב-ERP</text>
+      <rect x="80" y="216" width="120" height="48" rx="8" class="sv-box"/>
+      <text x="140" y="236" text-anchor="middle" class="sv-t">אחסון, ליקוט</text>
+      <text x="140" y="253" text-anchor="middle" class="sv-t">וניפוק</text>
+      <rect x="80" y="296" width="120" height="48" rx="8" class="sv-box"/>
+      <text x="140" y="316" text-anchor="middle" class="sv-t">הרכבה</text>
+      <text x="140" y="333" text-anchor="middle" class="sv-t">בעמדה</text>
+      <text x="450" y="386" text-anchor="middle" class="sv-note">מבוסס על תיאור המצב בהצעת הפרויקט. בשטח מאמתים כל שלב: מי מבצע, כמה זמן, באיזו מערכת.</text>
+    </svg>
+  </div>
+  <p class="small muted">התרשים הוא נקודת פתיחה לשיחה. ביום האפיון מראים אותו לאנשים ושואלים "איפה זה לא נכון?". אנשים מתקנים תרשים הרבה יותר בקלות ממה שהם מתארים תהליך מאפס.</p>
+
+  <div class="callout ask"><h4>מה לשאול ביום האפיון</h4><ul>
+    <li>מי מפעיל את ההזמנה בפועל, ועל סמך מה?</li>
+    <li>כמה אישורים עוברת דרישת רכש, ואצל מי?</li>
+    <li>יש בדיקת קבלה לחומרה? מה בודקים?</li>
+    <li>איפה יושב המלאי: מחסן מרכזי, מחסן משנה, ליד העמדה?</li>
+  </ul></div>
+  <div class="quiz" data-quiz="m7"></div>
+</section>
+
+<!-- ===================== M8 ===================== -->
+<section class="page" id="m8" hidden>
+  <h2>פרק 8 · מדדים (KPIs)</h2>
+  <p class="lead">בסמסטר ב' נצטרך להראות תועלת כמותית מול נקודת מוצא. את נקודת המוצא (Baseline) צריך למדוד עכשיו, אחרת לא יהיה מול מה להשוות.</p>
+
+  <div class="table-wrap"><table>
+    <thead><tr><th>מדד</th><th>איך מחשבים</th><th>נתונים נדרשים</th></tr></thead>
+    <tbody>
+      <tr><td><b>הזמנות רכש לפריטי C בחודש</b></td><td>ספירת הזמנות (או שורות הזמנה) של מק"טי C לחודש</td><td>היסטוריית הזמנות רכש מה-ERP</td></tr>
+      <tr><td><b>עלות טיפול בהזמנה</b></td><td>זמן כולל להזמנה (רכש, אישור, קבלה, חשבונית) × עלות שעה</td><td>ראיונות ומדידת זמנים, עלות שעת עבודה</td></tr>
+      <tr><td><b>ערך מלאי ומחזור מלאי</b></td><td>ערך ממוצע; מחזור = עלות צריכה שנתית ÷ ערך מלאי ממוצע</td><td>תמונות מלאי חודשיות + צריכה</td></tr>
+      <tr><td><b>ימי מלאי</b></td><td>מלאי נוכחי ÷ צריכה יומית ממוצעת</td><td>מלאי + צריכה</td></tr>
+      <tr><td><b>מלאי עודף או מת</b></td><td>ערך הפריטים מעל X חודשי צריכה, או בלי תנועה 12 חודשים</td><td>מלאי + תנועות</td></tr>
+      <tr><td><b>חוסרים</b></td><td>מספר אירועי חוסר בחודש; פקודות עבודה שהתעכבו; דקות עצירה</td><td>רישום חוסרים (אם קיים), ראיונות</td></tr>
+      <tr><td><b>הזמנות דחופות</b></td><td>מספר הזמנות דחופות ועלות המשלוח המהיר</td><td>הזמנות רכש עם סימון דחיפות</td></tr>
+      <tr><td><b>דיוק מלאי</b></td><td>אחוז המק"טים שהספירה שלהם תואמת למערכת בתוך טולרנס</td><td>תנועות התאמה מספירות</td></tr>
+      <tr><td><b>זמן עבודה על פריטי C</b></td><td>שעות בשבוע של רכש ומחסן על פריטי C</td><td>ראיונות, תצפית, מדידה</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="calc" id="poCalc">
+    <h4>מחשבון: כמה עולה הטיפול בהזמנות של פריטי C בשנה (להמחשה)</h4>
+    <div class="fields">
+      <label>הזמנות בחודש<input type="number" id="poN" value="100" min="0" inputmode="decimal"></label>
+      <label>דקות טיפול כוללות להזמנה<input type="number" id="poM" value="30" min="0" inputmode="decimal"></label>
+      <label>עלות שעת עבודה, ₪<input type="number" id="poW" value="120" min="0" inputmode="decimal"></label>
+      <label>הפחתה צפויה בהזמנות: <b id="poROut">50%</b><input type="range" id="poR" min="0" max="90" step="5" value="50"></label>
+    </div>
+    <div class="result" id="poOut" aria-live="polite"></div>
+  </div>
+  <p class="small muted">"דקות טיפול כוללות" כוללות את כל מי שנוגע בהזמנה: הקניין, המאשרים, המחסנאי בקבלה והנהלת החשבונות. ביום האפיון שואלים כל אחד כמה זמן לוקח החלק שלו.</p>
+
+  <div class="callout ask"><h4>מה לשאול ביום האפיון</h4><ul>
+    <li>אילו מדדים אתם מודדים היום בתחום? מי מודד, ואיפה רואים את זה?</li>
+    <li>יש רישום של חוסרים או עצירות קו? מאיזה תאריך?</li>
+    <li>כמה זמן לוקח לכל אחד החלק שלו בהזמנה אחת?</li>
+    <li>באיזה מדד הנהלה תסתכל כדי להגיד "הפרויקט הצליח"?</li>
+  </ul></div>
+  <div class="quiz" data-quiz="m8"></div>
+</section>
+
+<!-- ===================== M9 ===================== -->
+<section class="page" id="m9" hidden>
+  <h2>פרק 9 · ראיון אפיון ותצפית</h2>
+  <p class="lead">ביום האפיון אנחנו לא באים להציע פתרונות. באים להבין, לראות ולאסוף מספרים. איכות השאלות קובעת את איכות הממצאים.</p>
+
+  <h3>לפני הראיון</h3>
+  <ul>
+    <li><b>מטרה לכל ראיון:</b> מה חייבים לצאת איתו מהאדם הזה.</li>
+    <li><b>חלוקת תפקידים:</b> מוביל שיחה, רושם (ציטוטים ומספרים), ומתצפת (רואה, מודד, מצייר).</li>
+    <li><b>שאלה על הקלטה:</b> רק באישור. אם לא, רושמים מילה במילה את המשפטים החשובים.</li>
+  </ul>
+
+  <h3>טכניקת המשפך</h3>
+  <ol class="steps">
+    <li><b>פתוח</b>"ספר לי מה קורה מהרגע שמגירה מתרוקנת ועד שהיא מתמלאת שוב."</li>
+    <li><b>ממוקד</b>"אמרת שלפעמים מגלים מאוחר. מתי זה קרה בפעם האחרונה? מה עשיתם?"</li>
+    <li><b>סגור, לאישור</b>"אז אם הבנתי נכון, בערך פעמיים בחודש יש הזמנה דחופה, וכל אחת לוקחת חצי יום?"</li>
+  </ol>
+
+  <h3>שלושה כללים שעושים את ההבדל</h3>
+  <div class="concepts">
+    <div class="concept"><b>"מתי זה קרה בפעם האחרונה?"</b><p>הופך הכללה ("המון חוסרים") לסיפור אמיתי עם פרטים, ומשם למספר.</p></div>
+    <div class="concept"><b>"אפשר לראות?"</b><p>את המסך, את המגירה, את הטופס. מה שאנשים מתארים ומה שהם עושים בפועל שונה לא פעם.</p></div>
+    <div class="concept"><b>"מה עושים כשאין?"</b><p>מעקפים (Workarounds) חושפים את הבעיות האמיתיות: ההשאלה מערכה אחרת, המגירה הנסתרת.</p></div>
+  </div>
+
+  <h3>5 למה בתוך ראיון</h3>
+  <div class="callout note"><h4>דוגמה מומצאת</h4><ol style="margin:0">
+    <li>למה הקו עמד? חסר אום M3 בעמדה.</li>
+    <li>למה חסר? המחסן לא השלים את המגירה.</li>
+    <li>למה לא השלים? המערכת הראתה שיש מלאי, אז לא נפתחה הזמנה.</li>
+    <li>למה המערכת הראתה מלאי? ניפוקים דחופים נעשו בלי רישום.</li>
+    <li>למה בלי רישום? אין דרך מהירה לרשום ניפוק דחוף.</li>
+  </ol><p style="margin:8px 0 0"><b>השורש:</b> תהליך הרישום והניפוק, לא הספק. פתרון שמחליף ספק לא היה פותר את זה.</p></div>
+
+  <h3>תרגול: איזו שאלה זו?</h3>
+  <div class="drill" data-drill="questions"></div>
+
+  <h3>תצפית בשטח</h3>
+  <ul>
+    <li>מציגים את עצמנו ומסבירים: אנחנו בודקים תהליך, לא מעריכים אנשים.</li>
+    <li><b>מבקשים אישור לפני כל צילום.</b> זו חברת מכשור רפואי עם מידע רגיש, וייתכן שיש הסכם סודיות.</li>
+    <li>לא מפריעים לעבודה. שאלות בהפסקה או בסוף.</li>
+    <li>מודדים זמנים בשעון עצר (ניפוק אחד, הליכה למחסן), ומציירים את השטח לתרשים ספגטי.</li>
+    <li>סופרים: כמה מגירות, כמה מסומנות, כמה ריקות, כמה מק"טים בעמדה.</li>
+  </ul>
+
+  <h3>טריאנגולציה</h3>
+  <p>ממצא חזק הוא ממצא שמגיע משלושה כיוונים: מה אמרו בראיון, מה ראינו בתצפית, ומה מראים הנתונים. כשהם לא מתיישבים, זה בדיוק המקום לחפור.</p>
+
+  <h3>איך סוגרים פגישה</h3>
+  <ol>
+    <li>מסכמים בקול שלושה דברים ששמענו, ומבקשים תיקון.</li>
+    <li>מאשרים את בקשת הנתונים: מה, מי שולח, עד מתי, באיזה פורמט.</li>
+    <li>קובעים את הפגישה הבאה ואת מי נראיין.</li>
+    <li>שולחים מייל תודה עם הסיכום באותו יום.</li>
+    <li>תוך 24 שעות: תחקיר צוות ועדכון מסמך סיכומי הפגישות.</li>
+  </ol>
+
+  <div class="callout ask"><h4>מה לשאול ביום האפיון</h4><ul>
+    <li>מתי היה החוסר האחרון? מה קרה, ומי טיפל?</li>
+    <li>אפשר לראות איך מפיקים הזמנה במערכת?</li>
+    <li>מה עושים כשפריט חסר ואין זמן לחכות?</li>
+    <li>אם היית יכול לשנות דבר אחד בתהליך, מה זה היה?</li>
+  </ul></div>
+  <div class="quiz" data-quiz="m9"></div>
+</section>
+
+<!-- ===================== M10 ===================== -->
+<section class="page" id="m10" hidden>
+  <h2>פרק 10 · מבחן מסכם</h2>
+  <p class="lead">14 שאלות מכל הפרקים. מעל 80% אתם מוכנים. מתחת, חזרו לפרקים שבהם טעיתם.</p>
+  <p class="small muted" id="bestScore"></p>
+  <div class="quiz" data-quiz="exam"></div>
+</section>
+
+<!-- ===================== GLOSSARY ===================== -->
+<section class="page" id="glossary" hidden>
+  <h2>מילון מונחים</h2>
+  <p class="lead">לחצו על מונח כדי לראות את ההגדרה. טוב לחזרה מהירה בדרך לביקור.</p>
+  <input type="search" class="gsearch" id="gSearch" placeholder="חיפוש מונח, בעברית או באנגלית" aria-label="חיפוש מונח">
+  <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+    <button type="button" class="btn ghost" id="gAll">הצגת כל ההגדרות</button>
+    <span class="small muted" id="gCount"></span>
+  </div>
+  <div class="ggrid" id="gGrid"></div>
+</section>
+
+<!-- ===================== CHEAT ===================== -->
+<section class="page" id="cheat" hidden>
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+    <h2 style="margin:0">דף לפני שיוצאים</h2>
+    <button type="button" class="btn ghost no-print" id="printBtn">הדפסה</button>
+  </div>
+  <p class="lead" style="margin-top:8px">כל הקורס בעמוד אחד. לקרוא ערב לפני, ולהחזיק ביד ביום עצמו.</p>
+  <div class="cheat">
+    <div class="card"><h4>שלוש מטרות ליום</h4><ol>
+      <li>תמונת As-Is של התהליך, מהזמנה ועד הרכבה</li>
+      <li>הסכמה על קובץ נתונים מה-ERP: מה, מי, עד מתי</li>
+      <li>תאריכים לראיונות ולתצפיות המשך</li>
+    </ol></div>
+    <div class="card"><h4>חמש שאלות שאסור לצאת בלעדיהן</h4><ol>
+      <li>כמה מק"טים הם פריטי C, ואצל כמה ספקים?</li>
+      <li>כמה הזמנות רכש לפריטי C בחודש, וכמה זמן כל אחת מקצה לקצה?</li>
+      <li>כמה חוסרים היו ברבעון האחרון, ומה הייתה ההשפעה?</li>
+      <li>אילו פריטים דורשים עקיבות אצווה?</li>
+      <li>איך תיראה הצלחה בעיני רן, ובאיזה מספר?</li>
+    </ol></div>
+    <div class="card"><h4>נתונים לבקש</h4><ul>
+      <li>רשימת פריטי C: מחיר, ספק, זמן אספקה, Min/Max</li>
+      <li>תנועות מלאי ל-12 עד 24 חודשים</li>
+      <li>הזמנות רכש ל-12 עד 24 חודשים</li>
+      <li>תמונת מלאי ותנועות התאמה מספירות</li>
+      <li>רישום חוסרים, אם קיים</li>
+      <li>עץ מוצר (BOM) ותוכנית ייצור</li>
+    </ul></div>
+    <div class="card"><h4>מה לראות בתצפית</h4><ul>
+      <li>מסלול פריט מהמחסן לעמדה</li>
+      <li>מגירות ומיכלים בעמדה ומצב הסימון</li>
+      <li>כמה זמן לוקח ניפוק אחד</li>
+      <li>מה קורה כשמשהו חסר</li>
+      <li>לצלם רק באישור</li>
+    </ul></div>
+    <div class="card"><h4>כללי ראיון</h4><ul>
+      <li>פתוח, אחר כך ממוקד, ובסוף סגור לאישור</li>
+      <li>"מתי זה קרה בפעם האחרונה?"</li>
+      <li>"אפשר לראות?"</li>
+      <li>לכל בעיה: כמה פעמים, כמה זמן, כמה כסף</li>
+      <li>לא מציעים פתרונות בפגישה הראשונה</li>
+    </ul></div>
+    <div class="card"><h4>לפני שיוצאים מהדלת</h4><ul>
+      <li>לסכם בקול שלושה דברים ששמענו</li>
+      <li>לאשר מי שולח נתונים ועד מתי</li>
+      <li>לקבוע את הפגישה הבאה</li>
+      <li>מייל תודה עם סיכום, באותו יום</li>
+    </ul></div>
+  </div>
+</section>
+
+</main>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ---------- storage (safe) ---------- */
+  var store = {
+    get: function (k, d) { try { var v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } },
+    set: function (k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* storage unavailable */ } }
+  };
+
+  /* ---------- helpers ---------- */
+  function $(sel, root) { return (root || document).querySelector(sel); }
+  function $all(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
+  function el(tag, attrs) {
+    var n = document.createElement(tag);
+    if (attrs) {
+      Object.keys(attrs).forEach(function (k) {
+        var v = attrs[k];
+        if (k === 'class') n.className = v;
+        else if (k === 'html') n.innerHTML = v;
+        else if (v === true) n.setAttribute(k, '');
+        else if (v !== false && v !== null && v !== undefined) n.setAttribute(k, v);
+      });
+    }
+    for (var i = 2; i < arguments.length; i++) {
+      var c = arguments[i];
+      if (c === null || c === undefined) continue;
+      n.appendChild(typeof c === 'string' ? document.createTextNode(c) : c);
+    }
+    return n;
+  }
+  function fmt(n, d) { return Number(n).toLocaleString('he-IL', { maximumFractionDigits: d || 0 }); }
+  function num(id) { var v = parseFloat(document.getElementById(id).value); return isFinite(v) ? v : NaN; }
+
+  /* ---------- structure ---------- */
+  var MODULES = [
+    { id: 'm1', n: 1, t: `הקשר: הארגון והבעיה`, min: 10 },
+    { id: 'm2', n: 2, t: `יסודות ניהול מלאי`, min: 15 },
+    { id: 'm3', n: 3, t: `ניתוח ABC ופריטי C`, min: 15 },
+    { id: 'm4', n: 4, t: `עקרונות Lean`, min: 15 },
+    { id: 'm5', n: 5, t: `חלופות לניהול פריטי C`, min: 25 },
+    { id: 'm6', n: 6, t: `רגולציה במכשור רפואי`, min: 10 },
+    { id: 'm7', n: 7, t: `כלי מיפוי וניתוח`, min: 15 },
+    { id: 'm8', n: 8, t: `מדדים (KPIs)`, min: 15 },
+    { id: 'm9', n: 9, t: `ראיון ותצפית`, min: 15 },
+    { id: 'm10', n: 10, t: `מבחן מסכם`, min: 15 }
+  ];
+  var EXTRA = [
+    { id: 'home', t: `פתיחה` },
+    { id: 'glossary', t: `מילון מונחים` },
+    { id: 'cheat', t: `דף לפני שיוצאים` }
+  ];
+  var MODULE_IDS = MODULES.map(function (m) { return m.id; });
+  var ORDER = ['home'].concat(MODULE_IDS, ['glossary', 'cheat']);
+  function titleOf(id) {
+    var m = MODULES.filter(function (x) { return x.id === id; })[0] || EXTRA.filter(function (x) { return x.id === id; })[0];
+    return m ? m.t : id;
+  }
+  var done = store.get('fsc-done', {});
+  if (typeof done !== 'object' || done === null) done = {};
+
+  /* ---------- nav ---------- */
+  var nav = $('#nav');
+  function navLink(id, label, n) {
+    return el('a', { href: '#' + id, 'data-id': id }, el('span', { class: 'n' }, n), el('span', null, label));
+  }
+  nav.appendChild(navLink('home', `פתיחה`, '⌂'));
+  nav.appendChild(el('div', { class: 'sep' }));
+  MODULES.forEach(function (m) { nav.appendChild(navLink(m.id, m.t, String(m.n))); });
+  nav.appendChild(el('div', { class: 'sep' }));
+  nav.appendChild(navLink('glossary', `מילון מונחים`, 'א'));
+  nav.appendChild(navLink('cheat', `דף לפני שיוצאים`, '✓'));
+
+  var menuBtn = $('#menuBtn');
+  function closeMenu() { document.body.classList.remove('nav-open'); menuBtn.setAttribute('aria-expanded', 'false'); }
+  menuBtn.addEventListener('click', function () {
+    var open = document.body.classList.toggle('nav-open');
+    menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+
+  /* ---------- home grid ---------- */
+  var homeGrid = $('#homeGrid');
+  MODULES.forEach(function (m) {
+    homeGrid.appendChild(el('a', { href: '#' + m.id, class: 'mcard', 'data-id': m.id },
+      el('span', { class: 'mt' }, m.n + '. ' + m.t),
+      el('span', { class: 'mm' }, 'כ-' + m.min + ' דקות')));
+  });
+
+  /* ---------- pagers + done buttons ---------- */
+  ORDER.forEach(function (id, i) {
+    var sec = document.getElementById(id);
+    if (!sec) return;
+    var pager = el('div', { class: 'pager' });
+    if (MODULE_IDS.indexOf(id) !== -1) {
+      var b = el('button', { type: 'button', class: 'btn done-btn', 'data-id': id });
+      b.addEventListener('click', function () {
+        if (done[id]) delete done[id]; else done[id] = true;
+        store.set('fsc-done', done);
+        refreshProgress();
+      });
+      pager.appendChild(b);
+    }
+    var links = el('div', { class: 'pager-links' });
+    if (i > 0) links.appendChild(el('a', { href: '#' + ORDER[i - 1], class: 'prev' }, '→ ' + titleOf(ORDER[i - 1])));
+    if (i < ORDER.length - 1) links.appendChild(el('a', { href: '#' + ORDER[i + 1], class: 'next' }, titleOf(ORDER[i + 1]) + ' ←'));
+    pager.appendChild(links);
+    sec.appendChild(pager);
+  });
+
+  function refreshProgress() {
+    var count = MODULE_IDS.filter(function (id) { return done[id]; }).length;
+    $('#progText').textContent = count + '/' + MODULE_IDS.length;
+    $('#progBar').style.width = (count / MODULE_IDS.length * 100) + '%';
+    $all('.done-btn').forEach(function (b) {
+      var d = !!done[b.getAttribute('data-id')];
+      b.classList.toggle('is-done', d);
+      b.textContent = d ? '✓ הפרק סומן כהושלם (לחיצה מבטלת)' : 'סיימתי את הפרק';
+    });
+    $all('#nav a').forEach(function (a) { a.classList.toggle('done', !!done[a.getAttribute('data-id')]); });
+    $all('.mcard').forEach(function (a) { a.classList.toggle('done', !!done[a.getAttribute('data-id')]); });
+  }
+
+  /* ---------- routing ---------- */
+  function show(id) {
+    if (ORDER.indexOf(id) === -1) id = 'home';
+    $all('main > section.page').forEach(function (s) { s.hidden = s.id !== id; });
+    $all('#nav a').forEach(function (a) { a.classList.toggle('active', a.getAttribute('data-id') === id); });
+    closeMenu();
+    window.scrollTo(0, 0);
+  }
+  window.addEventListener('hashchange', function () { show(location.hash.slice(1)); });
+
+  /* ---------- theme ---------- */
+  var root = document.documentElement;
+  var savedTheme = store.get('fsc-theme', null);
+  if (savedTheme === 'light' || savedTheme === 'dark') root.setAttribute('data-theme', savedTheme);
+  $('#themeBtn').addEventListener('click', function () {
+    var cur = root.getAttribute('data-theme');
+    if (!cur) cur = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+    var next = cur === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    store.set('fsc-theme', next);
+  });
+
+  /* ---------- quizzes ---------- */
+  var QUIZ = {
+    m1: [
+      { q: `מה מאפיין פריט C בהקשר של הפרויקט?`, o: [`ערך נמוך ליחידה, הרבה מק"טים, וחשיבות גבוהה לרציפות הייצור`, `ערך גבוה ליחידה ומעט מק"טים`, `פריט שמיוצר בתוך החברה`, `פריט עם זמן אספקה ארוך במיוחד`], a: 0, e: `פריטי C הם החומרה הזולה: ברגים, אומים, מחברים, אזיקונים. כל אחד שווה מעט, אבל חוסר בו עוצר את ההרכבה.` },
+      { q: `איזה רכיב שוקל הכי הרבה בציון מצגת סיכום סמסטר א'?`, o: [`תיאור הארגון (20%)`, `ניתוח המצב הקיים: בעיות, כימות, מידול ומדדים (30%)`, `הגדרת מטרות (10%)`, `נראות המצגת (10%)`], a: 1, e: `ניתוח המצב הקיים שווה 30%. יום האפיון הוא איסוף חומר גלם לחלק הכי כבד בציון.` },
+      { q: `שמעתם בראיון "יש לנו המון חוסרים". מה הצעד הנכון?`, o: [`לרשום "חוסרים רבים" ולהמשיך`, `לבקש את המקרה האחרון ומספר: כמה חוסרים היו בחודש שעבר, ומה קרה בכל אחד`, `להציע מיד לעבור ל-VMI`, `לשאול אם הם מרוצים מהספק`], a: 1, e: `טענה כללית לא נותנת כימות. מקרה מוחשי ומספר הופכים אותה לממצא שאפשר להציג.` },
+      { q: `איפה מתמקד הפרויקט בתוך הארגון?`, o: [`במחלקת הפיתוח`, `בשיווק ובמכירות`, `בשרשרת האספקה: רכש, מחסן וייצור, בממשק בין המחסן לרצפה ומול הספקים`, `בשירות לקוחות בבתי חולים`], a: 2, e: `כך מוגדר בהצעת הפרויקט. זה גם קובע את מי צריך לראיין.` }
+    ],
+    m2: [
+      { q: `צריכה יומית 50 יחידות, זמן אספקה 4 ימים, מלאי ביטחון 100. מה נקודת ההזמנה (ROP)?`, o: [`150`, `200`, `300`, `400`], a: 2, e: `ROP = D×L + SS = 50×4 + 100 = 300.` },
+      { q: `למה EOQ של פריט C יוצא בדרך כלל גדול?`, o: [`כי עלות ההחזקה ליחידה קטנה מאוד ביחס לעלות הטיפול בהזמנה`, `כי פריטי C מתקלקלים מהר`, `כי לספקים אין MOQ`, `כי הצריכה של פריטי C תמיד נמוכה`], a: 0, e: `ב-EOQ = √(2DS/H), כש-H זעיר ו-S לא זניח, התוצאה גדלה: להזמין פחות פעמים, בכמויות גדולות יותר, בגבולות המקום והתוקף.` },
+      { q: `מה נכלל בזמן האספקה (Lead Time) לחישוב נקודת הזמנה?`, o: [`רק זמן המשלוח של הספק`, `כל הזמן מזיהוי הצורך ועד שהפריט זמין, כולל אישורים, קבלה ובדיקה`, `רק זמן הקבלה במחסן`, `הזמן שלוקח לספור את המלאי`], a: 1, e: `הזמנים הפנימיים הם חלק מה-Lead Time, ולעיתים קרובות שם מסתתר הבזבוז.` },
+      { q: `במלאי 1,200 יחידות, הצריכה 40 ביום. כמה ימי מלאי יש?`, o: [`12`, `30`, `48`, `120`], a: 1, e: `1,200 ÷ 40 = 30 ימי מלאי.` },
+      { q: `מה מודד שיעור מילוי (Fill Rate)?`, o: [`איזה חלק מהבקשות סופק מיד מהמלאי`, `אחוז המדפים המלאים במחסן`, `כמה הזמנות הספק סיפק בזמן`, `את ערך המלאי הממוצע`], a: 0, e: `שיעור מילוי הוא מדד ישיר לזמינות: כמה פעמים מי שביקש פריט קיבל אותו מיד.` }
+    ],
+    m3: [
+      { q: `לפי מה מסווגים פריטים בניתוח ABC?`, o: [`לפי מחיר ליחידה בלבד`, `לפי ערך הצריכה השנתי: כמות × מחיר`, `לפי גודל פיזי`, `לפי מספר הספקים`], a: 1, e: `ABC מדרג לפי ערך כספי שנתי. פריט זול שנצרך בכמויות עצומות יכול לעלות מעל פריט יקר שנצרך מעט.` },
+      { q: `מה הבעיה המרכזית בניהול פריטי C?`, o: [`ערך המלאי שלהם גבוה מדי`, `עלות הטיפול בהם (הזמנות, קבלות, ספירות) גבוהה ביחס לערך שלהם`, `הם תמיד באיכות נמוכה`, `אין להם מק"ט`], a: 1, e: `הכסף שקשור בהם קטן. מה שיקר הוא הזמן והתשומת לב. המטרה: פחות טרנזקציות.` },
+      { q: `איזה פריט הכי מתאים ל-Two-Bin או Kanban?`, o: [`CX: זול עם צריכה יציבה`, `CZ: זול עם צריכה ספורדית`, `AZ: יקר עם צריכה ספורדית`, `כל פריט באותה מידה`], a: 0, e: `צריכה יציבה מאפשרת לקבוע גודל מיכל ותדירות השלמה.` },
+      { q: `פריט מסווג C. אפשר להתעלם ממנו?`, o: [`כן, הערך שלו זניח`, `לא. ABC לא מודד קריטיות, וחוסר בו יכול לעצור את ההרכבה`, `כן, אם יש לו ספק אחד`, `רק אם הוא מיובא`], a: 1, e: `לכן משלבים ABC עם קריטיות. פריט C צריך זמינות גבוהה במינימום מאמץ.` }
+    ],
+    m4: [
+      { q: `מה מאפיין מערכת משיכה (Pull)?`, o: [`הזמנות לפי תחזית ארוכת טווח`, `השלמה שמופעלת מצריכה בפועל`, `ייצור במנות גדולות`, `ספירת מלאי כל יום`], a: 1, e: `ב-Pull, אות הצריכה (מיכל ריק, כרטיס) מפעיל את ההשלמה.` },
+      { q: `איזו פעילות היא "לא מוסיפה ערך אבל הכרחית"?`, o: [`חיפוש בורג במגירה לא מסומנת`, `תיעוד עקיבות שנדרש רגולטורית`, `המתנה לחלק חסר`, `שינוע כפול בין שני מחסנים`], a: 1, e: `הלקוח לא משלם על התיעוד, אבל במכשור רפואי אי אפשר לוותר עליו. את השאר אפשר לצמצם או לבטל.` },
+      { q: `מה הסדר הנכון של 5S?`, o: [`מיון, סידור, ניקיון, תקנון, שימור`, `ניקיון, מיון, שימור, סידור, תקנון`, `סידור, מיון, תקנון, ניקיון, שימור`, `תקנון, שימור, מיון, סידור, ניקיון`], a: 0, e: `Sort, Set in order, Shine, Standardize, Sustain.` },
+      { q: `מה המשמעות של Gemba?`, o: [`ישיבת הנהלה שבועית`, `ללכת למקום שבו העבודה קורית ולראות בעיניים`, `תוכנה לניהול מלאי`, `סוג של כרטיס Kanban`], a: 1, e: `רק בשטח רואים את המגירה הריקה ואת ההליכה למחסן.` }
+    ],
+    m5: [
+      { q: `D = 200 ביום, L = 2 ימים, α = 25%, C = 100 במיכל. כמה כרטיסי Kanban?`, o: [`4`, `5`, `8`, `10`], a: 1, e: `N = 200×2×1.25 ÷ 100 = 5.` },
+      { q: `מה אות ההשלמה ב-Two-Bin?`, o: [`דוח שבועי מה-ERP`, `המיכל הראשון מתרוקן`, `ספירה חודשית`, `בקשה בעל-פה ממנהל הייצור`], a: 1, e: `המיכל הריק הוא ההזמנה. המיכל השני מכסה את הצריכה עד שההשלמה מגיעה.` },
+      { q: `מה התועלת המרכזית של VMI לבעיה של ForSight?`, o: [`הוזלה של מחיר היחידה`, `הניטור וההשלמה עוברים לספק: פחות הזמנות ופחות עבודה אדמיניסטרטיבית`, `ביטול הצורך במק"טים`, `ביטול מלאי הביטחון`], a: 1, e: `זו המטרה בהצעת הפרויקט: פחות עומס ופחות הזמנות, עם זמינות טובה יותר.` },
+      { q: `מה סיכון מוכר ב-VMI?`, o: [`הספק עלול להחזיק יותר מלאי מהנדרש, ונוצרת תלות בו`, `אי אפשר לשלב אותו עם Two-Bin`, `הוא מחייב RFID`, `הוא מתאים רק לפריטי A`], a: 0, e: `לכן VMI דורש חוזה עם מדדים, ביקורות תקופתיות ואסטרטגיית יציאה.` },
+      { q: `מה זה Backflush?`, o: [`החזרת פריטים פגומים לספק`, `הורדה אוטומטית של הצריכה מהמלאי לפי עץ המוצר כשמדווחים על ייצור`, `ניקוי המחסן בסוף שנה`, `הזמנה דחופה`], a: 1, e: `חוסך טרנזקציות ניפוק, אבל דורש BOM מדויק.` }
+    ],
+    m6: [
+      { q: `למה לברר דרישות עקיבות לפני שמציעים Two-Bin?`, o: [`כי מיכלים עולים כסף`, `כי מילוי מיכל חלקי עלול לערבב אצוות ולפגוע בעקיבות`, `כי Two-Bin אסור במכשור רפואי`, `כי הספק לא יסכים`], a: 1, e: `אם פריט מנוהל לפי אצווה, מתכננים מראש: בלי ערבוב, FIFO וסימון האצווה על המיכל.` },
+      { q: `ספק VMI ממלא מגירות ישירות בקו. מה חייבים לברר?`, o: [`את צבע המגירות`, `איך מתועדות הקבלה ובדיקת הקבלה, ומי מאשר שהפריט תקין`, `את שעות הקפיטריה`, `כמה עובדים יש לספק`], a: 1, e: `אם הספק עוקף את הקבלה במחסן, צריך לבנות מחדש את הבקרה והתיעוד.` },
+      { q: `איזו מחלקה חובה לערב בתכנון הפתרון, מעבר לרכש, מחסן וייצור?`, o: [`שיווק`, `אבטחת איכות ורגולציה (QA/RA)`, `משאבי אנוש`, `כספים בלבד`], a: 1, e: `שינוי בשיטה או בספק יכול לדרוש בקרת שינויים ואישור ספק.` },
+      { q: `החלפת ספק של פריט C במפיץ עם שירות VMI עשויה לדרוש:`, o: [`כלום, אלה פריטים זולים`, `הערכה ואישור של הספק החדש לפי נוהלי הרכש של מערכת האיכות`, `אישור משרד הבריאות לכל בורג`, `שינוי בעיצוב המוצר`], a: 1, e: `במערכת איכות לפי ISO 13485 ספקים נבחרים ומאושרים לפי קריטריונים. את ההיקף בודקים מול QA בחברה.` }
+    ],
+    m7: [
+      { q: `איזה כלי מראה מי עושה מה ואיפה ההעברות בין רכש, מחסן וייצור?`, o: [`תרשים פארטו`, `תרשים זרימה עם מסלולים (Swimlane)`, `אישיקאווה`, `EOQ`], a: 1, e: `כל מחלקה במסלול משלה, וכל חץ שחוצה מסלול הוא העברה, ולעיתים קרובות גם המתנה.` },
+      { q: `רוצים לראות כמה הולכים פיזית בין המחסן לעמדות. איזה כלי?`, o: [`תרשים ספגטי`, `SIPOC`, `5 למה`, `ניתוח ABC`], a: 0, e: `מציירים את המסלולים על מפת השטח. הסבך שמתקבל מדבר בעד עצמו.` },
+      { q: `איזה כלי מראה את היחס בין זמן התהליך הכולל לזמן שמוסיף ערך?`, o: [`מפת זרם ערך (VSM)`, `תרשים פארטו`, `אישיקאווה`, `Two-Bin`], a: 0, e: `ב-VSM רואים זמנים ומלאי בכל שלב, ואת הפער בין זמן כולל לזמן שמוסיף ערך.` },
+      { q: `איך מוצאים אילו מק"טים אחראים לרוב החוסרים?`, o: [`תרשים פארטו על רשימת החוסרים`, `SIPOC`, `תרשים ספגטי`, `ראיון עם הספק`], a: 0, e: `ממיינים את החוסרים לפי מק"ט או סיבה, ורואים את המעטים שאחראים לרוב.` }
+    ],
+    m8: [
+      { q: `איך מחשבים מחזור מלאי?`, o: [`ערך מלאי ממוצע ÷ עלות הצריכה השנתית`, `עלות הצריכה השנתית ÷ ערך מלאי ממוצע`, `מספר מק"טים ÷ מספר ספקים`, `מספר הזמנות ÷ 12`], a: 1, e: `מחזור גבוה = מלאי שמתחלף מהר. מחזור נמוך = מלאי שיושב.` },
+      { q: `100 הזמנות בחודש, 30 דקות טיפול להזמנה, ₪120 לשעה. מה העלות השנתית?`, o: [`₪6,000`, `₪36,000`, `₪72,000`, `₪144,000`], a: 2, e: `100×12 = 1,200 הזמנות × 0.5 שעה = 600 שעות × ₪120 = ₪72,000. מספרים להמחשה בלבד.` },
+      { q: `למה למדוד את נקודת המוצא (Baseline) כבר עכשיו?`, o: [`כדי שיהיה מה לכתוב בדוח`, `כדי להראות תועלת כמותית של הפתרון מול נקודת מוצא, כפי שספר ההנחיות דורש`, `כי הארגון ביקש`, `אין צורך, מספיק להעריך בסוף`], a: 1, e: `"הערכת תועלת כמותית" היא תוצר חובה בכל פרויקט. בלי Baseline אין מול מה להשוות.` },
+      { q: `מאיזה נתון מחשבים דיוק מלאי?`, o: [`הזמנות רכש`, `השוואה בין ספירה פיזית לרישום במערכת`, `מחירון הספק`, `תוכנית הייצור`], a: 1, e: `תנועות ההתאמה אחרי ספירות מראות כמה המערכת רחוקה מהמציאות.` }
+    ],
+    m9: [
+      { q: `מה הסדר בטכניקת המשפך?`, o: [`סגורות ואחר כך פתוחות`, `פתוחות, אחר כך ממוקדות, ובסוף סגורות לאישור`, `רק סגורות`, `קודם הצעת פתרון ואחר כך שאלות`], a: 1, e: `פותחים רחב כדי לא לפספס, מתמקדים במה שעלה, וסוגרים באישור של המספרים.` },
+      { q: `מנהל המחסן אומר "הספירות לוקחות לנו המון זמן". מה התגובה הטובה ביותר?`, o: [`"נכון שזה בזבוז?"`, `"מתי הייתה הספירה האחרונה? כמה אנשים וכמה שעות? אפשר לראות את טופס הספירה?"`, `"כדאי לכם לעבור ל-VMI"`, `"אוקיי", ולעבור הלאה`], a: 1, e: `שואלים על המקרה האחרון, מבקשים מספרים, ומבקשים לראות.` },
+      { q: `מה עושים לפני שמצלמים מגירה או עמדה?`, o: [`מצלמים מהר כדי לא להפריע`, `מבקשים אישור. זו חברת מכשור רפואי עם מידע רגיש`, `מצלמים רק בטלפון`, `לא צריך לשאול אם אין אנשים בתמונה`], a: 1, e: `תמיד שואלים. ייתכן שיש הסכם סודיות ואזורים שאסור לצלם בהם.` },
+      { q: `מה המשמעות של טריאנגולציה בממצאים?`, o: [`לראיין בדיוק שלושה אנשים`, `לאמת ממצא משלושה כיוונים: ראיון, תצפית ונתונים`, `לצייר משולש בתרשים`, `לשאול כל שאלה שלוש פעמים`], a: 1, e: `כששלושת המקורות מסכימים, הממצא חזק. כשלא, שם חופרים.` }
+    ],
+    exam: [
+      { q: `צריכה יומית 30, זמן אספקה 7 ימים, מלאי ביטחון 90. מה ה-ROP?`, o: [`120`, `210`, `300`, `390`], a: 2, e: `30×7 + 90 = 300.` },
+      { q: `D = 120 ביום, L = 3 ימים, α = 20%, C = 60. כמה כרטיסי Kanban?`, o: [`6`, `7`, `8`, `9`], a: 2, e: `120×3×1.2 ÷ 60 = 7.2, ומעגלים תמיד כלפי מעלה: 8.` },
+      { q: `מחסנאי סופר ידנית 2,000 שייבות כל חודש. איזה בזבוז זה בעיקר?`, o: [`מלאי`, `עיבוד יתר`, `המתנה`, `שינוע`], a: 1, e: `ספירה פרטנית של פריט זול היא מאמץ שלא מוסיף ערך מעבר למה שנדרש.` },
+      { q: `15% מהפריטים מחזיקים 80% מערך הצריכה. איך הם מסווגים?`, o: [`A`, `B`, `C`, `X`], a: 0, e: `A הם המעטים שמחזיקים את רוב הערך.` },
+      { q: `מה עושה הזמנת מסגרת (Blanket Order)?`, o: [`מבטלת את הצורך במלאי`, `הזמנה אחת לתקופה, ומשיכות לפי צורך בלי הזמנה חדשה כל פעם`, `מעבירה את הבעלות על המלאי לספק`, `מחייבת חיישנים במגירות`], a: 1, e: `היא מצמצמת את מספר הזמנות הרכש בלי לשנות את התהליך הפיזי.` },
+      { q: `מה מאפיין מלאי קונסיגנציה?`, o: [`המלאי אצל ForSight אבל בבעלות הספק עד שנצרך`, `הספק מתקין מגירות חכמות`, `הכל מנופק לפי פקודות עבודה`, `הזמנה דחופה בכל פעם`], a: 0, e: `החיוב לפי צריכה בפועל, ולכן צריך מנגנון התחשבנות אמין.` },
+      { q: `באיזה כלי מנתחים את הסיבות האפשריות לחוסרים חוזרים לפי קטגוריות?`, o: [`אישיקאווה`, `SIPOC`, `EOQ`, `תרשים ספגטי`], a: 0, e: `דיאגרמת עצם הדג מסדרת סיבות לפי אנשים, שיטה, חומר, מדידה, ציוד וסביבה.` },
+      { q: `ב-VMI, מי מחליט מתי וכמה להשלים?`, o: [`הרכש של ForSight`, `הספק, בתוך גבולות מוסכמים`, `מנהל הייצור`, `ה-ERP לבד`], a: 1, e: `זה ההבדל המהותי: האחריות לניטור ולהשלמה עוברת לספק.` },
+      { q: `איזו שאלה היא שאלה מובילה?`, o: [`"ספר לי איך מזמינים חומרה"`, `"לא נראה לך שהספק אחראי לחוסרים?"`, `"מתי היה החוסר האחרון?"`, `"אפשר לראות את המסך?"`], a: 1, e: `שאלה מובילה מכניסה את התשובה לפה של המרואיין.` },
+      { q: `למה חשוב לכלול זמנים פנימיים בזמן האספקה?`, o: [`זה לא חשוב`, `אחרת ה-ROP יוצא נמוך מדי, וחוסרים "מפתיעים"`, `כדי להגדיל את מלאי הביטחון`, `בגלל הרגולציה`], a: 1, e: `אישורים, קבלה ובדיקה הם חלק מהזמן עד שהפריט זמין.` },
+      { q: `מה החיסרון העיקרי של מגירות חכמות?`, o: [`הן לא נותנות נתונים`, `עלות חומרה, אינטגרציה ל-IT ואישורים`, `הן דורשות ספירה ידנית`, `הן מתאימות רק ל-Two-Bin`], a: 1, e: `התועלת היא נתונים בזמן אמת. המחיר הוא השקעה ותחזוקה.` },
+      { q: `במלאי 3,000 יחידות, צריכה 25 ביום. כמה ימי מלאי?`, o: [`75`, `120`, `150`, `300`], a: 1, e: `3,000 ÷ 25 = 120.` },
+      { q: `מה מופיע בספר ההנחיות כתוצר חובה בכל פרויקט?`, o: [`תוכנה שפותחה עבור הארגון`, `הערכת תועלת כמותית ופירוט שלבי הטמעה`, `סקר שביעות רצון`, `חוזה חתום עם ספק`], a: 1, e: `ובנוסף: תיאור חלופות ובחירה מנומקת, ופירוט הפתרון מול המדדים מסמסטר א'.` },
+      { q: `מה הבעיה בניפוק חופשי (Floor Stock) לפריטים עם עקיבות אצווה?`, o: [`אין בעיה`, `לא ידוע איזו אצווה נכנסה לאיזו מערכת`, `הוא יקר מדי`, `הוא דורש VMI`], a: 1, e: `לכן מפרידים: ניפוק חופשי רק לפריטים שלא דורשים עקיבות.` }
+    ]
+  };
+
+  function renderQuiz(container, key) {
+    var qs = QUIZ[key];
+    if (!qs) return;
+    var isExam = key === 'exam';
+    container.innerHTML = '';
+    var state = { answered: 0, correct: 0 };
+    var score = el('span', { class: 'score' });
+    var reset = el('button', { type: 'button', class: 'btn ghost' }, 'להתחיל מחדש');
+    reset.addEventListener('click', function () { renderQuiz(container, key); });
+    container.appendChild(el('div', { class: 'quiz-head' }, el('h3', null, isExam ? 'המבחן' : 'בוחן קצר'), score));
+
+    function updateScore() {
+      score.textContent = state.correct + ' נכונות מתוך ' + qs.length + (state.answered < qs.length ? ' · נענו ' + state.answered : '');
+      if (state.answered === qs.length) {
+        var pct = Math.round(state.correct / qs.length * 100);
+        score.className = 'score final';
+        var msg = pct >= 80 ? ' · מוכנים.' : (pct >= 60 ? ' · כמעט. חזרו על מה שטעיתם.' : ' · כדאי לחזור על הפרקים.');
+        score.textContent = 'ציון: ' + pct + '% (' + state.correct + '/' + qs.length + ')' + msg;
+        if (isExam) {
+          var best = store.get('fsc-exam-best', 0);
+          if (pct > best) { best = pct; store.set('fsc-exam-best', pct); }
+          showBest(best);
+        }
+      }
+    }
+
+    qs.forEach(function (q, qi) {
+      var box = el('div', { class: 'q' });
+      box.appendChild(el('p', { class: 'q-text' }, (qi + 1) + '. ' + q.q));
+      var opts = el('div', { class: 'opts' });
+      var fb = el('div', { class: 'fb', hidden: true });
+      q.o.forEach(function (opt, oi) {
+        var b = el('button', { type: 'button', class: 'opt' }, opt);
+        b.addEventListener('click', function () {
+          if (box.getAttribute('data-done')) return;
+          box.setAttribute('data-done', '1');
+          state.answered++;
+          var ok = oi === q.a;
+          if (ok) state.correct++;
+          b.classList.add(ok ? 'right' : 'wrong');
+          opts.children[q.a].classList.add('right');
+          Array.prototype.forEach.call(opts.children, function (x) { x.disabled = true; });
+          fb.hidden = false;
+          fb.className = 'fb ' + (ok ? 'ok' : 'no');
+          fb.innerHTML = '';
+          fb.appendChild(el('strong', null, ok ? 'נכון. ' : 'לא בדיוק. '));
+          fb.appendChild(document.createTextNode(q.e));
+          updateScore();
+        });
+        opts.appendChild(b);
+      });
+      box.appendChild(opts);
+      box.appendChild(fb);
+      container.appendChild(box);
+    });
+    container.appendChild(reset);
+    updateScore();
+  }
+  function showBest(best) {
+    var t = $('#bestScore');
+    if (t) t.textContent = best ? 'הציון הגבוה שלכם עד עכשיו: ' + best + '%' : '';
+  }
+  showBest(store.get('fsc-exam-best', 0));
+  $all('.quiz[data-quiz]').forEach(function (c) { renderQuiz(c, c.getAttribute('data-quiz')); });
+
+  /* ---------- drills ---------- */
+  var DRILLS = {
+    waste: {
+      options: [`פגמים`, `ייצור יתר`, `המתנה`, `כישרון לא מנוצל`, `שינוע`, `מלאי`, `תנועה`, `עיבוד יתר`],
+      cards: [
+        { t: `מרכיב הולך למחסן שלוש פעמים במשמרת כי נגמרו לו אומים בעמדה.`, a: 6, e: `תנועה של אדם. אם היו מעבירים חומר בין מחסנים, זה היה שינוע.` },
+        { t: `הזמנת רכש של 40 ₪ עוברת שלושה אישורים.`, a: 7, e: `מאמץ בקרה שלא פרופורציונלי לערך. עיבוד יתר.` },
+        { t: `על המדף יש שייבות לשלוש שנים, בגלל כמות מינימום של הספק.`, a: 5, e: `מלאי עודף: תופס מקום, קושר כסף ועלול להתיישן.` },
+        { t: `קו ההרכבה עומד שעתיים עד שמגיע מחבר שחסר.`, a: 2, e: `המתנה. וגם התוצאה הכי יקרה של חוסר בפריט זול.` },
+        { t: `המערכת מראה 500 ברגים, ובמגירה יש 20.`, a: 0, e: `פגם במידע. רישום שגוי מייצר חוסרים מפתיעים והזמנות דחופות.` },
+        { t: `ארגז ברגים עובר מהמחסן הראשי למחסן משנה, ורק אז לקו.`, a: 4, e: `שינוע של חומר דרך תחנת ביניים שלא מוסיפה ערך.` },
+        { t: `ערכות ברגים מלוקטות לפקודות עבודה שבועיים לפני תחילת העבודה.`, a: 1, e: `עשייה לפני שצריך. הערכות תופסות מקום ומתפרקות כשהתוכנית משתנה.` },
+        { t: `קניין מנוסה מבלה חצי שבוע על הזמנות חוזרות של חומרה.`, a: 3, e: `הידע שלו היה יכול ללכת לניהול ספקים ולחיסכון אמיתי.` }
+      ]
+    },
+    questions: {
+      options: [`שאלה טובה`, `שאלה מובילה`, `סגורה מדי בשלב הזה`],
+      cards: [
+        { t: `"ספר לי מה קורה מהרגע שמגירה מתרוקנת ועד שהיא מתמלאת שוב."`, a: 0, e: `פתוחה ומזמינה תיאור של התהליך במילים של המרואיין.` },
+        { t: `"נכון שהרכש פשוט לא מזמין בזמן?"`, a: 1, e: `מכניסה את התשובה לפה של המרואיין, וגם מאשימה מחלקה.` },
+        { t: `"יש חוסרים?"`, a: 2, e: `תשובה של מילה אחת. עדיף: "ספר לי על הפעם האחרונה שמשהו היה חסר."` },
+        { t: `"מתי היה החוסר האחרון? מה עשיתם?"`, a: 0, e: `ממוקדת במקרה אמיתי. ממנה מגיעים פרטים ומספרים.` },
+        { t: `"לא עדיף שהספק ינהל את זה?"`, a: 1, e: `מציעה פתרון ומובילה. בפגישה הראשונה לא מציעים פתרונות.` },
+        { t: `"כמה הזמנות רכש לפריטי C יצאו בחודש שעבר, ומאיפה אפשר להוציא את המספר?"`, a: 0, e: `ממוקדת ומבקשת מקור נתונים. מצוינת אחרי שהתהליך כבר מובן.` },
+        { t: `"השיטה הנוכחית עובדת לך?"`, a: 2, e: `כן/לא. עדיף: "מה הכי מעצבן אותך בשיטה הנוכחית?"` }
+      ]
+    }
+  };
+
+  function renderDrill(container, key) {
+    var d = DRILLS[key];
+    if (!d) return;
+    container.innerHTML = '';
+    var state = { answered: 0, correct: 0 };
+    var score = el('p', { class: 'score' });
+    function upd() { score.textContent = state.correct + ' נכונות מתוך ' + state.answered + ' שנענו (' + d.cards.length + ' בסך הכל)'; }
+    d.cards.forEach(function (c) {
+      var card = el('div', { class: 'drill-card' }, el('p', null, c.t));
+      var chips = el('div', { class: 'chips' });
+      var fb = el('div', { class: 'fb', hidden: true });
+      d.options.forEach(function (o, oi) {
+        var b = el('button', { type: 'button', class: 'chip' }, o);
+        b.addEventListener('click', function () {
+          if (card.getAttribute('data-done')) return;
+          card.setAttribute('data-done', '1');
+          state.answered++;
+          var ok = oi === c.a;
+          if (ok) state.correct++;
+          b.classList.add(ok ? 'right' : 'wrong');
+          chips.children[c.a].classList.add('right');
+          Array.prototype.forEach.call(chips.children, function (x) { x.disabled = true; });
+          fb.hidden = false;
+          fb.className = 'fb ' + (ok ? 'ok' : 'no');
+          fb.innerHTML = '';
+          fb.appendChild(el('strong', null, ok ? 'נכון. ' : 'התשובה: ' + d.options[c.a] + '. '));
+          fb.appendChild(document.createTextNode(c.e));
+          upd();
+        });
+        chips.appendChild(b);
+      });
+      card.appendChild(chips);
+      card.appendChild(fb);
+      container.appendChild(card);
+    });
+    var reset = el('button', { type: 'button', class: 'btn ghost' }, 'להתחיל מחדש');
+    reset.addEventListener('click', function () { renderDrill(container, key); });
+    container.appendChild(score);
+    container.appendChild(reset);
+    upd();
+  }
+  $all('.drill[data-drill]').forEach(function (c) { renderDrill(c, c.getAttribute('data-drill')); });
+
+  /* ---------- EOQ ---------- */
+  function calcEOQ() {
+    var D = num('eoqD'), S = num('eoqS'), H = num('eoqH'), out = $('#eoqOut');
+    if (!(D > 0 && S > 0 && H > 0)) { out.textContent = 'צריך מספרים חיוביים בכל השדות.'; return; }
+    var q = Math.sqrt(2 * D * S / H), n = D / q, oc = n * S, hc = q / 2 * H;
+    out.innerHTML = '';
+    out.appendChild(el('div', { class: 'big' }, 'EOQ ≈ ' + fmt(q) + ' יחידות'));
+    out.appendChild(el('ul', null,
+      el('li', null, 'הזמנות בשנה: ' + fmt(n, 1)),
+      el('li', null, 'עלות הזמנות שנתית: ₪' + fmt(oc)),
+      el('li', null, 'עלות החזקה שנתית: ₪' + fmt(hc)),
+      el('li', null, 'סך הכל: ₪' + fmt(oc + hc) + '. בנקודת ה-EOQ שתי העלויות שוות.')));
+    if (q >= D) out.appendChild(el('p', { class: 'small muted', style: 'margin:6px 0 0' }, 'ה-EOQ גדול מהצריכה השנתית: בתיאוריה מספיקה הזמנה אחת בשנה או פחות. בפועל המקום, התוקף ושינויי תכנון מגבילים.'));
+  }
+  ['eoqD', 'eoqS', 'eoqH'].forEach(function (id) { document.getElementById(id).addEventListener('input', calcEOQ); });
+  calcEOQ();
+
+  /* ---------- Kanban ---------- */
+  function calcKanban() {
+    var D = num('kbD'), L = num('kbL'), a = num('kbA'), C = num('kbC'), out = $('#kbOut');
+    if (!(D > 0 && L > 0 && C > 0 && a >= 0)) { out.textContent = 'צריך מספרים חיוביים (מקדם הביטחון יכול להיות 0).'; return; }
+    var raw = D * L * (1 + a / 100) / C;
+    var N = Math.max(1, Math.ceil(raw - 1e-9));
+    var loop = N * C, days = loop / D;
+    out.innerHTML = '';
+    out.appendChild(el('div', { class: 'big' }, N + ' כרטיסים'));
+    out.appendChild(el('ul', null,
+      el('li', null, 'חישוב: ' + fmt(D) + ' × ' + fmt(L, 2) + ' × ' + fmt(1 + a / 100, 2) + ' ÷ ' + fmt(C) + ' = ' + fmt(raw, 2) + ', מעוגל כלפי מעלה'),
+      el('li', null, 'מלאי מקסימלי במעגל: ' + fmt(loop) + ' יחידות'),
+      el('li', null, 'כיסוי מקסימלי: כ-' + fmt(days, 1) + ' ימי צריכה')));
+    if (N <= 2) out.appendChild(el('p', { class: 'small muted', style: 'margin:6px 0 0' }, 'שני כרטיסים או פחות: זה בעצם Two-Bin.'));
+  }
+  ['kbD', 'kbL', 'kbA', 'kbC'].forEach(function (id) { document.getElementById(id).addEventListener('input', calcKanban); });
+  calcKanban();
+
+  /* ---------- PO cost ---------- */
+  function calcPO() {
+    var P = num('poN'), M = num('poM'), W = num('poW'), R = num('poR'), out = $('#poOut');
+    $('#poROut').textContent = (isFinite(R) ? R : 0) + '%';
+    if (!(P >= 0 && M >= 0 && W >= 0)) { out.textContent = 'צריך מספרים לא שליליים.'; return; }
+    var yearly = P * 12, hours = yearly * M / 60, cost = hours * W;
+    out.innerHTML = '';
+    out.appendChild(el('div', { class: 'big' }, '₪' + fmt(cost) + ' בשנה'));
+    out.appendChild(el('ul', null,
+      el('li', null, fmt(yearly) + ' הזמנות בשנה, ' + fmt(hours) + ' שעות עבודה'),
+      el('li', null, 'בהפחתה של ' + R + '%: חיסכון של כ-' + fmt(hours * R / 100) + ' שעות ו-₪' + fmt(cost * R / 100) + ' בשנה'),
+      el('li', null, 'בהנחה של כ-1,900 שעות עבודה בשנה למשרה: כ-' + fmt(hours / 1900, 2) + ' משרות')));
+  }
+  ['poN', 'poM', 'poW', 'poR'].forEach(function (id) { document.getElementById(id).addEventListener('input', calcPO); });
+  calcPO();
+
+  /* ---------- ABC ---------- */
+  var ABC_ITEMS = [
+    { n: `מנוע סרוו`, q: 120, p: 2400, o: 6 },
+    { n: `כרטיס בקר`, q: 120, p: 1800, o: 6 },
+    { n: `מודול אופטי`, q: 60, p: 3500, o: 4 },
+    { n: `חיישן כוח`, q: 240, p: 450, o: 12 },
+    { n: `רתמת כבלים`, q: 300, p: 180, o: 8 },
+    { n: `חלק מעובד אלומיניום`, q: 400, p: 95, o: 10 },
+    { n: `מסב כדורי`, q: 900, p: 22, o: 12 },
+    { n: `מחבר רב-פיני`, q: 1500, p: 9, o: 12 },
+    { n: `קפיץ`, q: 2000, p: 2.5, o: 10 },
+    { n: `בורג M3×8 נירוסטה`, q: 12000, p: 0.35, o: 18 },
+    { n: `בורג M2×5`, q: 8000, p: 0.3, o: 15 },
+    { n: `אום M3`, q: 10000, p: 0.2, o: 15 },
+    { n: `שרוול מתכווץ`, q: 3000, p: 0.4, o: 10 },
+    { n: `שייבה M3`, q: 14000, p: 0.08, o: 15 },
+    { n: `אזיקון 100 מ"מ`, q: 6000, p: 0.15, o: 10 }
+  ];
+  var thrA = $('#thrA'), thrB = $('#thrB');
+  function renderABC() {
+    var a = +thrA.value, b = +thrB.value;
+    if (b <= a) { b = Math.min(99, a + 5); thrB.value = b; }
+    $('#thrAOut').textContent = a + '%';
+    $('#thrBOut').textContent = b + '%';
+    var rows = ABC_ITEMS.map(function (it) { return { n: it.n, q: it.q, p: it.p, o: it.o, v: it.q * it.p }; })
+      .sort(function (x, y) { return y.v - x.v; });
+    var total = rows.reduce(function (s, r) { return s + r.v; }, 0);
+    var totalO = rows.reduce(function (s, r) { return s + r.o; }, 0);
+    var cum = 0;
+    rows.forEach(function (r, i) {
+      cum += r.v;
+      r.cum = cum / total * 100;
+      r.cls = (i === 0 || r.cum <= a) ? 'A' : (r.cum <= b ? 'B' : 'C');
+    });
+    var tbody = $('#abcTable tbody');
+    tbody.innerHTML = '';
+    rows.forEach(function (r, i) {
+      var bar = el('div', { class: 'cumbar' }, el('span', { style: 'width:' + r.cum.toFixed(1) + '%;background:var(--c' + r.cls + ')' }));
+      tbody.appendChild(el('tr', null,
+        el('td', null, String(i + 1)),
+        el('td', null, r.n),
+        el('td', { class: 'num' }, fmt(r.q)),
+        el('td', { class: 'num' }, fmt(r.p, 2)),
+        el('td', { class: 'num' }, fmt(r.v)),
+        el('td', null, fmt(r.cum, 1) + '%', bar),
+        el('td', null, el('span', { class: 'badge ' + r.cls }, r.cls)),
+        el('td', { class: 'num' }, String(r.o))));
+    });
+    var sum = $('#abcSummary');
+    sum.innerHTML = '';
+    ['A', 'B', 'C'].forEach(function (c) {
+      var g = rows.filter(function (r) { return r.cls === c; });
+      var v = g.reduce(function (s, r) { return s + r.v; }, 0);
+      var o = g.reduce(function (s, r) { return s + r.o; }, 0);
+      sum.appendChild(el('div', { class: 'abc-sum' },
+        el('b', null, el('span', { class: 'badge ' + c }, c), g.length + ' פריטים'),
+        el('div', null, fmt(g.length / rows.length * 100) + '% מהמק"טים'),
+        el('div', null, fmt(v / total * 100, 1) + '% מהערך'),
+        el('div', null, fmt(o / totalO * 100) + '% מהזמנות הרכש')));
+    });
+  }
+  thrA.addEventListener('input', renderABC);
+  thrB.addEventListener('input', renderABC);
+  renderABC();
+
+  /* ---------- method helper ---------- */
+  function radio(name) { var r = document.querySelector('input[name="' + name + '"]:checked'); return r ? r.value : 'unk'; }
+  $('#helperBtn').addEventListener('click', function () {
+    var s = radio('h-stable'), sup = radio('h-supplier'), sp = radio('h-space'), lot = radio('h-lot'), bud = radio('h-budget');
+    var title, why = [], verify = [];
+    if (s === 'no') {
+      title = `Min/Max מכויל מחדש + הזמנות מסגרת, ו-Kanban רק לתת-קבוצה היציבה`;
+      why.push(`כשהצריכה לא יציבה, מיכלים בגודל קבוע נוטים להיגמר או לשבת. קודם מזהים את פריטי ה-CX היציבים (ניתוח XYZ), ורק אותם מעבירים לשיטה ויזואלית.`);
+    } else if (sup === 'unk') {
+      title = `שני כיוונים פתוחים: VMI עם מגירות בקו, או Two-Bin פנימי + הזמנות מסגרת`;
+      why.push(`ההכרעה בין השניים תלויה בשאלה אם יש ספק שמתאים ל-VMI. זו אחת השאלות המרכזיות ליום האפיון.`);
+    } else if (sup === 'yes' && sp !== 'no') {
+      title = `VMI עם מגירות Two-Bin ליד העמדות (Breadbox)`;
+      why.push(`צריכה יציבה, ספק מתאים ומקום בעמדות: זה השילוב שמוריד גם את הזמנות הרכש וגם את הניפוקים מהמחסן. זה גם הכיוון שמתואר בהצעת הפרויקט.`);
+    } else if (sup === 'yes' && sp === 'no') {
+      title = `VMI לסופרמרקט מרכזי סמוך לקו`;
+      why.push(`בלי מקום בעמדות, הספק ממלא נקודה מרכזית אחת, ומשם השלמה פנימית קצרה לעמדות.`);
+    } else if (sp !== 'no') {
+      title = `Two-Bin או Kanban פנימי שהמחסן מנהל + הזמנות מסגרת מול הספקים`;
+      why.push(`בלי ספק שמתאים ל-VMI, אפשר לקבל את רוב התועלת בתוך הבית: השלמה ויזואלית בקו, והזמנות מסגרת שמצמצמות את עבודת הרכש.`);
+    } else {
+      title = `סופרמרקט Kanban מרכזי + הזמנות מסגרת`;
+      why.push(`בלי ספק VMI ובלי מקום בעמדות, נקודה מרכזית אחת עם כרטיסים מאפשרת שליטה בלי לפרק את רצפת הייצור.`);
+    }
+    if (s === 'unk' || sup === 'unk' || sp === 'unk') verify.push(`ההמלצה נשענת על הנחות. ביום האפיון מבררים: יציבות הצריכה (מנתוני ERP), מי הספקים העיקריים, וכמה מקום יש בעמדות.`);
+    if (lot === 'yes') verify.push(`עקיבות: פריטים עם אצווה דורשים מיכלים בלי ערבוב, FIFO וסימון אצווה. ניפוק חופשי לא מתאים להם. לתכנן עם QA.`);
+    if (lot === 'unk') verify.push(`לברר מול האיכות אילו פריטים דורשים עקיבות אצווה. זה יכול לפסול חלק מהחלופות.`);
+    if (lot === 'no') why.push(`בלי דרישת עקיבות, אפשר לשקול גם ניפוק חופשי או Backflush לפריטים הזולים ביותר.`);
+    if (bud === 'yes') why.push(`יש תקציב ו-IT: אפשר לשקול מגירות חכמות כשלב המשך, אחרי שהשיטה הידנית עובדת.`);
+    if (bud === 'unk') verify.push(`לשאול אם יש פתיחות להשקעה בחומרה או בתוכנה. זה קובע אם מגירות חכמות בכלל על השולחן.`);
+    var out = $('#helperOut');
+    out.hidden = false;
+    out.innerHTML = '';
+    out.appendChild(el('h4', null, title));
+    out.appendChild(el('b', null, 'למה'));
+    var u1 = el('ul'); why.forEach(function (w) { u1.appendChild(el('li', null, w)); }); out.appendChild(u1);
+    if (verify.length) {
+      out.appendChild(el('b', null, 'מה לבדוק'));
+      var u2 = el('ul'); verify.forEach(function (w) { u2.appendChild(el('li', null, w)); }); out.appendChild(u2);
+    }
+  });
+
+  /* ---------- glossary ---------- */
+  var GLOSS = [
+    { t: `מק"ט`, en: `SKU · Stock Keeping Unit`, d: `מזהה ייחודי לכל פריט במלאי.` },
+    { t: `פריטי C`, en: `C-items / C-parts`, d: `פריטים בערך צריכה נמוך: ברגים, אומים, שייבות, מחברים, אזיקונים. רבים בכמות, זולים, וקריטיים לרציפות.` },
+    { t: `זמן אספקה`, en: `Lead Time`, d: `הזמן מזיהוי הצורך ועד שהפריט זמין לשימוש, כולל אישורים, משלוח, קבלה ובדיקה.` },
+    { t: `מלאי ביטחון`, en: `Safety Stock`, d: `מלאי נוסף שמגן מפני שונות בצריכה או בזמן האספקה.` },
+    { t: `נקודת הזמנה מחדש`, en: `Reorder Point · ROP`, d: `רמת מלאי שבה יוצאת הזמנה. ROP = D×L + SS.` },
+    { t: `Min/Max`, en: `Min/Max`, d: `כשהמלאי יורד ל-Min, מזמינים עד Max.` },
+    { t: `כמות הזמנה כלכלית`, en: `EOQ · Economic Order Quantity`, d: `הכמות שמאזנת בין עלות הזמנה לעלות החזקה. EOQ = √(2DS/H).` },
+    { t: `כמות מינימום להזמנה`, en: `MOQ · Minimum Order Quantity`, d: `הכמות הקטנה ביותר שספק מוכן לספק. סיבה נפוצה למלאי עודף.` },
+    { t: `חוסר`, en: `Stockout`, d: `צריכה שאין מלאי לספק אותה.` },
+    { t: `מחזור מלאי`, en: `Inventory Turnover`, d: `עלות הצריכה השנתית ÷ ערך המלאי הממוצע. כמה פעמים בשנה המלאי מתחלף.` },
+    { t: `ימי מלאי`, en: `Days of Supply`, d: `מלאי נוכחי ÷ צריכה יומית ממוצעת.` },
+    { t: `שיעור מילוי`, en: `Fill Rate`, d: `החלק מהבקשות שסופק מיד מהמלאי.` },
+    { t: `רמת שירות`, en: `Service Level`, d: `הסיכוי שלא יהיה חוסר במחזור הזמנה.` },
+    { t: `ניתוח ABC`, en: `ABC Analysis`, d: `סיווג פריטים לפי ערך צריכה שנתי מצטבר: A מעטים ויקרים, C רבים וזולים.` },
+    { t: `ניתוח XYZ`, en: `XYZ Analysis`, d: `סיווג לפי יציבות הצריכה: X יציב, Y משתנה, Z ספורדי.` },
+    { t: `עקרון פארטו`, en: `Pareto Principle`, d: `מעט גורמים אחראים לרוב התוצאה. בסיס ל-ABC ולתרשים פארטו.` },
+    { t: `Lean`, en: `Lean Manufacturing`, d: `גישה שמתמקדת בערך ללקוח ובהסרה שיטתית של בזבוז.` },
+    { t: `בזבוז`, en: `Muda / Waste`, d: `כל פעילות שצורכת משאבים ולא מוסיפה ערך. שמונה סוגים: DOWNTIME.` },
+    { t: `מוסיף ערך`, en: `VA · Value Added`, d: `פעילות שמשנה את המוצר בדרך שהלקוח מוכן לשלם עליה.` },
+    { t: `לא מוסיף ערך`, en: `NVA · Non-Value Added`, d: `פעילות שאינה מוסיפה ערך. חלקה הכרחית (Business NVA), השאר בזבוז.` },
+    { t: `גמבה`, en: `Gemba`, d: `המקום שבו העבודה קורית. Gemba walk: הליכה ותצפית בשטח.` },
+    { t: `5S`, en: `Sort · Set · Shine · Standardize · Sustain`, d: `מיון, סידור, ניקיון, תקנון, שימור. בסיס לסדר ולניהול חזותי.` },
+    { t: `ניהול חזותי`, en: `Visual Management`, d: `הצגת המצב כך שהוא גלוי במבט: סימונים, צבעים, קווי מינימום.` },
+    { t: `משיכה`, en: `Pull`, d: `השלמה שמופעלת מצריכה בפועל.` },
+    { t: `דחיפה`, en: `Push`, d: `הזמנה או ייצור לפי תחזית או תוכנית.` },
+    { t: `קנבן`, en: `Kanban`, d: `מערכת משיכה עם כרטיסים כאות השלמה. N = D×L×(1+α)/C.` },
+    { t: `שני מיכלים`, en: `Two-Bin System`, d: `שני מיכלים לפריט. התרוקנות הראשון היא אות ההשלמה.` },
+    { t: `סופרמרקט`, en: `Supermarket`, d: `נקודת מלאי מבוקרת סמוך לקו, שממנה מושכים לפי צורך.` },
+    { t: `מלאי בניהול ספק`, en: `VMI · Vendor Managed Inventory`, d: `הספק מנטר ומשלים את המלאי בגבולות מוסכמים.` },
+    { t: `קונסיגנציה`, en: `Consignment`, d: `מלאי אצל הלקוח בבעלות הספק עד שנצרך. חיוב לפי צריכה.` },
+    { t: `הזמנת מסגרת`, en: `Blanket Order`, d: `הזמנה אחת לתקופה עם משיכות לפי צורך.` },
+    { t: `ניפוק לאחור`, en: `Backflush`, d: `הורדת צריכה אוטומטית לפי עץ המוצר בעת דיווח ייצור.` },
+    { t: `מלאי רצפה`, en: `Floor Stock / Free Issue`, d: `פריטים זולים שעומדים פתוחים בקו בלי ניפוק פרטני.` },
+    { t: `עץ מוצר`, en: `BOM · Bill of Materials`, d: `רשימת הרכיבים והכמויות שנדרשים ליחידת מוצר.` },
+    { t: `ERP`, en: `Enterprise Resource Planning`, d: `מערכת המידע הארגונית: פריטים, מלאי, רכש, ייצור, כספים.` },
+    { t: `MRP`, en: `Material Requirements Planning`, d: `תכנון דרישות חומר לפי תוכנית ייצור ועץ מוצר.` },
+    { t: `ספירה מחזורית`, en: `Cycle Counting`, d: `ספירה של חלק מהפריטים בכל פעם, במקום ספירה כללית אחת.` },
+    { t: `SIPOC`, en: `Suppliers · Inputs · Process · Outputs · Customers`, d: `מפה ברמה גבוהה שמגדירה את גבולות התהליך.` },
+    { t: `מפת זרם ערך`, en: `VSM · Value Stream Map`, d: `מיפוי זרימת חומר ומידע עם זמנים ונקודות מלאי.` },
+    { t: `תרשים מסלולים`, en: `Swimlane Diagram`, d: `תרשים זרימה שבו לכל גורם יש מסלול, כדי לראות העברות.` },
+    { t: `תרשים ספגטי`, en: `Spaghetti Diagram`, d: `מסלולי תנועה של אנשים או חומר על מפת השטח.` },
+    { t: `אישיקאווה`, en: `Ishikawa / Fishbone`, d: `דיאגרמת סיבה ותוצאה לפי קטגוריות.` },
+    { t: `5 למה`, en: `5 Whys`, d: `שאלת "למה" חוזרת עד שמגיעים לשורש הבעיה.` },
+    { t: `As-Is / To-Be`, en: `As-Is / To-Be`, d: `המצב הקיים מול המצב העתידי המתוכנן.` },
+    { t: `מדד ביצוע`, en: `KPI · Key Performance Indicator`, d: `מספר שמודד הצלחה, עם נקודת מוצא וערך יעד.` },
+    { t: `עקיבות`, en: `Traceability`, d: `היכולת לדעת איזו אצווה של רכיב נכנסה לאיזו יחידת מוצר.` },
+    { t: `רשימת ספקים מאושרים`, en: `ASL / AVL · Approved Supplier List`, d: `הספקים שעברו הערכה ואישור במערכת האיכות.` },
+    { t: `תעודת התאמה`, en: `CoC · Certificate of Conformance`, d: `הצהרת ספק שהמשלוח עומד בדרישות.` },
+    { t: `ISO 13485`, en: `ISO 13485`, d: `תקן מערכת ניהול איכות ליצרני מכשור רפואי.` },
+    { t: `ESD`, en: `Electrostatic Discharge`, d: `פריקה של חשמל סטטי שעלולה לפגוע ברכיבים אלקטרוניים.` }
+  ];
+  var gGrid = $('#gGrid'), gSearch = $('#gSearch');
+  function renderGloss() {
+    var f = gSearch.value.trim().toLowerCase();
+    gGrid.innerHTML = '';
+    var list = GLOSS.filter(function (g) { return !f || (g.t + ' ' + g.en + ' ' + g.d).toLowerCase().indexOf(f) !== -1; });
+    list.forEach(function (g) {
+      var card = el('button', { type: 'button', class: 'gcard' },
+        el('span', { class: 'g-term' }, g.t), el('span', { class: 'g-en' }, g.en), el('span', { class: 'g-def' }, g.d));
+      card.addEventListener('click', function () { card.classList.toggle('open'); });
+      gGrid.appendChild(card);
+    });
+    $('#gCount').textContent = list.length + ' מונחים';
+  }
+  gSearch.addEventListener('input', renderGloss);
+  $('#gAll').addEventListener('click', function () {
+    var on = gGrid.classList.toggle('show-all');
+    this.textContent = on ? 'הסתרת ההגדרות' : 'הצגת כל ההגדרות';
+  });
+  renderGloss();
+
+  $('#printBtn').addEventListener('click', function () { window.print(); });
+
+  /* ---------- init ---------- */
+  refreshProgress();
+  show(location.hash.slice(1) || 'home');
+})();
+</script>
+</body>
+</html>

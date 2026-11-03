@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="he" dir="rtl" data-page="company">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>הכרת החברה</title>
+<style>
+/*COMMON_CSS*/
+.details{display:grid;grid-template-columns:max-content 1fr;gap:6px 18px;margin:0}
+.details dt{color:var(--muted);font-size:14.5px;padding-top:1px}
+.details dd{margin:0}
+@media (max-width:520px){.details{grid-template-columns:1fr}.details dt{margin-top:6px}}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:14px 0}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;box-shadow:var(--shadow)}
+.stat b{display:block;font-size:26px;line-height:1.2;color:var(--accent)}
+.stat span{display:block;font-size:14px;margin-top:4px}
+.stat small{display:block;font-size:12.5px;color:var(--muted);margin-top:2px}
+
+.src{font-size:12.5px;color:var(--muted);white-space:nowrap}
+.src a{color:var(--muted)}
+sup.ref a{text-decoration:none;font-size:11.5px;padding:0 1px}
+
+.flow{margin:14px 0}
+.flow svg{display:block;width:100%;height:auto;max-width:860px}
+.flow .box{fill:var(--surface);stroke:var(--border);stroke-width:1.5}
+.flow .box.robot{fill:var(--accent-soft);stroke:var(--accent)}
+.flow .t{fill:var(--text);font-size:15px;font-weight:600}
+.flow .s{fill:var(--muted);font-size:12.5px}
+.flow .arr{stroke:var(--muted);stroke-width:1.5;fill:none}
+.flow .head{fill:var(--muted)}
+.flow .num{fill:var(--accent);font-size:12px;font-weight:700}
+.flow-key{display:flex;flex-wrap:wrap;gap:14px;font-size:13.5px;color:var(--muted);margin:4px 0 0}
+.flow-key span{display:inline-flex;align-items:center;gap:6px}
+.flow-key i{width:14px;height:14px;border-radius:4px;border:1.5px solid var(--border);background:var(--surface);display:inline-block}
+.flow-key i.r{border-color:var(--accent);background:var(--accent-soft)}
+.flow .flow-v{display:none}
+@media (max-width:640px){.flow .flow-h{display:none}.flow .flow-v{display:block;max-width:360px;margin:0 auto}}
+
+.tl{list-style:none;margin:0;padding:0;position:relative}
+.tl::before{content:"";position:absolute;inset-inline-start:11px;top:8px;bottom:8px;width:2px;background:var(--border)}
+.tl-band{position:relative;padding-inline-start:40px;margin:24px 0 8px;font-size:13px;font-weight:700;color:var(--muted)}
+.tl-band:first-child{margin-top:0}
+.tl-item{position:relative;padding-inline-start:40px;margin:0 0 10px}
+.tl-item .dot{position:absolute;inset-inline-start:4px;top:17px;width:16px;height:16px;border-radius:50%;border:2px solid var(--accent);background:var(--surface)}
+.tl-item.key .dot{background:var(--accent)}
+.tl-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px 14px}
+.tl-item.key .tl-card{border-color:var(--accent)}
+.tl-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px}
+.tl-head b{font-size:16px}
+.tl-head .date{font-size:13.5px;color:var(--muted);margin-inline-start:auto;white-space:nowrap}
+.tl-meta{font-size:14.5px;color:var(--muted);margin-top:2px}
+
+.people{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:4px 18px;font-size:15px;margin:0;padding:0;list-style:none}
+.people li{margin:0;padding:5px 0;border-bottom:1px dashed var(--border)}
+.people li b{font-weight:600}
+.people li span{color:var(--muted);font-size:14px}
+.people li.us{color:var(--accent)}
+.people li.us span{color:var(--accent)}
+
+.analysis{border:1px dashed var(--accent);border-radius:var(--radius);padding:4px 20px 8px;background:var(--surface)}
+.analysis .tag{display:inline-block;margin-top:14px}
+.imp{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px;margin:12px 0}
+@media (max-width:420px){.imp{grid-template-columns:1fr}}
+.imp .card{margin:0;border-top:3px solid var(--accent)}
+.imp h3{font-size:16px;margin:0 0 6px}
+.imp p{font-size:15px;margin:0}
+.imp .fact{font-size:13.5px;color:var(--muted);margin-top:8px}
+
+table.comp{min-width:620px}
+.sources{font-size:14.5px;padding-inline-start:22px}
+.sources li{margin:6px 0}
+.sources .pub{color:var(--muted)}
+.sources a{direction:ltr;unicode-bidi:isolate}
+
+@media print{
+  .flow .flow-v{display:none!important}.flow .flow-h{display:block!important}
+  .stat,.imp .card{break-inside:avoid}
+  .src a,.sources a{color:inherit}
+}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="brand">פרויקט גמר · ForSight Robotics</div>
+  <nav class="tabs">
+    <a href="../ניהול%20הפרויקט.html">ניהול הפרויקט</a>
+    <a href="../טיימליין%20ותוכנית%20הכנה.html">טיימליין</a>
+    <a class="current" href="#">הכרת החברה</a>
+    <a href="תיק%20עבודה%20-%20יום%20האפיון.html">תיק עבודה ליום האפיון</a>
+    <a href="מצגת%20פתיחה%20-%20יום%20האפיון.html">מצגת פתיחה</a>
+    <a href="קורס%20הכנה%20-%20ניהול%20מלאי%20ו-Lean.html">קורס הכנה</a>
+  </nav>
+  <button class="btn" id="printBtn" type="button">הדפסה</button>
+  <button class="btn" id="themeBtn" type="button" aria-label="מצב כהה או בהיר">◐</button>
+</div>
+
+<main>
+<header class="doc">
+  <h1>הכרת החברה: ForSight Robotics</h1>
+  <p class="sub">מה כדאי לדעת על החברה לפני יום האפיון</p>
+  <p class="meta">מבוסס על מקורות פומביים בלבד · נבדק ב־3.11.2026 · המספרים בסוגריים המרובעים מפנים לרשימת המקורות</p>
+  <nav class="toc no-print">
+    <a href="#glance">במבט אחד</a>
+    <a href="#product">המוצר</a>
+    <a href="#history">ציר זמן</a>
+    <a href="#people">אנשים</a>
+    <a href="#market">שוק ומתחרים</a>
+    <a href="#us">מה זה אומר לפרויקט</a>
+    <a href="#verify">לאמת ביום האפיון</a>
+    <a href="#sources">מקורות</a>
+  </nav>
+</header>
+
+<section id="glance">
+  <h2><span class="num">1</span>החברה במבט אחד</h2>
+  <p class="lead">חברה ישראלית שמפתחת ומייצרת מערכת רובוטית לניתוחי עיניים, ובראשם ניתוח קטרקט. המערכת, JASPER, עדיין בשלב פיתוח וניסויים קליניים בבני אדם, ואין לה עדיין אישור FDA או אישור למכירה מסחרית.</p>
+
+  <div class="stats">
+    <div class="stat"><b>$195M</b><span>גויסו עד היום</span><small>3 סבבים, האחרון ביוני 2025 <sup class="ref"><a href="#ref-3">[3]</a></sup></small></div>
+    <div class="stat"><b><bdi>110+</bdi></b><span>עובדים</span><small>נכון ליוני 2025, פי 2 בערך משנה קודם <sup class="ref"><a href="#ref-3">[3]</a></sup><sup class="ref"><a href="#ref-11">[11]</a></sup></small></div>
+    <div class="stat"><b>26</b><span>מטופלים נותחו ב־JASPER</span><small>ניסוי ראשון בבני אדם, נכון לאוגוסט 2026 <sup class="ref"><a href="#ref-6">[6]</a></sup></small></div>
+    <div class="stat"><b>ISO 13485</b><span>הסמכת מערכת איכות</span><small>מפברואר 2025, כולל ייצור <sup class="ref"><a href="#ref-4">[4]</a></sup></small></div>
+  </div>
+
+  <div class="card">
+    <dl class="details">
+      <dt>שם רשמי</dt><dd><bdi>ForSight Robotics Ltd.</bdi>, חברה פרטית</dd>
+      <dt>נוסדה</dt><dd>2020 <sup class="ref"><a href="#ref-10">[10]</a></sup><sup class="ref"><a href="#ref-13">[13]</a></sup></dd>
+      <dt>מייסדים</dt><dd>פרופ׳ משה שוהם, ד״ר דניאל גלוזמן, ד״ר ג׳וזף (יוסף) נתן</dd>
+      <dt>מיקום</dt><dd>קיסריה (פארק תרשיש). בהודעות לעיתונות עד 2025 החברה הופיעה ביקנעם עילית, ומ־2026 בקיסריה <sup class="ref"><a href="#ref-4">[4]</a></sup><sup class="ref"><a href="#ref-6">[6]</a></sup><sup class="ref"><a href="#ref-9">[9]</a></sup></dd>
+      <dt>מוצר</dt><dd>פלטפורמת <bdi>JASPER™</bdi> לניתוחי עיניים רובוטיים. השם הקודם: <bdi>ORYOM</bdi> (״אור יום״) <sup class="ref"><a href="#ref-5">[5]</a></sup><sup class="ref"><a href="#ref-12">[12]</a></sup></dd>
+      <dt>סטטוס רגולטורי</dt><dd>בפיתוח. לא קיבלה אישור FDA ולא נמכרת בארה״ב <sup class="ref"><a href="#ref-1">[1]</a></sup></dd>
+      <dt>משקיעים עיקריים</dt><dd><bdi>Eclipse</bdi>, קבוצת אדאני (<bdi>Adani Group</bdi>), <bdi>Mithril Capital</bdi>, ד״ר פרד מול (<bdi>Fred Moll</bdi>)</dd>
+      <dt>איש הקשר שלנו</dt><dd>רן עציוני, סמנכ״ל תפעול (<bdi>VP of Operations</bdi>). מופיע בצוות ההנהלה באתר החברה <sup class="ref"><a href="#ref-2">[2]</a></sup></dd>
+      <dt>אתר</dt><dd><a href="https://forsightrobotics.com" target="_blank" rel="noopener"><bdi>forsightrobotics.com</bdi></a></dd>
+    </dl>
+  </div>
+</section>
+
+<section id="product">
+  <h2><span class="num">2</span>המוצר והטכנולוגיה</h2>
+
+  <h3>קודם כול: מה זה ניתוח קטרקט</h3>
+  <p>קטרקט (ירוד) הוא עכירות של העדשה הטבעית בעין. הטיפול היחיד הוא ניתוח: מוציאים את העדשה העכורה ומכניסים במקומה עדשה מלאכותית (IOL). זה הניתוח הנפוץ בעולם, יותר מ־30 מיליון ניתוחים בשנה <sup class="ref"><a href="#ref-6">[6]</a></sup>. הניתוח קצר ונעשה בדרך כלל בהרדמה מקומית (טיפות), והמטופל חוזר הביתה באותו יום. אבל הוא דורש דיוק של עשיריות מילימטר בתוך עין קטנה, ולכן לוקח שנים להגיע בו למיומנות גבוהה.</p>
+
+  <div class="flow">
+    <svg class="flow-h" viewBox="0 0 860 150" role="img" aria-label="שלבי ניתוח קטרקט: חתכים, פתיחת קופסית העדשה, ריסוק ושאיבת העדשה, השתלת עדשה מלאכותית, סגירה. ב־JASPER כל השלבים נעשים בסיוע הרובוט">
+      <defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="head" d="M0,0 L10,5 L0,10 z"/></marker></defs>
+      <g text-anchor="middle">
+        <rect class="box robot" x="700" y="20" width="150" height="96" rx="10"/>
+        <text class="num" x="775" y="42">1</text><text class="t" x="775" y="66">חתכים זעירים</text><text class="s" x="775" y="88">בקרנית, כ־2–3 מ״מ</text>
+        <rect class="box robot" x="527" y="20" width="150" height="96" rx="10"/>
+        <text class="num" x="602" y="42">2</text><text class="t" x="602" y="66">פתיחת הקופסית</text><text class="s" x="602" y="88">הקרום שעוטף את העדשה</text>
+        <rect class="box robot" x="354" y="20" width="150" height="96" rx="10"/>
+        <text class="num" x="429" y="42">3</text><text class="t" x="429" y="66">ריסוק ושאיבה</text><text class="s" x="429" y="88">של העדשה העכורה</text>
+        <rect class="box robot" x="181" y="20" width="150" height="96" rx="10"/>
+        <text class="num" x="256" y="42">4</text><text class="t" x="256" y="66">השתלת עדשה</text><text class="s" x="256" y="88">מלאכותית (IOL)</text>
+        <rect class="box robot" x="8" y="20" width="150" height="96" rx="10"/>
+        <text class="num" x="83" y="42">5</text><text class="t" x="83" y="66">סיום</text><text class="s" x="83" y="88">החתכים נאטמים לבד</text>
+      </g>
+      <path class="arr" d="M698,68 L681,68" marker-end="url(#ah)"/>
+      <path class="arr" d="M525,68 L508,68" marker-end="url(#ah)"/>
+      <path class="arr" d="M352,68 L335,68" marker-end="url(#ah)"/>
+      <path class="arr" d="M179,68 L162,68" marker-end="url(#ah)"/>
+      <text class="s" x="430" y="140" text-anchor="middle">המנתח שולט ברובוט מעמדה, והרובוט מבצע את כל השלבים מתחילתם ועד סופם</text>
+    </svg>
+    <svg class="flow-v" viewBox="0 0 320 470" role="img" aria-label="שלבי ניתוח קטרקט, מלמעלה למטה">
+      <defs><marker id="ahv" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="head" d="M0,0 L10,5 L0,10 z"/></marker></defs>
+      <g text-anchor="middle">
+        <rect class="box robot" x="20" y="6" width="280" height="64" rx="10"/><text class="t" x="160" y="33">1 · חתכים זעירים</text><text class="s" x="160" y="55">בקרנית, כ־2–3 מ״מ</text>
+        <rect class="box robot" x="20" y="96" width="280" height="64" rx="10"/><text class="t" x="160" y="123">2 · פתיחת הקופסית</text><text class="s" x="160" y="145">הקרום שעוטף את העדשה</text>
+        <rect class="box robot" x="20" y="186" width="280" height="64" rx="10"/><text class="t" x="160" y="213">3 · ריסוק ושאיבה</text><text class="s" x="160" y="235">של העדשה העכורה</text>
+        <rect class="box robot" x="20" y="276" width="280" height="64" rx="10"/><text class="t" x="160" y="303">4 · השתלת עדשה</text><text class="s" x="160" y="325">מלאכותית (IOL)</text>
+        <rect class="box robot" x="20" y="366" width="280" height="64" rx="10"/><text class="t" x="160" y="393">5 · סיום</text><text class="s" x="160" y="415">החתכים נאטמים לבד</text>
+        <text class="s" x="160" y="460">הרובוט מבצע את כל השלבים</text>
+      </g>
+      <path class="arr" d="M160,72 L160,92" marker-end="url(#ahv)"/>
+      <path class="arr" d="M160,162 L160,182" marker-end="url(#ahv)"/>
+      <path class="arr" d="M160,252 L160,272" marker-end="url(#ahv)"/>
+      <path class="arr" d="M160,342 L160,362" marker-end="url(#ahv)"/>
+    </svg>
+    <div class="flow-key"><span><i class="r"></i>שלב שמבוצע בסיוע הרובוט</span><span>השלבים מפושטים, להמחשה בלבד</span></div>
+  </div>
+
+  <h3>מה המערכת עושה</h3>
+  <p><b><bdi>JASPER</bdi></b> (ראשי תיבות של <bdi>Joint Aligned System for Precise Eye Robotics</bdi>) היא פלטפורמה שבה המנתח יושב בעמדת שליטה ומפעיל זרועות רובוטיות שמבצעות את הניתוח (Telemanipulation). המנתח בשליטה לאורך כל השלבים, כלומר הרובוט לא פועל לבד <sup class="ref"><a href="#ref-6">[6]</a></sup>. לפי החברה, זו המערכת הראשונה שמבצעת את <b>כל</b> ניתוח הקטרקט, מתחילתו ועד סופו, ולא רק חלק מהשלבים <sup class="ref"><a href="#ref-5">[5]</a></sup>.</p>
+
+  <div class="table-wrap"><table>
+    <thead><tr><th>רכיב או יכולת</th><th>מה זה נותן</th><th>מקור</th></tr></thead>
+    <tbody>
+      <tr><td>שתי זרועות רובוטיות (Bimanual)</td><td>עבודה בשתי ידיים, כמו בניתוח רגיל</td><td class="src"><a href="#ref-6">[6]</a></td></tr>
+      <tr><td>14 דרגות חופש</td><td>גישה לכל חלקי העין, גם לניתוחים עתידיים בחלק האחורי (רשתית)</td><td class="src"><a href="#ref-1">[1]</a></td></tr>
+      <tr><td>תצוגת תלת־ממד ברזולוציה גבוהה</td><td>ראייה טובה יותר של העומק</td><td class="src"><a href="#ref-6">[6]</a></td></tr>
+      <tr><td>מעקב אחר תנועות העין בזמן אמת</td><td>הרובוט מתאים את עצמו כשהעין זזה</td><td class="src"><a href="#ref-6">[6]</a></td></tr>
+      <tr><td>הקטנת תנועה וסינון רעד (Motion scaling)</td><td>תנועה גדולה של היד הופכת לתנועה זעירה ומדויקת של הכלי</td><td class="src"><a href="#ref-6">[6]</a></td></tr>
+      <tr><td>אזורים אסורים (No-fly zones)</td><td>גבולות שהכלים לא יכולים לחצות</td><td class="src"><a href="#ref-1">[1]</a></td></tr>
+      <tr><td>ראייה ממוחשבת ואיסוף נתונים מהניתוח</td><td>בסיס לניתוח ביצועים, ובעתיד לאוטומציה</td><td class="src"><a href="#ref-1">[1]</a> <a href="#ref-6">[6]</a></td></tr>
+      <tr><td>מיקרוסקופ ניתוחי</td><td>חלק מהמערכת. הסמכת ה־ISO מזכירה ״מערכת רובוטית ומיקרוסקופ״</td><td class="src"><a href="#ref-4">[4]</a></td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="callout warn">
+    <strong>טענות של החברה, לא תוצאות מאומתות</strong>
+    החברה מדברת על דיוק של מיקרונים ועל דיוק גבוה פי 10 מיד אדם <sup class="ref"><a href="#ref-12">[12]</a></sup>. לא מצאנו מאמר מדעי שבדק את זה, ותוצאות הניסוי הקליני פורסמו עד כה רק בהודעות לעיתונות ובכתבות.
+  </div>
+
+  <h3>למה זה מעניין מבחינה הנדסית</h3>
+  <p>המערכת היא מכשיר רפואי גדול ומורכב: זרועות רובוטיות, מיקרוסקופ, מצלמות, מחשוב, עמדת שליטה וכלים כירורגיים. מערכת כזו בנויה ממאות עד אלפי חלקים, ובהם הרבה ברגים, אומים, מחברים וכבלים. זה בדיוק תחום הפרויקט שלנו. ראו <a href="#us">פרק 6</a>.</p>
+</section>
+
+<section id="history">
+  <h2><span class="num">3</span>ציר זמן של החברה</h2>
+  <ol class="tl">
+    <li class="tl-band">2020–2022 · הקמה וגיוס ראשון</li>
+    <li class="tl-item"><span class="dot"></span><div class="tl-card">
+      <div class="tl-head"><b>הקמת החברה</b><span class="date">2020</span></div>
+      <div class="tl-meta">שלושה מייסדים. פרופ׳ שוהם ייסד קודם לכן את Mazor Robotics, שנמכרה ל־Medtronic ב־2018 תמורת 1.6 מיליארד דולר <a href="#ref-10">[10]</a></div></div></li>
+    <li class="tl-item key"><span class="dot"></span><div class="tl-card">
+      <div class="tl-head"><b>סבב Seed: ‏10 מיליון דולר</b><span class="date">11.3.2021</span></div>
+      <div class="tl-meta">בהובלת Eclipse Ventures, עם Mithril Capital. אז היו בחברה 15 עובדים <a href="#ref-8">[8]</a> <a href="#ref-10">[10]</a></div></div></li>
+    <li class="tl-item key"><span class="dot"></span><div class="tl-card">
+      <div class="tl-head"><b>סבב A: ‏55 מיליון דולר</b><span class="date">20.7.2022</span></div>
+      <div class="tl-meta">בהובלת קבוצת אדאני ההודית. המטרה: להאיץ את פיתוח הפלטפורמה (אז בשם ORYOM) לקראת ניסויים קליניים <a href="#ref-12">[12]</a></div></div></li>
+
+    <li class="tl-band">2023–2025 · בניית הארגון ומערכת האיכות</li>
+    <li class="tl-item"><span class="dot"></span><div class="tl-card">
+      <div class="tl-head"><b>מינוי סמנכ״לית כספים (שרון לויטה)</b><span class="date">18.7.2023</span></div>
+      <div class="tl-meta">מגיעה מ־Medtronic <a href="#ref-7">[7]</a></div></div></li>
+    <li class="tl-item"><span class="dot"></span><div class="tl-card">
+      <div class="tl-head"><b>פרד מול מצטרף לדירקטוריון</b><span class="date">13.2.2025</span></div>
+      <div class="tl-meta">מייסד Intuitive Surgical (הרובוט da Vinci) ו־Auris Health. באותה הודעה: מינוי סמנכ״ל מו״פ וסמנכ״לית משאבי אנוש <a href="#ref-13">[13]</a></div></div></li>
+    <li class="tl-item key"><span class="dot"></span><div class="tl-card">
+      <div class="tl-head"><b>הסמכת ISO 13485:2016</b><span class="date">26.2.2025</span></div>
+      <div class="tl-meta">תקן מערכת האיכות של מכשור רפואי. ההסמכה כוללת תכנון, פיתוח <b>וייצור</b> של המערכת הרובוטית והמיקרוסקופ <a href="#ref-4">[4]</a></div></div></li>
+    <li class="tl-item key"><span class="dot"></span><div class="tl-card">
+      <div class="tl-head"><b>סבב B: ‏125 מיליון דולר</b><span class="date">24.6.2025</span></div>
+      <div class="tl-meta">בהובלת Eclipse. סך הגיוס עלה ל־195 מיליון דולר. החברה מסרה שיש בה יותר מ־110 עובדים, ושיותר מ־20 מנתחים ביצעו מאות ניתוחים בעיני חיות במערכת <a href="#ref-3">[3]</a> <a href="#ref-11">[11]</a></div></div></li>
+
+    <li class="tl-band">2026 · ניתוחים בבני אדם</li>
+    <li class="tl-item key"><span class="dot"></span><div class="tl-card">
+      <div class="tl-head"><b>ניתוח קטרקט רובוטי מלא ראשון באדם</b><span class="date">7.4.2026</span></div>
+      <div class="tl-meta">בפיליפינים. החוקר הראשי: ד״ר Robert Edward T. Ang מ־Asian Eye Institute במנילה. המנתח: ד״ר Alexey Rapoport. הפלטפורמה מוצגת בשמה החדש, JASPER <a href="#ref-5">[5]</a> <a href="#ref-14">[14]</a></div></div></li>
+    <li class="tl-item key"><span class="dot"></span><div class="tl-card">
+      <div class="tl-head"><b>26 מטופלים, בלי מעבר לניתוח ידני</b><span class="date">6.8.2026</span></div>
+      <div class="tl-meta">עוד 14 ניתוחים. כל 26 הניתוחים הושלמו ברובוט, בהרדמה מקומית או בטשטוש קל, וכל המטופלים השתחררו באותו יום. השלב הבא לפי החברה: מחקרים קליניים נוספים והגשות לרשויות. אין עדיין לוח זמנים להגשה ל־FDA <a href="#ref-6">[6]</a></div></div></li>
+  </ol>
+  <p class="small muted">לא מצאנו הודעות חדשות של החברה מאז אוגוסט 2026 (בדיקה ב־3.11.2026).</p>
+</section>
+
+<section id="people">
+  <h2><span class="num">4</span>אנשים</h2>
+  <p>ההנהלה כפי שהיא מופיעה באתר החברה <sup class="ref"><a href="#ref-2">[2]</a></sup>. השמות באנגלית, כמו באתר:</p>
+  <ul class="people">
+    <li><b><bdi>Joseph Nathan, MD</bdi></b><br><span>מייסד שותף ומנכ״ל</span></li>
+    <li><b><bdi>Daniel Glozman, PhD</bdi></b><br><span>מייסד שותף, CTO</span></li>
+    <li><b><bdi>Prof. Moshe Shoham</bdi></b><br><span>מייסד שותף, CSO</span></li>
+    <li class="us"><b><bdi>Ran Ezioni</bdi></b> (רן עציוני)<br><span>סמנכ״ל תפעול · איש הקשר שלנו</span></li>
+    <li><b><bdi>Shiran Conforti</bdi></b><br><span>סמנכ״לית רגולציה ואבטחת איכות</span></li>
+    <li><b><bdi>Sharon Levita</bdi></b><br><span>סמנכ״לית כספים</span></li>
+    <li><b><bdi>Yonatan Ushpizin</bdi></b><br><span>סמנכ״ל מו״פ</span></li>
+    <li><b><bdi>Yaron Levinson, PhD</bdi></b><br><span>סמנכ״ל מוצר</span></li>
+    <li><b><bdi>Eyal Ben-Esti</bdi></b><br><span>סמנכ״ל תוכניות</span></li>
+    <li><b><bdi>Merav Gat</bdi></b><br><span>סמנכ״לית עניינים קליניים</span></li>
+    <li><b><bdi>Ilanit Edri</bdi></b><br><span>סמנכ״לית משאבי אנוש</span></li>
+  </ul>
+
+  <div class="callout">
+    <strong>שינוי בצמרת ב־2026</strong>
+    ב־2021–2022 דניאל גלוזמן הופיע כמנכ״ל <sup class="ref"><a href="#ref-8">[8]</a></sup><sup class="ref"><a href="#ref-12">[12]</a></sup>, וב־2025 ג׳וזף נתן הופיע כנשיא ומנהל רפואי ראשי <sup class="ref"><a href="#ref-3">[3]</a></sup>. בהודעה מאפריל 2026 נתן עדיין מופיע כנשיא <sup class="ref"><a href="#ref-5">[5]</a></sup>, ובהודעה מאוגוסט 2026 הוא כבר המנכ״ל <sup class="ref"><a href="#ref-6">[6]</a></sup>. גלוזמן מופיע היום כ־CTO. לא מצאנו הודעה רשמית על השינוי.
+  </div>
+
+  <h3>יועצים</h3>
+  <p><b>מועצה אסטרטגית:</b> ד״ר פרד מול (מייסד Intuitive Surgical ו־Auris Health), רוני אבוביץ (מייסד Mako Surgical, רובוט לניתוחי מפרקים), דיוויד מינץ (לשעבר סמנכ״ל מו״פ ב־Auris Health). <b>מועצה קלינית:</b> בראשות פרופ׳ דיוויד צ׳אנג (David F. Chang), מנתח קטרקט מוכר בעולם <sup class="ref"><a href="#ref-2">[2]</a></sup>.</p>
+  <p class="small muted">כלומר, החברה מוקפת באנשים שכבר הביאו רובוטים כירורגיים לשוק ולייצור סדרתי. זה רלוונטי לשלב שבו היא נמצאת עכשיו.</p>
+</section>
+
+<section id="market">
+  <h2><span class="num">5</span>השוק והמתחרים</h2>
+
+  <h3>הטיעון של החברה: הרבה מטופלים, מעט מנתחים</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>נתון</th><th>ערך</th><th>מקור</th></tr></thead>
+    <tbody>
+      <tr><td>אנשים עם קטרקט בעולם</td><td>יותר מ־600 מיליון</td><td class="src"><a href="#ref-3">[3]</a> <a href="#ref-5">[5]</a></td></tr>
+      <tr><td>ניתוחי קטרקט בשנה בעולם</td><td>יותר מ־30 מיליון</td><td class="src"><a href="#ref-6">[6]</a></td></tr>
+      <tr><td>ניתוחי קטרקט בשנה בארה״ב</td><td>כ־4 מיליון</td><td class="src"><a href="#ref-3">[3]</a></td></tr>
+      <tr><td>מנתחי קטרקט למיליון תושבים (ממוצע עולמי)</td><td>14.1</td><td class="src"><a href="#ref-3">[3]</a></td></tr>
+      <tr><td>תחזית למספר רופאי העיניים עד 2035</td><td>ירידה של 12%, מול עלייה של 24% בביקוש</td><td class="src"><a href="#ref-3">[3]</a> <a href="#ref-11">[11]</a></td></tr>
+    </tbody>
+  </table></div>
+  <p class="small muted">הנתונים מצוטטים בהודעות החברה, שמפנות למקורות כמו WHO ו־PubMed. לפני שמשתמשים בהם בדוח, כדאי לבדוק את המקור הראשוני.</p>
+
+  <h3>מתחרים</h3>
+  <div class="table-wrap"><table class="comp">
+    <thead><tr><th>חברה</th><th>מערכת</th><th>מה הושג</th><th>סטטוס</th><th>מקור</th></tr></thead>
+    <tbody>
+      <tr class="key"><td><b>ForSight Robotics</b> (ישראל)</td><td>JASPER</td><td>4.2026: ניתוח מלא ראשון באדם. 8.2026: ‏26 מטופלים, כל השלבים ברובוט</td><td>ניסוי קליני, אין אישור FDA</td><td class="src"><a href="#ref-5">[5]</a> <a href="#ref-6">[6]</a></td></tr>
+      <tr><td><b>Horizon Surgical Systems</b> (ארה״ב, יצאה מ־UCLA)</td><td>Polaris</td><td>10.2025: ניתוחי הקטרקט הראשונים בסיוע רובוט, 10 מטופלים באל סלבדור. המנתח הפעיל את הרובוט מעמדה, ובחמישה מקרים הרובוט ביצע חלק מהניתוח בעצמו, בפיקוח המנתח</td><td>לשימוש מחקרי בלבד, אין אישור FDA</td><td class="src"><a href="#ref-14">[14]</a> <a href="#ref-15">[15]</a></td></tr>
+    </tbody>
+  </table></div>
+  <p>שתי החברות מתחרות על אותו תואר: ״הניתוח הרובוטי הראשון״. Horizon הייתה ראשונה בניתוח <b>בסיוע</b> רובוט, ו־ForSight טוענת שהייתה ראשונה בניתוח שכל שלביו נעשו ברובוט, בלי הרדמה כללית <sup class="ref"><a href="#ref-5">[5]</a></sup>. אף אחת מהן לא קיבלה עדיין אישור רגולטורי <sup class="ref"><a href="#ref-14">[14]</a></sup>. לא מצאנו רובוט לניתוחי קטרקט של חברות הרובוטיקה הכירורגית הגדולות, כמו Intuitive.</p>
+</section>
+
+<section id="us">
+  <h2><span class="num">6</span>מה זה אומר לפרויקט שלנו</h2>
+  <div class="analysis">
+    <span class="badge graded tag">הניתוח שלנו, לא עובדות מהחברה</span>
+    <p style="margin-top:10px">החברה עוברת עכשיו מפיתוח לניסויים קליניים, ובהמשך לייצור מסחרי. השלב הזה משנה את האופן שבו צריך לנהל פריטי C:</p>
+    <div class="imp">
+      <div class="card">
+        <h3>הכמויות יגדלו</h3>
+        <p>כרגע מייצרים מערכות בודדות. אם יגיע אישור רגולטורי, הייצור יגדל, ואיתו מספר ההזמנות הקטנות, הספירות והחוסרים. שיטה שעובדת היום ״בכוח״ לא תחזיק בכמויות גדולות.</p>
+        <p class="fact">עובדות: גיוס של 125M$ ב־2025; הכפלת כוח האדם תוך שנה; הכנה להגשות רגולטוריות</p>
+      </div>
+      <div class="card">
+        <h3>מערכת האיכות קובעת גבולות</h3>
+        <p>ISO 13485 מכסה גם ייצור. זה עשוי לחייב עקיבות לפי אצווה, ספקים מאושרים ובדיקות קבלה, ולהגביל פתרונות כמו מגירות פתוחות ליד הקו או ספק שממלא מלאי בעצמו. כל שיטה שנציע צריכה להשתלב בנהלים הקיימים.</p>
+        <p class="fact">עובדה: הסמכה מ־26.2.2025 שכוללת ייצור; יש בחברה סמנכ״לית רגולציה ואיכות</p>
+      </div>
+      <div class="card">
+        <h3>הזמן ההנדסי יקר</h3>
+        <p>בחברה של כ־110 עובדים, כל שעה שמהנדס או טכנאי מבזבז על חיפוש בורג או על הזמנה קטנה היא שעה שלא הולכת לפיתוח או לייצור. מצד שני, לפריטי C לא תמיד יש תמחור מדויק. כדאי למדוד זמן טיפול, ולא רק ערך מלאי.</p>
+        <p class="fact">עובדה: יותר מ־110 עובדים ביוני 2025</p>
+      </div>
+      <div class="card">
+        <h3>מעבר לאתר חדש</h3>
+        <p>אם החברה עברה לקיסריה בשנה האחרונה, ייתכן שהמחסן ואזור הייצור עדיין מתעצבים. זו הזדמנות: קל יותר להטמיע Two-Bin או VMI כשמתכננים את המקום, מאשר לשנות סידור קיים.</p>
+        <p class="fact">עובדה: ההודעות לעיתונות עברו מיקנעם עילית (2025) לקיסריה (2026). מועד המעבר לא ידוע</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="verify">
+  <h2><span class="num">7</span>שאלות לאמת ביום האפיון</h2>
+  <p>המחקר השאיר שאלות שהמקורות הפומביים לא עונים עליהן: מה מייצרים בבית ומה בקבלני משנה, מתי עברו לקיסריה, כמה מערכות קיימות, כמה מק״טים יש בעץ המוצר ומי אחראי על פריטי C. הן נמצאות ב<a href="תיק%20עבודה%20-%20יום%20האפיון.html#s4">תיק העבודה, סעיף 4</a>, יחד עם שאר השאלות לרן, כדי שכל השאלות יהיו במקום אחד.</p>
+</section>
+
+<section id="sources">
+  <h2><span class="num">8</span>מקורות</h2>
+  <p class="small muted">כל הדפים נפתחו ונקראו (לא רק תקצירי חיפוש). נבדק ב־1.11.2026 וב־3.11.2026.</p>
+  <ol class="sources">
+    <li id="ref-1"><a href="https://forsightrobotics.com/jasper-platform" target="_blank" rel="noopener">JASPER Platform</a> <span class="pub">· אתר החברה · כולל הסתייגות רגולטורית</span></li>
+    <li id="ref-2"><a href="https://forsightrobotics.com/about-us" target="_blank" rel="noopener">About Us: Leadership, Advisory Boards</a> <span class="pub">· אתר החברה</span></li>
+    <li id="ref-3"><a href="https://forsightrobotics.com/newsroom/forsight-robotics-secures-125m-in-series-b-funding-addressing-global-surgeon-shortage-and-exploding-demand-for-ophthalmic-surgery" target="_blank" rel="noopener">ForSight Robotics Secures $125M in Series B Funding</a> <span class="pub">· הודעת החברה · 24.6.2025</span></li>
+    <li id="ref-4"><a href="https://forsightrobotics.com/newsroom/forsight-robotics-achieves-iso-13485-2016-certification" target="_blank" rel="noopener">ForSight Robotics Achieves ISO 13485:2016 Certification</a> <span class="pub">· הודעת החברה · 26.2.2025</span></li>
+    <li id="ref-5"><a href="https://forsightrobotics.com/newsroom/forsight-robotics-makes-history-with-the-worlds-first-in-human-fully-robot-assisted-cataract-surgery" target="_blank" rel="noopener">ForSight Robotics Makes History with the World’s First-in-Human Fully Robot-Assisted Cataract Surgery</a> <span class="pub">· הודעת החברה · 7.4.2026</span></li>
+    <li id="ref-6"><a href="https://forsightrobotics.com/newsroom/forsight-robotics-demonstrates-fully-robotic-assisted-cataract-surgery-within-the-standard-clinical-workflow-of-the-worlds-most-commonly-performed-surgical-procedure" target="_blank" rel="noopener">ForSight Robotics Demonstrates Fully Robotic-Assisted Cataract Surgery Within the Standard Clinical Workflow</a> <span class="pub">· הודעת החברה · 6.8.2026</span></li>
+    <li id="ref-7"><a href="https://forsightrobotics.com/newsroom" target="_blank" rel="noopener">Newsroom</a> <span class="pub">· אתר החברה · רשימת ההודעות, כולל מינוי סמנכ״לית הכספים (18.7.2023)</span></li>
+    <li id="ref-8"><a href="https://forsightrobotics.com/newsroom/forsight-robotics-raises-10-million-from-eclipse-ventures-and-mithril-capital-in-seed-round" target="_blank" rel="noopener">ForSight Robotics Raises $10 Million … in Seed Round</a> <span class="pub">· הודעת החברה · 11.3.2021</span></li>
+    <li id="ref-9"><a href="https://forsightrobotics.com/careers" target="_blank" rel="noopener">Careers</a> <span class="pub">· אתר החברה · משרות פתוחות בקיסריה</span></li>
+    <li id="ref-10"><a href="https://www.calcalistech.com/ctech/articles/0,7340,L-3897656,00.html" target="_blank" rel="noopener">Mazor Robotics founder is at it again, raising $10 million …</a> <span class="pub">· CTech (כלכליסט) · 9.3.2021</span></li>
+    <li id="ref-11"><a href="https://www.medtechdive.com/news/Forsight-Robotics-raises-125m-cataract-surgery/751796/" target="_blank" rel="noopener">ForSight Robotics raises $125M for cataract surgery robot</a> <span class="pub">· MedTech Dive · 26.6.2025</span></li>
+    <li id="ref-12"><a href="https://www.biospace.com/forsight-robotics-raises-55-million-in-series-a-round-to-develop-world-s-first-fully-robotic-cataract-surgery-procedure" target="_blank" rel="noopener">ForSight Robotics Raises $55 Million in Series A Round</a> <span class="pub">· BioSpace (הודעת החברה) · 20.7.2022</span></li>
+    <li id="ref-13"><a href="https://forsightrobotics.com/newsroom/father-of-surgical-robotics-dr-fred-moll-joins-forsight-robotics-board-of-directors" target="_blank" rel="noopener">“Father of Surgical Robotics” Dr. Fred Moll Joins ForSight Robotics Board of Directors</a> <span class="pub">· הודעת החברה · 13.2.2025</span></li>
+    <li id="ref-14"><a href="https://www.healio.com/news/ophthalmology/20260731/embrace-the-future-of-robotics-in-ophthalmology" target="_blank" rel="noopener">“Embrace the future” of robotics in ophthalmology</a> <span class="pub">· Healio, Ocular Surgery News · 31.7.2026</span></li>
+    <li id="ref-15"><a href="https://ophthalmologymanagement.com/news/2025/horizon-completes-worlds-first-robotics-assisted-cataract-surgery/" target="_blank" rel="noopener">Horizon completes world’s first robotics-assisted cataract surgery</a> <span class="pub">· Ophthalmology Management · 8.10.2025</span></li>
+  </ol>
+  <h3>מה לא מצאנו במקורות פומביים</h3>
+  <ul>
+    <li>נפח ייצור, מספר מערכות קיימות, מבנה שרשרת האספקה וספקים</li>
+    <li>מועד המעבר לקיסריה ומה בדיוק יש באתר</li>
+    <li>לוח זמנים להגשה ל־FDA או לאישור CE</li>
+    <li>מאמר מדעי עם תוצאות קליניות (יש רק הודעות לעיתונות וכתבות)</li>
+  </ul>
+</section>
+
+<footer class="note">
+  פרויקט גמר · ייצור ושירות בסביבה דיגיטלית · המרכז האקדמי רופין · תשפ״ז. הדף מבוסס על מקורות פומביים בלבד, ומה שלא אומת מסומן ככזה. סימוני השאלות נשמרים בדפדפן הזה בלבד.
+</footer>
+</main>
+<script>/*COMMON_JS*/</script>
+</body>
+</html>

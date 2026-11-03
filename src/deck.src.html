@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="he" dir="rtl" data-page="deck">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>מצגת פתיחה ליום האפיון</title>
+<style>
+/*COMMON_CSS*/
+.howto{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;font-size:14.5px;color:var(--muted);margin-top:12px}
+.howto .btn.primary{font-size:15px;padding:7px 16px}
+kbd{font:inherit;font-size:12.5px;border:1px solid var(--border);border-bottom-width:2px;border-radius:5px;padding:0 6px;background:var(--surface)}
+
+/* slides: a 16:9 canvas; everything inside is sized from the slide width */
+.deck{display:flex;flex-direction:column;gap:0;margin-top:28px}
+.slide{position:relative;container-type:inline-size;aspect-ratio:16/9;background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow);overflow:hidden;margin:0 0 10px}
+.slide::before{content:"";position:absolute;inset-inline-start:0;top:0;bottom:0;width:.7cqw;background:var(--accent)}
+.s-in{position:absolute;inset:0;padding:4.6cqw 6.2cqw 5.6cqw;font-size:2.1cqw;line-height:1.5;display:flex;flex-direction:column}
+.s-kick{font-size:.72em;font-weight:700;color:var(--accent);letter-spacing:.02em;margin:0 0 .3em}
+.slide h2{font-size:1.75em;line-height:1.25;border:0;padding:0;margin:0 0 .7em}
+.slide h3{font-size:1.02em;margin:0 0 .3em}
+.slide p{margin:0 0 .5em}
+.slide ul{margin:0;padding-inline-start:1.1em}
+.slide li{margin:.18em 0}
+.s-foot .n,#counter{direction:ltr;unicode-bidi:isolate}
+.s-foot{position:absolute;bottom:2.1cqw;inset-inline:6.2cqw;display:flex;justify-content:space-between;font-size:1.2cqw;color:var(--muted)}
+.slide .s-note{margin:auto 0 0;padding-top:.6em;font-size:.82em;color:var(--muted)}
+.s-note b{color:var(--text)}
+
+.s-title .s-in{justify-content:center}
+.s-title h1{font-size:2.9em;line-height:1.15;margin:0 0 .25em}
+.s-title .s-sub{font-size:1.1em;color:var(--accent);margin:0 0 1.6em}
+.s-title .team{font-size:1.05em;font-weight:600;margin:0 0 .3em}
+.s-title .s-meta{font-size:.8em;color:var(--muted)}
+.slide .field{min-width:12em;border-bottom-color:var(--border)}
+
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:2.4cqw}
+.cols3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.8cqw}
+.cols4{display:grid;grid-template-columns:repeat(4,1fr);gap:1.6cqw}
+.box{background:var(--surface-2);border-radius:1cqw;padding:1.5cqw 1.8cqw}
+.box.line{background:transparent;border:1px solid var(--border);border-top:.35cqw solid var(--accent)}
+.box p{font-size:.86em;margin:0;color:var(--muted)}
+.box ul{font-size:.9em}
+
+.chips{display:flex;flex-wrap:wrap;align-items:center;gap:.5em;margin:.2em 0 1em}
+.chips span{background:var(--accent-soft);color:var(--accent);border-radius:999px;padding:.15em .8em;font-size:.86em;font-weight:600}
+.chips i{font-style:normal;color:var(--muted)}
+
+.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:1.4cqw;margin:.4em 0 1em}
+.kpi{border:1px solid var(--border);border-radius:1cqw;padding:1.4cqw 1.2cqw;text-align:center}
+.kpi b{display:block;font-size:2em;line-height:1.1;color:var(--accent)}
+.kpi b.up{color:var(--ok)}
+.kpi span{display:block;font-size:.8em;margin-top:.3em}
+
+.steps{list-style:none;padding:0;margin:.6em 0 1em;display:grid;grid-template-columns:repeat(6,1fr);gap:1cqw;position:relative}
+.steps::before{content:"";position:absolute;top:1.25cqw;inset-inline:3%;height:.25cqw;background:var(--border)}
+.steps li{position:relative;margin:0;padding-top:3.4cqw;font-size:.84em}
+.steps li::before{content:attr(data-n);position:absolute;top:0;inset-inline-start:0;width:2.6cqw;height:2.6cqw;border-radius:50%;background:var(--surface);border:.25cqw solid var(--accent);color:var(--accent);font-weight:700;font-size:1.25cqw;display:flex;align-items:center;justify-content:center}
+.steps li.ms::before{background:var(--accent);color:var(--surface)}
+.steps b{display:block;line-height:1.3;margin-bottom:.2em}
+.steps span{color:var(--muted);font-size:.9em;display:block;line-height:1.35}
+.steps em{font-style:normal;display:inline-block;margin-top:.35em;font-size:.82em;color:var(--accent);font-weight:600}
+
+.agenda{width:100%;border-collapse:collapse;font-size:.86em}
+.agenda td{padding:.42em .6em;border-bottom:1px solid var(--border);vertical-align:top}
+.agenda tr:last-child td{border-bottom:0}
+.agenda td:first-child{white-space:nowrap;color:var(--muted);width:1%;direction:ltr;text-align:end}
+.agenda td:last-child{color:var(--muted)}
+
+.big-q{font-size:2.2em;line-height:1.25;font-weight:700;margin:0 0 .5em}
+.s-close .s-in{justify-content:center}
+.s-close .thanks{margin-top:1.4em;font-size:1.3em;color:var(--accent);font-weight:700}
+
+/* speaker notes, under each slide in the regular view */
+.say{background:var(--warn-soft);border-inline-start:3px solid var(--warn);border-radius:8px;padding:10px 14px;margin:0 0 30px;font-size:15px}
+.say-head{display:flex;flex-wrap:wrap;align-items:center;gap:4px 12px;margin-bottom:4px}
+.say-head b{color:var(--warn)}
+.say-head .who{font-size:14px;color:var(--muted)}
+.say-head .who .field{min-width:90px}
+.say-head .go{margin-inline-start:auto;font-size:13px;padding:3px 10px}
+.say ul{margin:0}
+
+.qa dt{font-weight:650;margin-top:14px}
+.qa dd{margin:4px 0 0;color:var(--muted)}
+
+/* narrow screens: slides become normal cards so the text stays readable */
+@media (max-width:700px){
+  body:not(.presenting) .slide{aspect-ratio:auto}
+  body:not(.presenting) .s-in{position:static;font-size:15px;padding:22px 20px 44px}
+  body:not(.presenting) .s-foot{font-size:12px;bottom:14px;inset-inline:20px}
+  body:not(.presenting) .cols,body:not(.presenting) .cols3,body:not(.presenting) .cols4{grid-template-columns:1fr;gap:10px}
+  body:not(.presenting) .kpis{grid-template-columns:repeat(2,1fr);gap:8px}
+  body:not(.presenting) .steps{grid-template-columns:1fr;gap:12px}
+  body:not(.presenting) .steps::before{display:none}
+  body:not(.presenting) .steps li{padding-top:0;padding-inline-start:38px}
+  body:not(.presenting) .steps li::before{width:26px;height:26px;font-size:12px;border-width:2px}
+  body:not(.presenting) .box,body:not(.presenting) .kpi{border-radius:8px;padding:10px 12px}
+}
+
+/* presenting: one slide, full screen */
+body.presenting{background:#0b0b0c;overflow:hidden}
+body.presenting .topbar,body.presenting header.doc,body.presenting .say,body.presenting .after,body.presenting footer.note{display:none}
+body.presenting main{max-width:none;padding:0;margin:0}
+body.presenting .deck{margin:0}
+body.presenting .slide{display:none;border:0;border-radius:0;box-shadow:none;margin:0}
+body.presenting .slide.active{display:block;position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);width:min(100vw,177.78vh)}
+.pres-ui{display:none}
+body.presenting .pres-ui{display:flex;position:fixed;bottom:10px;left:12px;gap:6px;z-index:40;opacity:.15;transition:opacity .2s}
+body.presenting .pres-ui:hover{opacity:1}
+.pres-ui .btn{font-size:13px;padding:3px 10px}
+
+@media print{
+  @page{size:A4 landscape;margin:0}
+  body{background:#fff}
+  header.doc,.say,.after,footer.note,.pres-ui{display:none!important}
+  .deck{margin:0}
+  .slide{width:297mm;height:209mm;aspect-ratio:auto;border:0;border-radius:0;box-shadow:none;margin:0;break-after:page;break-inside:avoid}
+  .slide:last-of-type{break-after:auto}
+  .slide .field:empty{display:none}
+}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="brand">פרויקט גמר · ForSight Robotics</div>
+  <nav class="tabs">
+    <a href="../ניהול%20הפרויקט.html">ניהול הפרויקט</a>
+    <a href="../טיימליין%20ותוכנית%20הכנה.html">טיימליין</a>
+    <a href="הכרת%20החברה%20-%20ForSight%20Robotics.html">הכרת החברה</a>
+    <a href="תיק%20עבודה%20-%20יום%20האפיון.html">תיק עבודה ליום האפיון</a>
+    <a class="current" href="#">מצגת פתיחה</a>
+    <a href="קורס%20הכנה%20-%20ניהול%20מלאי%20ו-Lean.html">קורס הכנה</a>
+  </nav>
+  <button class="btn" id="printBtn" type="button">הדפסה</button>
+  <button class="btn" id="themeBtn" type="button" aria-label="מצב כהה או בהיר">◐</button>
+</div>
+
+<main>
+<header class="doc">
+  <h1>מצגת פתיחה ליום האפיון</h1>
+  <p class="sub">20 הדקות הראשונות עם רן עציוני: היכרות, מה הבנו, מה נבקש וסדר היום</p>
+  <p class="meta">9 שקפים · עד 8 דקות הצגה, והשאר שיחה · מתחת לכל שקף: מה אומרים ומי מציג</p>
+  <div class="howto no-print">
+    <button class="btn primary" id="startBtn" type="button">▶ הצגה במסך מלא</button>
+    <span><kbd>←</kbd> או רווח או קליק: השקף הבא · <kbd>→</kbd>: הקודם · <kbd>Esc</kbd>: יציאה</span>
+    <span>הדפסה: שקף לכל עמוד, בלי הערות הדובר. כך שומרים PDF לשליחה לרן.</span>
+  </div>
+</header>
+
+<div class="deck" id="deck">
+
+<!-- 1 -->
+<article class="slide s-title"><div class="s-in">
+  <p class="s-kick">פגישת אפיון · ForSight Robotics</p>
+  <h1>ניהול פריטי C בגישת Lean</h1>
+  <p class="s-sub">יישום כלים מתקדמים בניהול מלאי בהתאם לעקרונות Lean</p>
+  <p class="team"><span class="field" contenteditable="true" data-key="team" data-ph="שמות חברי הצוות"></span></p>
+  <p class="s-meta">ייצור ושירות בסביבה דיגיטלית · המרכז האקדמי רופין · תשפ״ז · <span class="field" contenteditable="true" data-key="date" data-ph="תאריך" style="min-width:6em"></span></p>
+</div><div class="s-foot"><span>ForSight Robotics · פגישת אפיון</span><span class="n"></span></div></article>
+<div class="say">
+  <div class="say-head"><b>מה אומרים · כדקה</b><span class="who">מציג: <span class="field" contenteditable="true" data-key="who-1" data-ph="שם"></span></span><button class="btn go" type="button">▶ מכאן</button></div>
+  <ul>
+    <li>תודה על הזמן ועל ההזדמנות לעבוד על בעיה אמיתית.</li>
+    <li>כל אחד מציג את עצמו במשפט: שם, ומה התפקיד שלו היום (מוביל שיחה, רושם, תצפית).</li>
+  </ul>
+</div>
+
+<!-- 2 -->
+<article class="slide"><div class="s-in">
+  <p class="s-kick">1 · מי אנחנו</p>
+  <h2>פרויקט גמר לאורך שנה, עם תוצר שאפשר ליישם</h2>
+  <div class="cols">
+    <div class="box line">
+      <h3>המסגרת</h3>
+      <ul>
+        <li>פרויקט גמר בהתמחות ייצור ושירות בסביבה דיגיטלית</li>
+        <li>שני סמסטרים, שנת הלימודים תשפ״ז</li>
+        <li>מנחה אקדמי: <span class="field" contenteditable="true" data-key="advisor" data-ph="שם המנחה" style="min-width:7em"></span></li>
+        <li>רכז הפרויקטים: יוסי אנגליסטר</li>
+      </ul>
+    </div>
+    <div class="box line">
+      <h3>מה תקבלו בסוף</h3>
+      <ul>
+        <li>תמונה של המצב הקיים, עם מספרים</li>
+        <li>השוואה בין שיטות לניהול פריטי C</li>
+        <li>המלצה מנומקת, עם תועלת כמותית</li>
+        <li>תוכנית הטמעה, וכל הנתונים והקבצים</li>
+      </ul>
+    </div>
+  </div>
+  <p class="s-note">המטרה: שתוכלו ליישם את ההמלצה <b>גם בלעדינו</b>.</p>
+</div><div class="s-foot"><span>ForSight Robotics · פגישת אפיון</span><span class="n"></span></div></article>
+<div class="say">
+  <div class="say-head"><b>מה אומרים · כדקה</b><span class="who">מציג: <span class="field" contenteditable="true" data-key="who-2" data-ph="שם"></span></span><button class="btn go" type="button">▶ מכאן</button></div>
+  <ul>
+    <li>מסבירים בקצרה את המסגרת, ומדגישים: התוצר הוא תוכנית עבודה, לא רק עבודה אקדמית.</li>
+    <li>אם המנחה עוד לא ידוע, אומרים שנעדכן.</li>
+  </ul>
+</div>
+
+<!-- 3 -->
+<article class="slide"><div class="s-in">
+  <p class="s-kick">2 · מה הבנו עד עכשיו</p>
+  <h2>מאות פריטים זולים, שבלעדיהם ההרכבה נעצרת</h2>
+  <p>ברגים, אומים, שייבות, מחברים, אזיקונים. היום הם מנוהלים כמו כל פריט אחר:</p>
+  <div class="chips"><span>מק״ט לכל פריט</span><i>←</i><span>רמות מלאי</span><i>←</i><span>ספירות ומעקב</span><i>←</i><span>הזמנת רכש לפי צריכה</span></div>
+  <div class="cols3">
+    <div class="box"><h3>עומס על הרכש והמחסן</h3><p>הרבה הזמנות קטנות, ספירות ומעקב אחרי מאות מק״טים</p></div>
+    <div class="box"><h3>עודף לצד חוסר</h3><p>מלאי עודף בפריט אחד, וחוסר נקודתי בפריט אחר</p></div>
+    <div class="box"><h3>זמן שלא מוסיף ערך</h3><p>שעות עבודה שהולכות על פריטים שעולים אגורות</p></div>
+  </div>
+  <p class="s-note">כך זה מתואר בהצעת הפרויקט. <b>היום באנו לבדוק אם זו התמונה הנכונה, ומה חסר בה.</b></p>
+</div><div class="s-foot"><span>ForSight Robotics · פגישת אפיון</span><span class="n"></span></div></article>
+<div class="say">
+  <div class="say-head"><b>מה אומרים · כדקה וחצי</b><span class="who">מציג: <span class="field" contenteditable="true" data-key="who-3" data-ph="שם"></span></span><button class="btn go" type="button">▶ מכאן</button></div>
+  <ul>
+    <li>זה השקף הכי חשוב לשיחה. בסופו עוצרים ושואלים את רן: <b>"זה נכון? מה היית מוסיף או משנה?"</b></li>
+    <li>הרושם כותב את התשובה מילה במילה. ככה מקבלים את הבעיה במילים של הארגון.</li>
+  </ul>
+</div>
+
+<!-- 4 -->
+<article class="slide"><div class="s-in">
+  <p class="s-kick">3 · המטרה</p>
+  <h2>פחות טיפול בפריטי C, בלי חוסרים ברצפה</h2>
+  <p>לבחור ולתכנן שיטה לניהול פריטי C שמורידה עבודה מהרכש ומהמחסן, ושומרת על זמינות בקו הייצור.</p>
+  <div class="kpis">
+    <div class="kpi"><b>↓</b><span>הזמנות רכש לפריטי C</span></div>
+    <div class="kpi"><b class="up">↑</b><span>זמינות פריטים בקו</span></div>
+    <div class="kpi"><b>↓</b><span>מקרי חוסר</span></div>
+    <div class="kpi"><b>↓</b><span>מלאי עודף</span></div>
+    <div class="kpi"><b>↓</b><span>זמן טיפול בפריטי C</span></div>
+  </div>
+  <p class="s-note">את ערכי היעד נקבע <b>יחד איתכם</b>, אחרי שנמדוד את המצב הקיים.</p>
+</div><div class="s-foot"><span>ForSight Robotics · פגישת אפיון</span><span class="n"></span></div></article>
+<div class="say">
+  <div class="say-head"><b>מה אומרים · דקה</b><span class="who">מציג: <span class="field" contenteditable="true" data-key="who-4" data-ph="שם"></span></span><button class="btn go" type="button">▶ מכאן</button></div>
+  <ul>
+    <li>שואלים: <b>"אילו מהמדדים האלה אתם כבר מודדים היום, ואיפה?"</b> התשובה נכנסת לפרק המדדים במצגת סמסטר א׳.</li>
+  </ul>
+</div>
+
+<!-- 5 -->
+<article class="slide"><div class="s-in">
+  <p class="s-kick">4 · כיווני פתרון</p>
+  <h2>השיטות שנבחן</h2>
+  <div class="cols4">
+    <div class="box line"><h3>VMI</h3><p>הספק מנהל את המלאי אצלכם: מגיע, סופר ומשלים לפי הצריכה בפועל</p></div>
+    <div class="box line"><h3>Kanban</h3><p>כרטיס או אות שמפעיל הזמנה רק כשהפריט נצרך</p></div>
+    <div class="box line"><h3>Two-Bin</h3><p>שני מיכלים לכל פריט. כשהראשון מתרוקן מזמינים, ובינתיים עובדים מהשני</p></div>
+    <div class="box line"><h3>ניהול חזותי</h3><p>מיקום קבוע, סימון וצבעים, כך שרואים מיד מה חסר</p></div>
+  </div>
+  <p style="margin-top:1em">ייתכן גם שילוב: שיטה אחת לרוב הפריטים, ושיטה אחרת לפריטים שדורשים עקיבות.</p>
+  <p class="s-note"><b>היום לא בוחרים.</b> קודם מבינים ומודדים, ובסמסטר ב׳ משווים עם מספרים.</p>
+</div><div class="s-foot"><span>ForSight Robotics · פגישת אפיון</span><span class="n"></span></div></article>
+<div class="say">
+  <div class="say-head"><b>מה אומרים · דקה</b><span class="who">מציג: <span class="field" contenteditable="true" data-key="who-5" data-ph="שם"></span></span><button class="btn go" type="button">▶ מכאן</button></div>
+  <ul>
+    <li>מסבירים כל שיטה במשפט אחד, בלי להמליץ.</li>
+    <li>שואלים: <b>"ניסיתם פעם משהו כזה? ספק כבר הציע לכם?"</b></li>
+  </ul>
+</div>
+
+<!-- 6 -->
+<article class="slide"><div class="s-in">
+  <p class="s-kick">5 · איך נעבוד</p>
+  <h2>שלבי הפרויקט</h2>
+  <ol class="steps">
+    <li data-n="1"><b>אפיון ואיסוף נתונים</b><span>ראיונות, תצפיות, נתוני ERP</span><em>סמסטר א׳</em></li>
+    <li data-n="2"><b>ניתוח המצב הקיים</b><span>מיפוי התהליך, כימות הבעיות, מדדים</span><em>סמסטר א׳</em></li>
+    <li data-n="3" class="ms"><b>הצגה לכם</b><span>מה מצאנו, ואישור שלכם</span><em>סוף סמסטר א׳</em></li>
+    <li data-n="4"><b>חלופות ותועלת</b><span>השוואה כמותית בין השיטות</span><em>סמסטר ב׳</em></li>
+    <li data-n="5"><b>הפתרון ותוכנית הטמעה</b><span>אחריות, תדירות, בקרה ומדדים</span><em>סמסטר ב׳</em></li>
+    <li data-n="6" class="ms"><b>מסירה</b><span>פגישת מסירה וכל החומרים</span><em>סוף השנה</em></li>
+  </ol>
+  <p class="s-note">בשתי נקודות נבקש מכם טופס קצר: אישור על ההצגה בסוף סמסטר א׳, ואישור קבלת התוצרים ומשוב בסיום.</p>
+</div><div class="s-foot"><span>ForSight Robotics · פגישת אפיון</span><span class="n"></span></div></article>
+<div class="say">
+  <div class="say-head"><b>מה אומרים · דקה</b><span class="who">מציג: <span class="field" contenteditable="true" data-key="who-6" data-ph="שם"></span></span><button class="btn go" type="button">▶ מכאן</button></div>
+  <ul>
+    <li>התאריכים המדויקים יגיעו מהקורס. אומרים שנעדכן ברגע שיהיו.</li>
+    <li>הטפסים הם נספחים 1, 2 ו־3 בספר ההנחיות. בלי נספח 1 הציון של מצגת סמסטר א׳ לא מתפרסם.</li>
+  </ul>
+</div>
+
+<!-- 7 -->
+<article class="slide"><div class="s-in">
+  <p class="s-kick">6 · מה נצטרך מכם</p>
+  <h2>אנשים, שטח, נתונים ואיש קשר</h2>
+  <div class="cols">
+    <div class="box"><h3>אנשים</h3><p>שיחה של 30–45 דקות עם שרשרת האספקה והרכש, המחסן, הייצור והאיכות. אם אפשר, גם עם ספק אחד או שניים.</p></div>
+    <div class="box"><h3>שטח</h3><p>סיור בקבלת הסחורה, במחסן וברצפת הייצור. מצלמים רק באישור.</p></div>
+    <div class="box"><h3>נתונים מה-ERP</h3><p>רשימת פריטי C, תנועות מלאי והזמנות רכש ל־12–24 חודשים, רמות מלאי, חוסרים, עץ מוצר ותוכנית ייצור.</p></div>
+    <div class="box"><h3>איש קשר</h3><p>מישהו שאפשר לפנות אליו בשאלות קטנות בין הביקורים.</p></div>
+  </div>
+  <p class="s-note">הנתונים משמשים רק לפרויקט. אפשר להסתיר מחירים ושמות ספקים, ונחתום על הסכם סודיות אם צריך.</p>
+</div><div class="s-foot"><span>ForSight Robotics · פגישת אפיון</span><span class="n"></span></div></article>
+<div class="say">
+  <div class="say-head"><b>מה אומרים · דקה וחצי</b><span class="who">מציג: <span class="field" contenteditable="true" data-key="who-7" data-ph="שם"></span></span><button class="btn go" type="button">▶ מכאן</button></div>
+  <ul>
+    <li>זו הבקשה הכי חשובה ביום. מבקשים כבר עכשיו <b>שם של מי שיוציא את הנתונים</b>, ומשאירים אצל רן את טבלת הנתונים המודפסת (תיק העבודה, סעיף 11).</li>
+    <li>שואלים על צילום ועל סודיות לפני הסיור, לא באמצעו.</li>
+  </ul>
+</div>
+
+<!-- 8 -->
+<article class="slide"><div class="s-in">
+  <p class="s-kick">7 · היום</p>
+  <h2>סדר היום המוצע</h2>
+  <table class="agenda">
+    <tr><td>0:00–0:20</td><td>פתיחה והיכרות</td><td>רן</td></tr>
+    <tr><td>0:20–1:00</td><td>שיחה על הרקע, היעדים והמגבלות</td><td>רן</td></tr>
+    <tr><td>1:00–1:45</td><td>סיור: קבלת סחורה, מחסן, רצפת הייצור</td><td>מלווה מהמחסן או מהייצור</td></tr>
+    <tr><td>1:45–2:30</td><td>שרשרת האספקה והרכש</td><td>מנהלי שרשרת האספקה והרכש</td></tr>
+    <tr><td>2:30–3:10</td><td>המחסן, כולל הדגמה בעמדה</td><td>מנהל המחסן ועובד מחסן</td></tr>
+    <tr><td>3:10–3:40</td><td>שיחה ברצפת הייצור</td><td>ראש צוות או מרכיב</td></tr>
+    <tr><td>3:40–4:00</td><td>סיכום וצעדים הבאים</td><td>רן</td></tr>
+  </table>
+  <p class="s-note">זו הצעה. נתאים לפי מי שזמין ומתי.</p>
+</div><div class="s-foot"><span>ForSight Robotics · פגישת אפיון</span><span class="n"></span></div></article>
+<div class="say">
+  <div class="say-head"><b>מה אומרים · חצי דקה</b><span class="who">מציג: <span class="field" contenteditable="true" data-key="who-8" data-ph="שם"></span></span><button class="btn go" type="button">▶ מכאן</button></div>
+  <ul>
+    <li>מאשרים את סדר היום עם רן. אם חסר זמן, מוותרים קודם על ספקים ואיכות וקובעים להם שיחה נפרדת.</li>
+  </ul>
+</div>
+
+<!-- 9 -->
+<article class="slide s-close"><div class="s-in">
+  <p class="s-kick">לפני שמתחילים</p>
+  <p class="big-q">איך תיראה הצלחה מבחינתכם, בעוד שנה?</p>
+  <p style="font-size:1.1em;color:var(--muted)">ומה הכי כואב היום: זמן של אנשים, חוסרים בייצור, או כסף שתקוע במלאי?</p>
+  <p class="thanks">תודה</p>
+</div><div class="s-foot"><span>ForSight Robotics · פגישת אפיון</span><span class="n"></span></div></article>
+<div class="say">
+  <div class="say-head"><b>מה אומרים · ואז מקשיבים</b><span class="who">מציג: <span class="field" contenteditable="true" data-key="who-9" data-ph="שם"></span></span><button class="btn go" type="button">▶ מכאן</button></div>
+  <ul>
+    <li>שואלים ושותקים. לא ממהרים למלא את השקט.</li>
+    <li>מכאן עוברים ישר לראיון עם רן (תיק העבודה, סעיף 4). התשובה לשאלה הזו היא חומר הגלם לפרק המטרות.</li>
+  </ul>
+</div>
+
+</div>
+
+<section class="after" id="qa">
+  <h2><span class="num">★</span>שאלות שאולי ישאלו אתכם</h2>
+  <p>תשובות קצרות, כדי לא להיתפס לא מוכנים. לא מקריאים אותן, אלא אומרים במילים שלכם.</p>
+  <dl class="qa">
+    <dt>"כמה זמן זה ייקח מהאנשים שלנו?"</dt>
+    <dd>שיחה של 30–45 דקות עם כל בעל תפקיד, ועוד כמה שאלות קצרות במייל. את התצפיות עושים בלי לעצור את העבודה.</dd>
+    <dt>"מה אנחנו מקבלים בסוף?"</dt>
+    <dd>ניתוח מספרי של המצב הקיים, השוואה בין שיטות, המלצה עם תועלת כמותית ותוכנית הטמעה. הכול נמסר בפגישת מסירה, כולל הנתונים והקבצים.</dd>
+    <dt>"מה עם סודיות?"</dt>
+    <dd>הנתונים משמשים רק לפרויקט. אפשר להסתיר מחירים ושמות ספקים, ונשמח לחתום על הסכם סודיות. מה שמוצג בקורס נתאם איתכם מראש.</dd>
+    <dt>"אז מה אתם ממליצים?"</dt>
+    <dd>מוקדם מדי. קודם מודדים, וההמלצה תגיע עם מספרים. מה שכן: נשמח לשמוע מה <b>אתם</b> חושבים שיעבוד.</dd>
+    <dt>"כבר ניסינו את זה" או "ספק כבר הציע VMI"</dt>
+    <dd>מעולה, זה בדיוק המידע שחסר לנו. שואלים מה קרה, למה זה לא נמשך, ורושמים.</dd>
+    <dt>"למה פריטי C? הם הרי זולים"</dt>
+    <dd>זולים ליחידה, אבל יקרים לטיפול: הרבה הזמנות, ספירות, וחוסרים שעוצרים הרכבה. את העלות הזו נמדוד.</dd>
+    <dt>"אילו נתונים בדיוק אתם צריכים?"</dt>
+    <dd>מראים את סעיף 11 בתיק העבודה ומשאירים עותק מודפס. מסכמים מי מוציא, עד מתי ובאיזה פורמט (Excel או CSV).</dd>
+    <dt>"מתי תסיימו?"</dt>
+    <dd>בסוף שנת הלימודים, בקיץ 2027. ההצגה הראשונה לכם תהיה בסוף סמסטר א׳. התאריכים המדויקים יגיעו מהקורס.</dd>
+  </dl>
+
+  <h3>טיפים להצגה</h3>
+  <ul>
+    <li>עד 8 דקות. כל אחד מציג שניים או שלושה שקפים, לפי השמות שמתחת לשקפים.</li>
+    <li>שקף 3 (מה הבנו) ושקף 9 (איך תיראה הצלחה) הם בעצם שאלות. שם עוצרים ומקשיבים.</li>
+    <li>להביא את המצגת גם כ-PDF, בטלפון או בדיסק און קי, למקרה שאין חיבור למסך.</li>
+    <li>לעבור עליה פעם אחת בקול, עם שעון, יום לפני.</li>
+  </ul>
+</section>
+
+<footer class="note">שמות ותאריך שמקלידים במצגת נשמרים רק בדפדפן הזה. לשליחה לרן: הדפסה ← שמירה כ-PDF (השקפים בלבד, בלי הערות).</footer>
+</main>
+
+<div class="pres-ui"><button class="btn" id="prevBtn" type="button">→</button><span class="btn" id="counter"></span><button class="btn" id="nextBtn" type="button">←</button><button class="btn" id="exitBtn" type="button">יציאה</button></div>
+
+<script>
+/*COMMON_JS*/
+
+(function(){
+  var store=window.fsStore;
+  var state=store.load(); state.fields=state.fields||{};
+  document.querySelectorAll('[data-key]').forEach(function(el){
+    var k=el.getAttribute('data-key'), v=state.fields[k];
+    if(v!=null) el.textContent=v;
+    el.addEventListener('input',function(){
+      var s=store.load(); s.fields=s.fields||{}; s.fields[k]=el.textContent; store.save(s);
+    });
+  });
+
+  function applyFields(st){
+    var f=(st&&st.fields)||{};
+    document.querySelectorAll('[data-key]').forEach(function(el){
+      if(el===document.activeElement) return;
+      var k=el.getAttribute('data-key'), v=f[k]==null?'':f[k];
+      if(el.tagName==='TEXTAREA'){ if(el.value!==v) el.value=v; } else if(el.textContent!==v) el.textContent=v;
+    });
+  }
+  store.onChange(applyFields);
+
+  var slides=Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var total=slides.length, cur=0, body=document.body;
+  slides.forEach(function(s,i){ s.querySelector('.n').textContent=(i+1)+' / '+total; });
+
+  function show(i){
+    cur=Math.max(0,Math.min(total-1,i));
+    slides.forEach(function(s,j){ s.classList.toggle('active',j===cur); });
+    document.getElementById('counter').textContent=(cur+1)+' / '+total;
+  }
+  function start(i,full){
+    body.classList.add('presenting'); show(i||0);
+    if(full!==false && document.documentElement.requestFullscreen){
+      document.documentElement.requestFullscreen().catch(function(){});
+    }
+  }
+  function stop(){
+    var at=slides[cur];
+    body.classList.remove('presenting');
+    slides.forEach(function(s){ s.classList.remove('active'); });
+    if(document.fullscreenElement && document.exitFullscreen) document.exitFullscreen().catch(function(){});
+    if(at) at.scrollIntoView({block:'center'});
+  }
+  document.getElementById('startBtn').addEventListener('click',function(){ start(0); });
+  document.querySelectorAll('.say .go').forEach(function(b,i){ b.addEventListener('click',function(){ start(i); }); });
+  document.getElementById('nextBtn').addEventListener('click',function(){ show(cur+1); });
+  document.getElementById('prevBtn').addEventListener('click',function(){ show(cur-1); });
+  document.getElementById('exitBtn').addEventListener('click',stop);
+  document.addEventListener('fullscreenchange',function(){ if(!document.fullscreenElement && body.classList.contains('presenting')) stop(); });
+
+  document.addEventListener('keydown',function(e){
+    if(!body.classList.contains('presenting')) return;
+    if(e.target.isContentEditable) return;
+    var k=e.key;
+    if(k==='ArrowLeft'||k==='PageDown'||k===' '||k==='Enter'||k==='ArrowDown'){ e.preventDefault(); show(cur+1); }
+    else if(k==='ArrowRight'||k==='PageUp'||k==='Backspace'||k==='ArrowUp'){ e.preventDefault(); show(cur-1); }
+    else if(k==='Home'){ show(0); } else if(k==='End'){ show(total-1); }
+    else if(k==='Escape'){ stop(); }
+  });
+  document.getElementById('deck').addEventListener('click',function(e){
+    if(!body.classList.contains('presenting') || e.target.closest('[contenteditable]')) return;
+    show(e.shiftKey?cur-1:cur+1);
+  });
+
+  // #present opens the deck on screen without asking for full screen.
+  if(location.hash.indexOf('#present')===0){ start((parseInt(location.hash.slice(8),10)||1)-1,false); }
+})();
+</script>
+</body>
+</html>

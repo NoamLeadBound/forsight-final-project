@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="he" dir="rtl" data-page="timeline">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>טיימליין ותוכנית הכנה</title>
+<style>
+/*COMMON_CSS*/
+.details{display:grid;grid-template-columns:max-content 1fr;gap:6px 18px;margin:0}
+.details dt{color:var(--muted);font-size:14.5px;padding-top:1px}
+.details dd{margin:0}
+@media (max-width:520px){.details{grid-template-columns:1fr}.details dt{margin-top:6px}}
+
+.legend{display:flex;flex-wrap:wrap;gap:16px;font-size:13.5px;color:var(--muted);margin:4px 0 16px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:12px;height:12px;border-radius:50%;border:2px solid var(--accent);display:inline-block;background:var(--surface)}
+.legend i.f{background:var(--accent)}
+.legend i.d{background:var(--ok);border-color:var(--ok)}
+.legend i.q{border-color:var(--muted);width:10px;height:10px}
+
+.tl{list-style:none;margin:0;padding:0;position:relative}
+.tl::before{content:"";position:absolute;inset-inline-start:11px;top:8px;bottom:8px;width:2px;background:var(--border)}
+.tl-band{position:relative;padding-inline-start:40px;margin:24px 0 8px;font-size:13px;font-weight:700;color:var(--muted)}
+.tl-band:first-child{margin-top:0}
+.tl-item{position:relative;padding-inline-start:40px;margin:0 0 10px}
+.tl-item .dot{position:absolute;inset-inline-start:4px;top:17px;width:16px;height:16px;border-radius:50%;border:2px solid var(--accent);background:var(--surface)}
+.tl-item.graded .dot{background:var(--accent)}
+.tl-item.done .dot{background:var(--ok);border-color:var(--ok)}
+.tl-item.quiet .dot{border-color:var(--muted);width:12px;height:12px;inset-inline-start:6px;top:19px}
+.tl-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px 14px}
+.tl-item.quiet .tl-card{background:transparent;border-style:dashed}
+.tl-item.next .tl-card{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.tl-head{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px}
+.tl-head b{font-size:16px}
+.tl-head a{font-size:13.5px;margin-inline-start:auto;text-decoration:none}
+.tl-meta{font-size:14px;color:var(--muted);margin-top:2px}
+.tl-meta .tbd{border-bottom:1px dashed var(--muted)}
+
+.musts{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:12px}
+.musts .card{margin:0;border-top:3px solid var(--accent)}
+.musts h3{font-size:16px;margin:0 0 6px}
+.musts p{font-size:15px;color:var(--muted);margin:0}
+
+.ms{scroll-margin-top:72px}
+.ms .ms-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;margin-bottom:8px}
+.ms .ms-head h3{margin:0}
+.ms .when{font-size:14px;color:var(--muted)}
+
+.gantt-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:10px;background:var(--surface);margin:12px 0}
+.gantt{display:grid;grid-template-columns:150px repeat(14,minmax(30px,1fr));row-gap:8px;align-items:center;min-width:640px;padding:14px 14px 16px}
+.gantt .wk{font-size:12px;color:var(--muted);text-align:center;grid-row:1}
+.gantt .lbl{font-size:14px;font-weight:600;padding-inline-end:12px;grid-column:1}
+.gantt .gb{height:24px;border-radius:6px;background:var(--accent);color:var(--surface);font-size:12px;display:flex;align-items:center;justify-content:center;white-space:nowrap;overflow:hidden;padding:0 6px}
+.gantt .gb.mid{background:var(--warn)}
+.gantt .gb.end{background:var(--ok)}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="brand">פרויקט גמר · ForSight Robotics</div>
+  <nav class="tabs">
+    <a href="ניהול%20הפרויקט.html">ניהול הפרויקט</a>
+    <a class="current" href="#">טיימליין</a>
+    <a href="01%20הכנה%20לאפיון/הכרת%20החברה%20-%20ForSight%20Robotics.html">הכרת החברה</a>
+    <a href="01%20הכנה%20לאפיון/תיק%20עבודה%20-%20יום%20האפיון.html">תיק עבודה ליום האפיון</a>
+    <a href="01%20הכנה%20לאפיון/מצגת%20פתיחה%20-%20יום%20האפיון.html">מצגת פתיחה</a>
+    <a href="01%20הכנה%20לאפיון/קורס%20הכנה%20-%20ניהול%20מלאי%20ו-Lean.html">קורס הכנה</a>
+  </nav>
+  <button class="btn" id="printBtn" type="button">הדפסה</button>
+  <button class="btn" id="themeBtn" type="button" aria-label="מצב כהה או בהיר">◐</button>
+</div>
+
+<main>
+<header class="doc">
+  <h1>טיימליין ותוכנית הכנה</h1>
+  <p class="sub">יישום כלים מתקדמים בניהול מלאי בהתאם לעקרונות Lean · ForSight Robotics</p>
+  <p class="meta">ייצור ושירות בסביבה דיגיטלית · המרכז האקדמי רופין · תשפ״ז · עודכן 1.11.2026</p>
+</header>
+
+<div class="callout">
+  <strong>התאריכים עוד חסרים</strong>
+  ספר ההנחיות קובע את הסדר ואת התוכן של כל שלב, אבל לא תאריכים. כשקובץ הטיימליין של הקורס יגיע לתיקייה, התאריכים יתעדכנו כאן. עד אז כל תאריך מסומן "יעודכן".
+</div>
+
+<div class="card">
+  <dl class="details">
+    <dt>ארגון</dt><dd>ForSight Robotics, קיסריה. פיתוח וייצור מערכת רובוטית לניתוחי קטרקט</dd>
+    <dt>איש קשר בארגון</dt><dd>רן עציוני, סמנכ״ל תפעול<span data-private="ran_phone"></span></dd>
+    <dt>ראש ההתמחות</dt><dd>ד״ר שרית פרוינד<span data-private="sarit_email"></span></dd>
+    <dt>רכז הפרויקטים</dt><dd>יוסי אנגליסטר<span data-private="anglister_email"></span></dd>
+    <dt>מנחה</dt><dd class="muted">יעודכן (לפי קובץ השיבוץ)</dd>
+    <dt>היקף</dt><dd>חלק א׳: 3 נ״ז · חלק ב׳: 3 נ״ז</dd>
+    <dt>סיכומי פגישות</dt><dd><a href="https://docs.google.com/document/d/1PYHIEohi6YG6lKFjBBG_j7qrgPLz7ccW7vKGmzoxaPw/edit" target="_blank" rel="noopener">מסמך סיכומי הפגישות (Google Docs)</a></dd>
+  </dl>
+</div>
+
+<section id="year">
+  <h2><span class="num">1</span>השנה במבט אחד</h2>
+  <div class="legend">
+    <span><i class="d"></i>הושלם</span>
+    <span><i class="f"></i>הגשה עם ציון</span>
+    <span><i></i>הגשה או חובה בלי ציון</span>
+    <span><i class="q"></i>עבודה שוטפת</span>
+  </div>
+  <ol class="tl">
+    <li class="tl-band">קיץ 2026</li>
+    <li class="tl-item done"><span class="dot"></span><div class="tl-card">
+      <div class="tl-head"><b>אישור הצעת הפרויקט</b><span class="badge done">הושלם</span></div>
+      <div class="tl-meta">20.7.2026 · הצעת פרויקט חתומה על ידי הארגון</div></div></li>
+
+    <li class="tl-band">סמסטר א׳</li>
+    <li class="tl-item next"><span class="dot"></span><div class="tl-card">
+      <div class="tl-head"><b>פגישת אפיון ראשונה בארגון</b><span class="badge next">הבא בתור</span><a href="01%20הכנה%20לאפיון/תיק%20עבודה%20-%20יום%20האפיון.html">לתיק העבודה ←</a></div>
+      <div class="tl-meta">תחילת הסמסטר · <span class="tbd">תאריך: יעודכן</span></div></div></li>
+    <li class="tl-item quiet"><span class="dot"></span><div class="tl-card">
+      <div class="tl-head"><b>איסוף נתונים: ראיונות, תצפיות, ERP</b></div>
+      <div class="tl-meta">לאורך הסמסטר</div></div></li>
+    <li class="tl-item"><span class="dot"></span><div class="tl-card">
+      <div class="tl-head"><b>מצגת אוריינטציה</b><span class="badge must">בלי ציון · נוכחות חובה</span><a href="#d-orientation">פירוט ←</a></div>
+      <div class="tl-meta">אמצע הסמסטר · <span class="tbd">תאריך: יעודכן</span> · מצגת של 5–6 שקפים</div></div></li>
+    <li class="tl-item graded"><span class="dot"></span><div class="tl-card">
+      <div class="tl-head"><b>מצגת מסכמת סמסטר א׳</b><span class="badge graded">בציון</span><a href="#d-semA">פירוט ←</a></div>
+      <div class="tl-meta">סוף הסמסטר · <span class="tbd">תאריך: יעודכן</span></div></div></li>
+    <li class="tl-item"><span class="dot"></span><div class="tl-card">
+      <div class="tl-head"><b>הצגה לארגון + נספח 1</b><span class="badge must">תנאי לפרסום הציון</span><a href="#d-org">פירוט ←</a></div>
+      <div class="tl-meta">אחרי מצגת סמסטר א׳ · <span class="tbd">תאריך: יעודכן</span> · הטופס נשלח למנחה ולרכז</div></div></li>
+    <li class="tl-item graded"><span class="dot"></span><div class="tl-card">
+      <div class="tl-head"><b>דוח ביניים</b><span class="badge graded">בציון</span><a href="#d-interim">פירוט ←</a></div>
+      <div class="tl-meta">סוף הסמסטר · <span class="tbd">תאריך: יעודכן</span> · דוח הנדסי + סקירת ספרות</div></div></li>
+
+    <li class="tl-band">סמסטר ב׳</li>
+    <li class="tl-item quiet"><span class="dot"></span><div class="tl-card">
+      <div class="tl-head"><b>ניתוח חלופות ותכנון הפתרון</b></div>
+      <div class="tl-meta">לאורך הסמסטר</div></div></li>
+    <li class="tl-item graded"><span class="dot"></span><div class="tl-card">
+      <div class="tl-head"><b>פוסטר</b><span class="badge graded">בציון</span><a href="#d-poster">פירוט ←</a></div>
+      <div class="tl-meta">היום האקדמי · <span class="tbd">תאריך: יעודכן</span> · פוסטר + הצגה בעל פה</div></div></li>
+    <li class="tl-item graded"><span class="dot"></span><div class="tl-card">
+      <div class="tl-head"><b>מצגת מסכמת סמסטר ב׳</b><span class="badge graded">בציון</span><a href="#d-semB">פירוט ←</a></div>
+      <div class="tl-meta">סוף הסמסטר · <span class="tbd">תאריך: יעודכן</span></div></div></li>
+    <li class="tl-item graded"><span class="dot"></span><div class="tl-card">
+      <div class="tl-head"><b>דוח מסכם</b><span class="badge graded">בציון</span><a href="#d-final">פירוט ←</a></div>
+      <div class="tl-meta">סוף הסמסטר · <span class="tbd">תאריך: יעודכן</span></div></div></li>
+
+    <li class="tl-band">סיום</li>
+    <li class="tl-item"><span class="dot"></span><div class="tl-card">
+      <div class="tl-head"><b>מסירה לארגון</b><span class="badge must">חובה</span><a href="#d-handover">פירוט ←</a></div>
+      <div class="tl-meta">אחרי אישור המנחה · <span class="tbd">תאריך: יעודכן</span> · סיכום פגישה + נספחים 2 ו־3</div></div></li>
+  </ol>
+</section>
+
+<section id="must">
+  <h2><span class="num">2</span>מה חייב להופיע בכל פרויקט</h2>
+  <p>ספר ההנחיות מגדיר ארבעה תוצרים שחייבים להופיע. כדאי לבנות את העבודה סביבם כבר מהיום הראשון.</p>
+  <div class="musts">
+    <div class="card"><h3>חלופות ובחירה</h3><p>השוואה בין VMI, Kanban, Two-Bin, Visual Management ושיטות נוספות, לפי קריטריונים שנגדיר: עלות, עומס עבודה, זמינות פריטים, התאמה לדרישות האיכות.</p></div>
+    <div class="card"><h3>תועלת כמותית</h3><p>כמה הזמנות רכש נחסכות, כמה שעות עבודה ברכש ובמחסן, ומה קורה לערך המלאי ולמספר החוסרים. מחושב מנתוני ה-ERP ומהתצפיות.</p></div>
+    <div class="card"><h3>הפתרון מול המדדים</h3><p>המדדים מסמסטר א׳ הם קו הבסיס. בסמסטר ב׳ מציגים לכל מדד ערך יעד, ומראים איך הפתרון מגיע אליו.</p></div>
+    <div class="card"><h3>שלבי הטמעה</h3><p>לדוגמה: פיילוט על משפחת פריטים אחת או ספק אחד, מדידה, הרחבה, נוהל עבודה והדרכה.</p></div>
+  </div>
+</section>
+
+<section id="details">
+  <h2><span class="num">3</span>פירוט אבני הדרך</h2>
+
+  <div class="card ms" id="d-orientation">
+    <div class="ms-head"><h3>מצגת אוריינטציה</h3><span class="when">אמצע סמסטר א׳</span><span class="badge must">בלי ציון · נוכחות חובה</span></div>
+    <p>המטרה היא לוודא שהפרויקט ראוי ובהיקף המתאים, ולקבל הערות מהשופטים.</p>
+    <ul>
+      <li><b>פורמט:</b> 5–6 שקפים, כ־7 דקות הצגה וכ־5 דקות שאלות.</li>
+      <li><b>מה להציג:</b> רקע על הארגון; מצב קיים (תהליכים ומדדים); בעיות שזוהו ומטרת הפרויקט; כיוונים כלליים לפתרון; נושאים שמתלבטים בהם.</li>
+      <li><b>הדגש:</b> מצגת אטרקטיבית, בהירה וממוקדת, עם שימוש נכון באינפוגרפיקה.</li>
+    </ul>
+    <h4>איך מתכוננים</h4>
+    <ul class="check" data-group="orientation">
+      <li><label><input type="checkbox"><span>מיפוי ראשוני של התהליך, גם אם הוא עוד חלקי</span></label></li>
+      <li><label><input type="checkbox"><span>לפחות מספר אחד שמכמת את הבעיה, למשל כמה הזמנות רכש לפריטי C יוצאות בחודש</span></label></li>
+      <li><label><input type="checkbox"><span>שקף של שאלות פתוחות: מה נרצה לשמוע מהשופטים</span></label></li>
+      <li><label><input type="checkbox"><span>חזרה מלאה עם שעון</span></label></li>
+    </ul>
+  </div>
+
+  <div class="card ms" id="d-semA">
+    <div class="ms-head"><h3>מצגת מסכמת סמסטר א׳</h3><span class="when">סוף סמסטר א׳</span><span class="badge graded">בציון</span></div>
+    <p>המצגת הראשונה עם ציון. <b>30% מהציון הם ניתוח המצב הקיים</b>, ולכן הכימות והמדדים חשובים כאן יותר מהעיצוב.</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>נושא</th><th>מה בודקים</th><th>משקל</th></tr></thead>
+      <tbody>
+        <tr><td>תיאור הארגון</td><td>רקע, תוצרים, משאבים</td><td><div class="weight"><b>20%</b><span class="bar"><i style="width:67%"></i></span></div></td></tr>
+        <tr class="key"><td><b>ניתוח מצב קיים</b></td><td>בעיות עיקריות; כימות עוצמת הבעיות; מידול התהליכים בכלים סטנדרטיים מהתואר; המדדים שבהם הארגון בוחן את המחלקה</td><td><div class="weight"><b>30%</b><span class="bar"><i style="width:100%"></i></span></div></td></tr>
+        <tr><td>הגדרת מטרות הפרויקט</td><td class="muted">—</td><td><div class="weight"><b>10%</b><span class="bar"><i style="width:33%"></i></span></div></td></tr>
+        <tr><td>איסוף נתונים וכיווני פתרון</td><td>אילו נתונים נאספו; אילו שיטות סטטיסטיות שימשו; איך הפתרונות ישפיעו על הבעיה ועל מדדי הארגון</td><td><div class="weight"><b>20%</b><span class="bar"><i style="width:67%"></i></span></div></td></tr>
+        <tr><td>מבנה ונראות</td><td>עיצוב, איורים, מלל קריא, מושגים נכונים ושפה תקנית</td><td><div class="weight"><b>10%</b><span class="bar"><i style="width:33%"></i></span></div></td></tr>
+        <tr><td>אופן ההצגה</td><td>שטף, עמידה מול קהל, שליטה בחומר ומענה לשאלות</td><td><div class="weight"><b>10%</b><span class="bar"><i style="width:33%"></i></span></div></td></tr>
+      </tbody>
+    </table></div>
+    <p class="small muted">אין חובה לשמור על הסדר הזה, כל עוד הסדר הגיוני וכל התכנים מופיעים.</p>
+  </div>
+
+  <div class="card ms" id="d-org">
+    <div class="ms-head"><h3>הצגה לארגון ונספח 1</h3><span class="when">אחרי מצגת סמסטר א׳</span><span class="badge must">תנאי לפרסום הציון</span></div>
+    <p>כל צוות מציג את מצגת סמסטר א׳ בפני הארגון, ושולח את נספח 1 למנחה ולרכז. <b>בלי הטופס, ציון המצגת לא מתפרסם.</b> מה נכנס לטופס:</p>
+    <ul>
+      <li>מועד העדכון ומי נכח</li>
+      <li>ממצאים שהוצגו (5–10 משפטים)</li>
+      <li>הערות שהתקבלו מהארגון (5–10 משפטים)</li>
+      <li>סיכום פעולות לביצוע (5–10 משפטים)</li>
+    </ul>
+    <p class="small muted">טיפ: לתאם את המועד עם רן כבר כשנקבע תאריך מצגת סוף הסמסטר.</p>
+  </div>
+
+  <div class="card ms" id="d-interim">
+    <div class="ms-head"><h3>דוח ביניים</h3><span class="when">סוף סמסטר א׳</span><span class="badge graded">בציון</span></div>
+    <p>התוכן של המצגת, מורחב לדוח הנדסי כתוב. <b>חייב לכלול סקירת ספרות</b> לפי הכללים האקדמיים.</p>
+    <p class="small muted">טיפ: להתחיל לאסוף מאמרים כבר עכשיו, על VMI, Kanban, Two-Bin, ניהול פריטי C ו־Lean בייצור מכשור רפואי. בדוח המסכם נדרשים 2–3 מאמרים בנושא דומה.</p>
+  </div>
+
+  <div class="card ms" id="d-poster">
+    <div class="ms-head"><h3>פוסטר</h3><span class="when">היום האקדמי</span><span class="badge graded">בציון</span></div>
+    <div class="table-wrap"><table>
+      <thead><tr><th>קריטריון</th><th>משקל</th></tr></thead>
+      <tbody>
+        <tr><td>הפוסטר אטרקטיבי, בנוי היטב וברור, בלי שגיאות כתיב ודקדוק</td><td><div class="weight"><b>15%</b><span class="bar"><i style="width:75%"></i></span></div></td></tr>
+        <tr><td>רקע</td><td><div class="weight"><b>10%</b><span class="bar"><i style="width:50%"></i></span></div></td></tr>
+        <tr><td>בעיות ומטרות הפרויקט</td><td><div class="weight"><b>10%</b><span class="bar"><i style="width:50%"></i></span></div></td></tr>
+        <tr><td>ניתוח הנתונים שנאספו</td><td><div class="weight"><b>15%</b><span class="bar"><i style="width:75%"></i></span></div></td></tr>
+        <tr class="key"><td><b>תיאור הפתרון</b></td><td><div class="weight"><b>20%</b><span class="bar"><i style="width:100%"></i></span></div></td></tr>
+        <tr><td>תוצאות ומסקנות (חלקן בעל פה)</td><td><div class="weight"><b>10%</b><span class="bar"><i style="width:50%"></i></span></div></td></tr>
+        <tr class="key"><td><b>תשובות לשאלות</b></td><td><div class="weight"><b>20%</b><span class="bar"><i style="width:100%"></i></span></div></td></tr>
+      </tbody>
+    </table></div>
+    <p>20% מהציון הם תשובות לשאלות, ולכן כל חברי הצוות צריכים להכיר את כל הפרויקט, לא רק את החלק שלהם.</p>
+  </div>
+
+  <div class="card ms" id="d-semB">
+    <div class="ms-head"><h3>מצגת מסכמת סמסטר ב׳</h3><span class="when">סוף סמסטר ב׳</span><span class="badge graded">בציון</span></div>
+    <div class="table-wrap"><table>
+      <thead><tr><th>קריטריון</th><th>משקל</th></tr></thead>
+      <tbody>
+        <tr><td>תיאור כללי של מטרת הפרויקט</td><td><div class="weight"><b>5%</b><span class="bar"><i style="width:20%"></i></span></div></td></tr>
+        <tr><td>חקר המצב הקיים והבעיות שזוהו</td><td><div class="weight"><b>15%</b><span class="bar"><i style="width:60%"></i></span></div></td></tr>
+        <tr><td>הבעיה שבה מתמקד הפרויקט ועוצמתה</td><td><div class="weight"><b>5%</b><span class="bar"><i style="width:20%"></i></span></div></td></tr>
+        <tr><td>מטרת הפרויקט, מדדי ההצלחה וערכי היעד שלהם</td><td><div class="weight"><b>5%</b><span class="bar"><i style="width:20%"></i></span></div></td></tr>
+        <tr><td>חלופות הפתרון שנבחנו ותועלתן הכמותית</td><td><div class="weight"><b>10%</b><span class="bar"><i style="width:40%"></i></span></div></td></tr>
+        <tr class="key"><td><b>הפתרון הנבחר, ואיך הוא מבטיח את ערכי היעד של המדדים</b></td><td><div class="weight"><b>25%</b><span class="bar"><i style="width:100%"></i></span></div></td></tr>
+        <tr><td>מסקנות והמלצות</td><td><div class="weight"><b>10%</b><span class="bar"><i style="width:40%"></i></span></div></td></tr>
+        <tr><td>שלבי הטמעת הפרויקט</td><td><div class="weight"><b>5%</b><span class="bar"><i style="width:20%"></i></span></div></td></tr>
+        <tr><td>מענה על שאלות</td><td><div class="weight"><b>15%</b><span class="bar"><i style="width:60%"></i></span></div></td></tr>
+        <tr><td>נראות המצגת</td><td><div class="weight"><b>5%</b><span class="bar"><i style="width:20%"></i></span></div></td></tr>
+      </tbody>
+    </table></div>
+    <p>שתי שאלות שהשופטים יחפשו: <b>כמה הפתרון תורם לארגון</b> (בניתוח כמותי), ו<b>אילו מדדים של הארגון השתפרו</b>. המצגת צריכה להישען על אינפוגרפיקה וטבלאות.</p>
+  </div>
+
+  <div class="card ms" id="d-final">
+    <div class="ms-head"><h3>דוח מסכם</h3><span class="when">סוף סמסטר ב׳</span><span class="badge graded">בציון</span></div>
+    <p>תיאור מפורט של כל מה שמוצג במצגת המסכמת, במבנה של כתיבה מדעית, עם כותרת לכל טבלה ותרשים. תוכן עניינים לדוגמה (מתאימים לפרויקט):</p>
+    <ol>
+      <li>תקציר</li>
+      <li>תודות</li>
+      <li>רקע על הארגון: מטרות, תוצרים, מדדים, משאבים</li>
+      <li>מטרת העבודה</li>
+      <li>תיאור וניתוח מצב קיים: תהליכים בתרשימים, ביצועים לפי מדדים קיימים ומוצעים</li>
+      <li>הבעיות העיקריות</li>
+      <li>מטרות הפרויקט</li>
+      <li>סקירת ספרות: 2–3 מאמרים בנושא דומה</li>
+      <li>ניתוח החלופות והסבר על החלופה שנבחרה</li>
+      <li>הפתרון הנבחר והשפעתו על הביצועים</li>
+      <li>סיכום ומסקנות</li>
+      <li>רשימת מקורות</li>
+    </ol>
+  </div>
+
+  <div class="card ms" id="d-handover">
+    <div class="ms-head"><h3>מסירה לארגון</h3><span class="when">בסיום, אחרי אישור המנחה</span><span class="badge must">חובה</span></div>
+    <ol>
+      <li>מקבלים אישור מהמנחה.</li>
+      <li>מתאמים פגישה עם רן, העובדים הרלוונטיים והמנחה.</li>
+      <li>מכינים את המצגת המסכמת ואת כל החומר (נתונים, תוכניות, ניתוחים, נימוקים), כך שהארגון יוכל ליישם בלעדינו.</li>
+      <li>מציגים, דנים בהמלצות, ומעדכנים חישובים אם צריך.</li>
+      <li>מוסרים עותקים של הנתונים, התוכניות והניתוחים.</li>
+      <li>כותבים סיכום פגישה: משתתפים, נושאים, פעולות שסוכמו, רשימת החומרים ושם מי שקיבל אותם. מפיצים ומקבלים אישור.</li>
+      <li>נספח 2 (אישור הארגון על קבלת התוצרים והטמעתם) נשלח לרכז.</li>
+      <li>נספח 3 (משוב הארגון) נשלח למנחה ולרכז.</li>
+    </ol>
+  </div>
+</section>
+
+<section id="plan">
+  <h2><span class="num">4</span>תוכנית עבודה מוצעת לסמסטר א׳</h2>
+  <p>חלוקה לפי שבועות מתחילת העבודה בארגון. זו הצעה, ומתאימים אותה לתאריכים בפועל ברגע שיש את הטיימליין.</p>
+  <div class="gantt-wrap"><div class="gantt">
+    <div class="wk" style="grid-column:2">1</div><div class="wk" style="grid-column:3">2</div><div class="wk" style="grid-column:4">3</div><div class="wk" style="grid-column:5">4</div><div class="wk" style="grid-column:6">5</div><div class="wk" style="grid-column:7">6</div><div class="wk" style="grid-column:8">7</div><div class="wk" style="grid-column:9">8</div><div class="wk" style="grid-column:10">9</div><div class="wk" style="grid-column:11">10</div><div class="wk" style="grid-column:12">11</div><div class="wk" style="grid-column:13">12</div><div class="wk" style="grid-column:14">13</div><div class="wk" style="grid-column:15">14</div>
+    <div class="lbl" style="grid-row:2">אפיון ראשוני</div><div class="gb" style="grid-row:2;grid-column:2 / 4"></div>
+    <div class="lbl" style="grid-row:3">ראיונות ותצפיות</div><div class="gb" style="grid-row:3;grid-column:3 / 7"></div>
+    <div class="lbl" style="grid-row:4">ניתוח נתונים</div><div class="gb" style="grid-row:4;grid-column:6 / 11"></div>
+    <div class="lbl" style="grid-row:5">סקירת ספרות</div><div class="gb" style="grid-row:5;grid-column:6 / 12"></div>
+    <div class="lbl" style="grid-row:6">אוריינטציה</div><div class="gb mid" style="grid-row:6;grid-column:7 / 9">אמצע הסמסטר</div>
+    <div class="lbl" style="grid-row:7">כיווני פתרון</div><div class="gb" style="grid-row:7;grid-column:10 / 13"></div>
+    <div class="lbl" style="grid-row:8">סגירת הסמסטר</div><div class="gb end" style="grid-row:8;grid-column:12 / 16">מצגת · נספח 1 · דוח</div>
+  </div></div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>שלב</th><th>מה עושים</th><th>תוצר</th></tr></thead>
+    <tbody>
+      <tr><td><b>אפיון ראשוני</b></td><td>יום אפיון בארגון, סיור, ראיון עם רן, בקשת נתונים מה-ERP</td><td>תיק עבודה ממולא, סיכום פגישה</td></tr>
+      <tr><td><b>ראיונות ותצפיות</b></td><td>רכש, מחסן, ייצור, איכות וספקים; תצפיות ומדידות זמנים</td><td>מיפוי מצב קיים: SIPOC, Swimlane, VSM</td></tr>
+      <tr><td><b>ניתוח נתונים</b></td><td>ניתוח ABC, מדדים קיימים, כימות הבעיות: הזמנות, זמנים, חוסרים, עודפים</td><td>טבלאות ותרשימים למצגת</td></tr>
+      <tr><td><b>סקירת ספרות</b></td><td>2–3 מאמרים מרכזיים ומקורות נוספים</td><td>טיוטת פרק הספרות</td></tr>
+      <tr><td><b>אוריינטציה</b></td><td>5–6 שקפים וחזרה</td><td>מצגת אוריינטציה</td></tr>
+      <tr><td><b>כיווני פתרון</b></td><td>השוואה ראשונית בין החלופות, שיחות עם ספקים</td><td>כיווני פתרון למצגת</td></tr>
+      <tr><td><b>סגירת הסמסטר</b></td><td>מצגת מסכמת, הצגה לארגון, נספח 1, דוח ביניים</td><td>מצגת, נספח 1, דוח</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="now">
+  <h2><span class="num">5</span>מה עושים עכשיו</h2>
+  <ul class="check" data-group="now">
+    <li><label><input type="checkbox"><span>להוסיף לתיקייה את קובץ הטיימליין של הקורס, כדי לעדכן כאן את התאריכים</span></label></li>
+    <li><label><input type="checkbox"><span>לברר מי המנחה ולקבוע פגישת היכרות</span></label></li>
+    <li><label><input type="checkbox"><span>לתאם עם רן את יום האפיון</span></label></li>
+    <li><label><input type="checkbox"><span>לעבור על קורס ההכנה</span></label></li>
+    <li><label><input type="checkbox"><span>לעבור על תיק העבודה ליום האפיון ולחלק תפקידים</span></label></li>
+    <li><label><input type="checkbox"><span>אחרי כל פגישה: להוריד את מסמך סיכומי הפגישות לתיקייה 02 (קובץ ← הורדה)</span></label></li>
+    <li><label><input type="checkbox"><span>לפתוח רשימת מאמרים לסקירת הספרות</span></label></li>
+  </ul>
+  <p class="small muted">הסימונים נשמרים רק בדפדפן הזה.</p>
+</section>
+
+<section id="folder">
+  <h2><span class="num">6</span>מבנה התיקייה</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>תיקייה</th><th>מה יש בה</th></tr></thead>
+    <tbody>
+      <tr><td>00 הנחיות ומקורות</td><td>ספר ההנחיות, הצעת הפרויקט המאושרת</td></tr>
+      <tr><td>01 הכנה לאפיון</td><td>קורס ההכנה, תיק העבודה ליום האפיון</td></tr>
+      <tr><td>02 פגישות וסיכומים</td><td>סיכומי פגישות עם הארגון ועם המנחה</td></tr>
+      <tr><td>03 נתונים</td><td>קובצי ERP, תצפיות, מדידות, צילומים</td></tr>
+      <tr><td>04 תוצרים - מצגות ודוחות</td><td>אוריינטציה, מצגות, דוחות, פוסטר</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<footer class="note">המקור לסדר, לתוכן ולמשקלות: ספר ההנחיות של ההתמחות (תיקייה 00). התאריכים: מקובץ הטיימליין של הקורס, כשיגיע.</footer>
+</main>
+
+<script>
+/*COMMON_JS*/
+</script>
+</body>
+</html>

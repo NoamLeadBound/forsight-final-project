@@ -1,0 +1,571 @@
+<!doctype html>
+<html lang="he" dir="rtl" data-page="workpack">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>תיק עבודה ליום האפיון</title>
+<style>
+/*COMMON_CSS*/
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px 20px;margin-top:14px;font-size:15px}
+.fields label{display:flex;gap:8px;align-items:baseline;color:var(--muted)}
+.fields .field{flex:1;min-width:0;color:var(--text)}
+.star{color:var(--star);font-weight:700}
+.qs li.m > label > span{font-weight:600}
+body.must-only .qs li:not(.m){display:none}
+.goal{color:var(--muted);margin-top:-4px}
+.notes h4{margin-top:18px}
+.legend-line{font-size:14px;color:var(--muted)}
+.roles td:last-child{min-width:130px}
+.findings td{min-width:70px}
+.findings td:nth-child(2){min-width:220px}
+.findings select{width:100%}
+.row-actions{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 0}
+.email{white-space:pre-line;background:var(--surface);border:1px dashed var(--border);border-radius:10px;padding:14px 16px;margin:10px 0}
+.counter{font-size:13px;color:var(--muted);white-space:nowrap}
+.btn[aria-pressed="true"]{background:var(--accent-soft);color:var(--accent);border-color:var(--accent)}
+.del{background:none;border:0;color:var(--muted);cursor:pointer;font-size:16px;padding:0 4px}
+.del:hover{color:var(--no)}
+.gloss td:first-child{font-weight:600;min-width:150px}
+.gloss .en{display:block;direction:ltr;unicode-bidi:isolate;text-align:right;font-weight:400;font-size:13px;color:var(--muted)}
+.gloss td:last-child{color:var(--muted);min-width:180px}
+.gloss tr.sec td{background:var(--surface-2);font-weight:700;font-size:13.5px;color:var(--muted)}
+@media print{
+  .findings td:last-child,.findings th:last-child{display:none}
+  body.must-only .qs li:not(.m){display:list-item}
+}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="brand">פרויקט גמר · ForSight Robotics</div>
+  <nav class="tabs">
+    <a href="../ניהול%20הפרויקט.html">ניהול הפרויקט</a>
+    <a href="../%D7%98%D7%99%D7%99%D7%9E%D7%9C%D7%99%D7%99%D7%9F%20%D7%95%D7%AA%D7%95%D7%9B%D7%A0%D7%99%D7%AA%20%D7%94%D7%9B%D7%A0%D7%94.html">טיימליין</a>
+    <a href="הכרת%20החברה%20-%20ForSight%20Robotics.html">הכרת החברה</a>
+    <a class="current" href="#">תיק עבודה ליום האפיון</a>
+    <a href="מצגת%20פתיחה%20-%20יום%20האפיון.html">מצגת פתיחה</a>
+    <a href="%D7%A7%D7%95%D7%A8%D7%A1%20%D7%94%D7%9B%D7%A0%D7%94%20-%20%D7%A0%D7%99%D7%94%D7%95%D7%9C%20%D7%9E%D7%9C%D7%90%D7%99%20%D7%95-Lean.html">קורס הכנה</a>
+  </nav>
+  <span class="counter" id="mustCounter"></span>
+  <button class="btn" id="mustBtn" type="button" aria-pressed="false" title="להציג רק את שאלות החובה">רק ★</button>
+  <button class="btn" id="printBtn" type="button">הדפסה</button>
+  <button class="btn" id="themeBtn" type="button" aria-label="מצב כהה או בהיר">◐</button>
+</div>
+
+<main>
+<header class="doc">
+  <h1>תיק עבודה ליום האפיון</h1>
+  <p class="sub">ForSight Robotics · יישום כלים מתקדמים בניהול מלאי בהתאם לעקרונות Lean</p>
+  <div class="fields">
+    <label>תאריך הביקור <span class="field" contenteditable="true" data-key="visit-date" data-ph="__/__/2026"></span></label>
+    <label>מהצוות <span class="field" contenteditable="true" data-key="team" data-ph="שמות"></span></label>
+    <label>מהארגון <span class="field" contenteditable="true" data-key="org-people" data-ph="שמות ותפקידים"></span></label>
+  </div>
+  <nav class="toc no-print" aria-label="תוכן">
+    <a href="#s0">0 לפני הביקור</a><a href="#s1">1 מטרות</a><a href="#s2">2 לו״ז ותפקידים</a><a href="#s3">3 השערות</a><a href="#s4">4 רן</a><a href="#s5">5 רכש</a><a href="#s6">6 מחסן</a><a href="#s7">7 ייצור</a><a href="#s8">8 ספקים</a><a href="#s9">9 איכות</a><a href="#s10">10 תצפית</a><a href="#s11">11 נתוני ERP</a><a href="#s12">12 ממצאים</a><a href="#s13">13 סגירה</a><a href="#s14">14 מילון</a>
+  </nav>
+</header>
+
+<div class="callout">
+  <strong>הכלל של היום</strong>
+  באים להבין ולמדוד, לא להציע פתרונות. כל ממצא נרשם עם מספר, דוגמה או ציטוט. השאלות המסומנות <span class="star">★</span> הן החובה. כשהזמן קצר, הכפתור "רק ★" למעלה משאיר רק אותן.
+</div>
+
+<section id="s0">
+  <h2><span class="num">0</span>לפני הביקור</h2>
+  <p class="goal">מה עושים בימים שלפני, כדי להגיע מוכנים.</p>
+  <ul class="check" data-group="before">
+    <li><label><input type="checkbox"><span>לשלוח לרן את המייל שלמטה, כמה ימים לפני, ולקבל תשובה על סדר היום, המשתתפים והצילום</span></label></li>
+    <li><label><input type="checkbox"><span>לקרוא את <a href="הכרת%20החברה%20-%20ForSight%20Robotics.html">הכרת החברה</a> (כרבע שעה). לדעת להסביר במשפט מה זה JASPER ובאיזה שלב החברה</span></label></li>
+    <li><label><input type="checkbox"><span>לחלק תפקידים (סעיף 2) ולחלק את שקפי <a href="מצגת%20פתיחה%20-%20יום%20האפיון.html">מצגת הפתיחה</a> בין הדוברים</span></label></li>
+    <li><label><input type="checkbox"><span>לעבור על המצגת בקול פעם אחת, עם שעון: עד 8 דקות</span></label></li>
+    <li><label><input type="checkbox"><span>לעבור על המילון (סעיף 14), כדי להבין את המונחים שיעלו בשיחה</span></label></li>
+    <li><label><input type="checkbox"><span>להדפיס את תיק העבודה (או לפתוח אותו בטאבלט), ועוד שני עותקים של טבלת הנתונים (סעיף 11). אחד נשאר אצל רן</span></label></li>
+    <li><label><input type="checkbox"><span>לשמור את המצגת כ-PDF, ולהביא אותה גם בטלפון או בדיסק און קי</span></label></li>
+    <li><label><input type="checkbox"><span>ציוד: מחשב טעון ומטען, שעון עצר בטלפון, מטר מתקפל, דפים לתרשים ספגטי</span></label></li>
+    <li><label><input type="checkbox"><span>לברר מראש: חניה, תעודה מזהה, ביגוד לאזור ESD או לחדר נקי, והסכם סודיות</span></label></li>
+    <li><label><input type="checkbox"><span>למלא למעלה את תאריך הביקור, שמות הצוות והמשתתפים מהארגון</span></label></li>
+  </ul>
+  <h4>נוסח למייל לרן לפני הביקור</h4>
+  <div class="email" id="emailBefore">היי רן,
+לקראת הביקור ב־[תאריך] בשעה [שעה], רצינו לתאם כמה דברים:
+1. סדר יום מוצע, כארבע שעות: פתיחה והיכרות, שיחה איתך, סיור בקבלת הסחורה, במחסן וברצפת הייצור, ושיחות קצרות עם הרכש ושרשרת האספקה, המחסן והייצור. נשמח להתאים לפי הזמינות אצלכם.
+2. עם מי נוכל לדבר? שיחה של 30–45 דקות עם האחראים על שרשרת האספקה, הרכש והמחסן, ועם מישהו מהייצור. אם אפשר, גם עם מישהו מהאיכות.
+3. מותר לצלם מדפים ומגירות (בלי מסכים ובלי המוצר)? יש מגבלות כניסה, ביגוד מיוחד, או הסכם סודיות שצריך לחתום עליו מראש?
+4. נביא איתנו רשימה של הנתונים שנבקש מה-ERP. אם יש מי שאחראי על הוצאת דוחות, נשמח שיהיה זמין לכמה דקות.
+מגיעים: [שמות].
+תודה רבה,
+[שמות הצוות]</div>
+  <button class="btn no-print" type="button" data-copy="emailBefore">העתקת הנוסח</button>
+</section>
+
+<section id="s1">
+  <h2><span class="num">1</span>מטרות היום</h2>
+  <p>יוצאים מהיום עם שלושה דברים: <b>תמונה של התהליך כפי שהוא היום</b> (As-Is), <b>הסכמה על קובץ הנתונים מה-ERP</b>, ו<b>תאריכים לראיונות ולתצפיות ההמשך</b>. כל השאר בונוס.</p>
+  <p class="muted small">הרשימה בנויה לפי מה שצריך להציג באוריינטציה (רקע, מצב קיים, בעיות ומטרה, כיווני פתרון), ולפי מה שנבדק בסוף סמסטר א׳: כימות הבעיות ומדדי הארגון הם 30% מהציון.</p>
+  <ul class="check" data-group="goals">
+    <li><label><input type="checkbox"><span><b>רקע על הארגון:</b> מוצר, מספר עובדים, מבנה ארגוני, כמה מערכות מייצרים בחודש ומה התוכנית לשנה הקרובה</span></label></li>
+    <li><label><input type="checkbox"><span><b>התהליך מקצה לקצה:</b> איך פריט C עובר מהזמנת רכש ועד שהוא בידי המרכיב. מי עושה כל שלב, ובאיזו מערכת</span></label></li>
+    <li><label><input type="checkbox"><span><b>היקף פריטי C:</b> כמה מק״טים, כמה ספקים, איפה הם מאוחסנים</span></label></li>
+    <li><label><input type="checkbox"><span><b>3 עד 5 בעיות, עם דוגמה מוחשית לכל אחת</b> וסדר גודל במספרים: כמה פעמים בחודש, כמה זמן, כמה כסף</span></label></li>
+    <li><label><input type="checkbox"><span><b>מדדים:</b> מה הארגון כבר מודד בתחום (חוסרים, ערך מלאי, מספר הזמנות), ומה לא נמדד בכלל</span></label></li>
+    <li><label><input type="checkbox"><span><b>בקשת נתונים:</b> מי מוציא את הנתונים מה-ERP, עד מתי ובאיזה פורמט (סעיף 11)</span></label></li>
+    <li><label><input type="checkbox"><span><b>גבולות הפרויקט:</b> רק חומרה, או גם מתכלים? רק רצפת הייצור, או גם מעבדות הפיתוח?</span></label></li>
+    <li><label><input type="checkbox"><span><b>אנשי קשר ותאריכים</b> לראיונות ולתצפיות ההמשך</span></label></li>
+  </ul>
+</section>
+
+<section id="s2">
+  <h2><span class="num">2</span>לו״ז ותפקידים</h2>
+  <p>הצעה ליום של כארבע שעות. כדאי לשלוח אותה לרן מראש ולהתאים לפי מה שהוא מאשר.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>זמן</th><th>מה</th><th>עם מי</th><th>יוצאים עם</th></tr></thead>
+    <tbody>
+      <tr><td class="num"><bdi>0:00–0:20</bdi></td><td><b>פתיחה:</b> היכרות, מטרות הפרויקט, תיאום ציפיות, סודיות והרשאות צילום</td><td>רן עציוני</td><td>הסכמה על סדר היום</td></tr>
+      <tr><td class="num"><bdi>0:20–1:00</bdi></td><td><b>ראיון הנהלה</b> (<a href="#s4">סעיף 4</a>)</td><td>רן עציוני</td><td>רקע, יעדים, מגבלות</td></tr>
+      <tr><td class="num"><bdi>1:00–1:45</bdi></td><td><b>סיור ותצפית:</b> קבלת סחורה, מחסן, רצפת הייצור (<a href="#s10">סעיף 10</a>)</td><td>מלווה מהמחסן או מהייצור</td><td>ספירות, מדידות, תרשים ספגטי ראשוני</td></tr>
+      <tr><td class="num"><bdi>1:45–2:30</bdi></td><td><b>ראיון שרשרת אספקה ורכש</b> (<a href="#s5">סעיף 5</a>)</td><td>מנהל שרשרת האספקה, מנהל הרכש</td><td>תהליך ההזמנה ומספרים</td></tr>
+      <tr><td class="num"><bdi>2:30–3:10</bdi></td><td><b>ראיון מחסן</b>, כולל הדגמה בעמדה (<a href="#s6">סעיף 6</a>)</td><td>מנהל המחסן, עובד מחסן</td><td>תהליך הקבלה, הניפוק והספירה</td></tr>
+      <tr><td class="num"><bdi>3:10–3:40</bdi></td><td><b>שיחה ברצפה</b> (<a href="#s7">סעיף 7</a>)</td><td>ראש צוות או מרכיב</td><td>מה חוסר עושה לקו</td></tr>
+      <tr><td class="num"><bdi>3:40–4:00</bdi></td><td><b>סגירה</b> (<a href="#s13">סעיף 13</a>)</td><td>רן עציוני</td><td>בקשת נתונים, תאריכים, אנשי קשר</td></tr>
+    </tbody>
+  </table></div>
+  <p class="small muted">אם אין זמן לספקים ולאיכות באותו יום (סעיפים 8 ו־9), מבקשים מרן לקבוע שיחות נפרדות.</p>
+
+  <h3>תפקידים בצוות</h3>
+  <div class="table-wrap"><table class="roles">
+    <thead><tr><th>תפקיד</th><th>מה עושה</th><th>מי</th></tr></thead>
+    <tbody>
+      <tr><td><b>מוביל שיחה</b></td><td>שואל, שומר על הזמן, מבקש דוגמאות ומספרים</td><td contenteditable="true" data-key="role-lead" data-ph="שם"></td></tr>
+      <tr><td><b>רושם</b></td><td>כותב ציטוטים, מספרים ושמות. לא משתתף בשיחה</td><td contenteditable="true" data-key="role-notes" data-ph="שם"></td></tr>
+      <tr><td><b>תצפית ונתונים</b></td><td>מצלם (באישור), סופר, מודד זמנים, ממלא את טבלת הממצאים</td><td contenteditable="true" data-key="role-obs" data-ph="שם"></td></tr>
+    </tbody>
+  </table></div>
+  <p class="small muted">מחליפים תפקידים בין הראיונות, כדי שכל אחד יוביל לפחות שיחה אחת.</p>
+
+  <h3>כללי ראיון</h3>
+  <ul>
+    <li><b>שאלות פתוחות:</b> "איך זה עובד אצלכם?" ולא "נכון שיש הרבה חוסרים?"</li>
+    <li><b>כל טענה מקבלת המשך:</b> "יש דוגמה מהשבוע האחרון?" ו"כמה פעמים זה קורה בחודש?"</li>
+    <li><b>"תראה לי":</b> לבקש לראות את המסך ב-ERP, את המדף, את הטופס. מה שעושים בפועל חשוב יותר ממה שמתארים</li>
+    <li><b>5 למה (5 Whys):</b> כשעולה בעיה, שואלים "למה?" עד שמגיעים לסיבה</li>
+    <li><b>לא מציעים פתרונות ולא מבטיחים</b> ביום הראשון</li>
+    <li><b>בסוף כל ראיון:</b> "מה לא שאלנו ששווה לדעת?" ו"עם מי עוד כדאי לדבר?"</li>
+  </ul>
+</section>
+
+<section id="s3">
+  <h2><span class="num">3</span>מה כבר ידוע והשערות לבדוק</h2>
+  <p>מהצעת הפרויקט: מאות פריטי C (ברגים, אומים, שייבות, מחברים, אזיקונים ועוד) מנוהלים היום כמו כל פריט אחר: מק״ט, רמות מלאי מוגדרות, והזמנות רכש לפי צריכה. ההצעה מתארת עומס על הרכש והמחסן, מלאי עודף לצד חוסרים נקודתיים, והרבה הזמנות בערך נמוך.</p>
+
+  <h3>זרימת פריט C כפי שאנחנו מניחים אותה</h3>
+  <p>זו השערה. בשטח מאמתים כל שלב: מי עושה אותו, כמה זמן זה לוקח, באיזו מערכת, ומה משתבש. את העמודה האחרונה ממלאים ביום עצמו.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th class="num">#</th><th>שלב</th><th>מי (לאמת)</th><th>שאלה מרכזית</th><th>מה ראינו</th></tr></thead>
+    <tbody>
+      <tr><td class="num">1</td><td>זיהוי צורך</td><td>רכש / מחסן / ERP</td><td>מה מפעיל הזמנה: נקודת הזמנה במערכת, ספירה, או בקשה מהייצור?</td><td contenteditable="true" data-key="flow-1" data-ph="להקליד…"></td></tr>
+      <tr><td class="num">2</td><td>דרישה והזמנת רכש</td><td>רכש</td><td>כמה זמן לוקחת הזמנה אחת, וכמה אישורים צריך?</td><td contenteditable="true" data-key="flow-2" data-ph="להקליד…"></td></tr>
+      <tr><td class="num">3</td><td>אספקה</td><td>ספק</td><td>מה זמן האספקה? יש כמות מינימום (MOQ)?</td><td contenteditable="true" data-key="flow-3" data-ph="להקליד…"></td></tr>
+      <tr><td class="num">4</td><td>קבלה ובדיקה</td><td>מחסן / איכות</td><td>יש בדיקת קבלה? כמה זמן לוקחת קליטה?</td><td contenteditable="true" data-key="flow-4" data-ph="להקליד…"></td></tr>
+      <tr><td class="num">5</td><td>אחסון</td><td>מחסן</td><td>איפה מאוחסן, ואיך מסומן?</td><td contenteditable="true" data-key="flow-5" data-ph="להקליד…"></td></tr>
+      <tr><td class="num">6</td><td>ניפוק לייצור</td><td>מחסן</td><td>לפי פקודת עבודה, בקיט, או מלאי פתוח ליד הקו?</td><td contenteditable="true" data-key="flow-6" data-ph="להקליד…"></td></tr>
+      <tr><td class="num">7</td><td>צריכה בהרכבה</td><td>ייצור</td><td>מה קורה כשחסר פריט?</td><td contenteditable="true" data-key="flow-7" data-ph="להקליד…"></td></tr>
+      <tr><td class="num">8</td><td>עדכון מלאי</td><td>מחסן / ERP</td><td>איך נרשמת הצריכה, ומתי סופרים?</td><td contenteditable="true" data-key="flow-8" data-ph="להקליד…"></td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>השערות עבודה</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th class="num">#</th><th>השערה</th><th>איך בודקים</th><th>מקור</th></tr></thead>
+    <tbody>
+      <tr><td class="num">H1</td><td>פריטי C הם רוב המק״טים, אבל חלק קטן מערך המלאי</td><td>ניתוח ABC על רשימת הפריטים והצריכה</td><td>ERP</td></tr>
+      <tr><td class="num">H2</td><td>עלות הטיפול בהזמנה (זמן רכש, קליטה, חשבונית) גבוהה מערך הפריטים שבה</td><td>מספר הזמנות × זמן להזמנה, מול ערך ההזמנות</td><td>ראיון רכש + ERP</td></tr>
+      <tr><td class="num">H3</td><td>חוסרים נובעים מרישום מלאי לא מדויק, או מנקודות הזמנה לא מעודכנות</td><td>ספירה מול מערכת; אירועי חוסר אחרונים</td><td>מחסן + ERP</td></tr>
+      <tr><td class="num">H4</td><td>מלאי עודף נוצר מכמויות מינימום של ספקים, או מהזמנות "ליתר ביטחון"</td><td>MOQ מול צריכה חודשית; ימי מלאי לפריט</td><td>רכש + ERP</td></tr>
+      <tr><td class="num">H5</td><td>רוב פריטי C מגיעים ממספר קטן של ספקים, שהם מועמדים טבעיים ל-VMI</td><td>התפלגות הפריטים והערך לפי ספק</td><td>ERP</td></tr>
+      <tr><td class="num">H6</td><td>דרישות עקיבות של מכשור רפואי מגבילות חלק מהשיטות</td><td>אילו פריטים מנוהלים לפי אצווה (Lot)</td><td>איכות</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="s4">
+  <h2><span class="num">4</span>ראיון הנהלה: רן עציוני, סמנכ״ל תפעול</h2>
+  <p class="goal">המטרה: להבין למה עכשיו, מה נחשב הצלחה, ומה המגבלות.</p>
+  <h4>הארגון (לפרק הרקע)</h4>
+  <ul class="check qs" data-group="ran-org">
+    <li class="m"><label><input type="checkbox"><span><span class="star">★</span> כמה עובדים יש בחברה, ואיך בנוי התפעול: רכש, מחסן, ייצור, איכות?</span></label></li>
+    <li class="m"><label><input type="checkbox"><span><span class="star">★</span> כמה מערכות מייצרים היום בחודש, ומה התוכנית לשנה-שנתיים הקרובות?</span></label></li>
+    <li><label><input type="checkbox"><span>איך השלב הרגולטורי והמסחרי של החברה משפיע על הייצור?</span></label></li>
+    <li><label><input type="checkbox"><span>אילו מדדים התפעול מדווח להנהלה היום?</span></label></li>
+  </ul>
+  <h4>מהמחקר על החברה</h4>
+  <p class="legend-line">שאלות שהמקורות הפומביים לא עונים עליהן. הרקע בדף <a href="הכרת%20החברה%20-%20ForSight%20Robotics.html">הכרת החברה</a>.</p>
+  <ul class="check qs" data-group="ran-research">
+    <li class="m"><label><input type="checkbox"><span><span class="star">★</span> מה מייצרים ומרכיבים כאן, ומה מגיע מקבלני משנה? ההרכבה הסופית של JASPER נעשית אצלכם?</span></label></li>
+    <li><label><input type="checkbox"><span>מתי עברתם לקיסריה? מה יש באתר: הרכבה, בדיקות, מחסן? נשארה פעילות ביקנעם?</span></label></li>
+    <li><label><input type="checkbox"><span>כמה מערכות JASPER קיימות היום (קליניות, פיתוח, הדגמה), וכמה צריך לשלב הקליני הבא?</span></label></li>
+    <li><label><input type="checkbox"><span>כמה מק״טים יש בעץ המוצר של מערכת אחת, וכמה מהם פריטי C?</span></label></li>
+    <li><label><input type="checkbox"><span>מי אחראי היום על פריטי C: תפעול, רכש או מו״פ? מי מחליט על רמות המלאי?</span></label></li>
+    <li><label><input type="checkbox"><span>פריטי C של מעבדות הפיתוח ושל הייצור יושבים באותו מלאי?</span></label></li>
+    <li><label><input type="checkbox"><span>איך מנוהלים חלקי חילוף ופריטי C במערכות שנמצאות באתר הקליני בחו״ל?</span></label></li>
+  </ul>
+  <h4>הבעיה והציפיות</h4>
+  <ul class="check qs" data-group="ran-problem">
+    <li class="m"><label><input type="checkbox"><span><span class="star">★</span> מה גרם לכם להעלות את הנושא דווקא עכשיו? היה אירוע מסוים?</span></label></li>
+    <li class="m"><label><input type="checkbox"><span><span class="star">★</span> איך תיראה הצלחה מבחינתך בעוד שנה? יש יעד במספרים?</span></label></li>
+    <li class="m"><label><input type="checkbox"><span><span class="star">★</span> איפה הכאב הכי גדול: זמן של אנשים, חוסרים בייצור, או כסף שתקוע במלאי?</span></label></li>
+    <li><label><input type="checkbox"><span>ניסיתם פתרונות בעבר? מה עבד ומה לא?</span></label></li>
+    <li><label><input type="checkbox"><span>יש ספקים שכבר הציעו שירות VMI או מגירות מנוהלות?</span></label></li>
+  </ul>
+  <h4>מגבלות ועבודה משותפת</h4>
+  <ul class="check qs" data-group="ran-limits">
+    <li class="m"><label><input type="checkbox"><span><span class="star">★</span> אילו נתונים אפשר לקבל מה-ERP, ומי יכול להוציא אותם? עם איזו מערכת ERP אתם עובדים?</span></label></li>
+    <li class="m"><label><input type="checkbox"><span><span class="star">★</span> עם מי מותר וכדאי לנו לדבר? אפשר גם עם ספקים?</span></label></li>
+    <li><label><input type="checkbox"><span>יש מגבלות סודיות, צילום או כניסה לאזורים מסוימים (חדר נקי, אזור ESD)?</span></label></li>
+    <li><label><input type="checkbox"><span>יש תקציב או נכונות להשקיע במגירות, בשילוט או במערכת?</span></label></li>
+    <li><label><input type="checkbox"><span>איך תרצה לקבל עדכונים, ובאיזו תדירות?</span></label></li>
+  </ul>
+  <div class="notes"><h4>הערות מהראיון</h4><textarea data-key="notes-ran" placeholder="ציטוטים, מספרים, שמות…"></textarea></div>
+</section>
+
+<section id="s5">
+  <h2><span class="num">5</span>ראיון שרשרת האספקה והרכש</h2>
+  <p class="goal">המטרה: תהליך ההזמנה מקצה לקצה, והמספרים שמאחוריו.</p>
+  <h4>היקף</h4>
+  <ul class="check qs" data-group="proc-scope">
+    <li class="m"><label><input type="checkbox"><span><span class="star">★</span> כמה מק״טים נחשבים פריטי C, "חומרה" או "מתכלים"? יש הגדרה רשמית?</span></label></li>
+    <li class="m"><label><input type="checkbox"><span><span class="star">★</span> כמה ספקים מספקים אותם? מי שלושת הגדולים?</span></label></li>
+    <li class="m"><label><input type="checkbox"><span><span class="star">★</span> כמה הזמנות רכש לפריטי C יוצאות בחודש, בממוצע?</span></label></li>
+  </ul>
+  <h4>התהליך</h4>
+  <ul class="check qs" data-group="proc-process">
+    <li class="m"><label><input type="checkbox"><span><span class="star">★</span> תראו לנו הזמנה אחת מההתחלה ועד הסוף: מי מזהה צורך, מי מאשר, איך היא נשלחת, ואיך נסגרת?</span></label></li>
+    <li class="m"><label><input type="checkbox"><span><span class="star">★</span> כמה זמן לוקחת הזמנה אחת, כולל מעקב וטיפול בחשבונית?</span></label></li>
+    <li><label><input type="checkbox"><span>יש נקודות הזמנה או Min/Max מוגדרים במערכת? מי קבע אותם, ומתי עודכנו לאחרונה?</span></label></li>
+    <li><label><input type="checkbox"><span>יש הסכמי מסגרת או הזמנות פתוחות (Blanket PO) עם ספקים?</span></label></li>
+    <li><label><input type="checkbox"><span>מה זמני האספקה, ויש כמויות מינימום להזמנה?</span></label></li>
+    <li><label><input type="checkbox"><span>כמה הזמנות דחופות היו ברבעון האחרון, ולמה?</span></label></li>
+  </ul>
+  <h4>בעיות</h4>
+  <ul class="check qs" data-group="proc-problems">
+    <li class="m"><label><input type="checkbox"><span><span class="star">★</span> מתי בפעם האחרונה חסר פריט C בייצור? מה קרה, ואיך זה טופל?</span></label></li>
+    <li><label><input type="checkbox"><span>איפה יש עודפים? יש פריטים שלא זזו שנה?</span></label></li>
+    <li><label><input type="checkbox"><span>כמה זמן מהשבוע שלך הולך על פריטי C?</span></label></li>
+    <li><label><input type="checkbox"><span>אם היית יכול לשנות דבר אחד בתהליך, מה זה היה?</span></label></li>
+  </ul>
+  <div class="notes"><h4>הערות מהראיון</h4><textarea data-key="notes-proc" placeholder="ציטוטים, מספרים, שמות…"></textarea></div>
+</section>
+
+<section id="s6">
+  <h2><span class="num">6</span>ראיון המחסן</h2>
+  <p class="goal">המטרה: לראות איך הפריט זז בפועל, לא איך הוא אמור לזוז.</p>
+  <ul class="check qs" data-group="wh">
+    <li class="m"><label><input type="checkbox"><span><span class="star">★</span> תראו לנו איך מקבלים משלוח של פריטי C: מה בודקים, איך קולטים במערכת, ואיפה מאחסנים?</span></label></li>
+    <li class="m"><label><input type="checkbox"><span><span class="star">★</span> איך מנפקים לייצור? לפי פקודת עבודה, בקיט, או שיש מלאי פתוח ליד הקו?</span></label></li>
+    <li class="m"><label><input type="checkbox"><span><span class="star">★</span> איך מגלים שפריט עומד להיגמר, ומה עושים אז?</span></label></li>
+    <li><label><input type="checkbox"><span>כל כמה זמן סופרים, וכמה פערים יש בין הספירה למערכת?</span></label></li>
+    <li><label><input type="checkbox"><span>כמה זמן לוקח ניפוק או ליקוט של קיט טיפוסי?</span></label></li>
+    <li><label><input type="checkbox"><span>איך הפריטים מסודרים ומסומנים? יש מיקום קבוע לכל מק״ט?</span></label></li>
+    <li><label><input type="checkbox"><span>יש פריטים שמנוהלים לפי אצווה (Lot), או שדורשים טיפול מיוחד (ESD, ניקיון)?</span></label></li>
+    <li><label><input type="checkbox"><span>מה הכי מתסכל בעבודה עם הפריטים האלה?</span></label></li>
+  </ul>
+  <div class="notes"><h4>הערות מהראיון</h4><textarea data-key="notes-wh" placeholder="ציטוטים, מספרים, שמות…"></textarea></div>
+</section>
+
+<section id="s7">
+  <h2><span class="num">7</span>שיחה עם אנשי הייצור</h2>
+  <p class="goal">המטרה: להבין מה חוסר עושה לקו, מנקודת המבט של מי שמרכיב.</p>
+  <ul class="check qs" data-group="prod">
+    <li class="m"><label><input type="checkbox"><span><span class="star">★</span> איך הפריטים מגיעים אלייך? מה יש ליד העמדה, ומה צריך לבקש?</span></label></li>
+    <li class="m"><label><input type="checkbox"><span><span class="star">★</span> מתי בפעם האחרונה חיכית לפריט? כמה זמן, ומה עשית בינתיים?</span></label></li>
+    <li><label><input type="checkbox"><span>יש "מלאי פרטי" או מגירות לא רשמיות ליד העמדות?</span></label></li>
+    <li><label><input type="checkbox"><span>כמה פעמים ביום הולכים למחסן?</span></label></li>
+    <li><label><input type="checkbox"><span>איך היית רוצה שזה יעבוד?</span></label></li>
+  </ul>
+  <div class="notes"><h4>הערות מהשיחה</h4><textarea data-key="notes-prod" placeholder="ציטוטים, מספרים, שמות…"></textarea></div>
+</section>
+
+<section id="s8">
+  <h2><span class="num">8</span>שיחה עם ספקים (אם יש גישה)</h2>
+  <p class="goal">המטרה: לבדוק אם הספקים של החברה יכולים ורוצים לנהל מלאי אצלה (VMI).</p>
+  <ul class="check qs" data-group="sup">
+    <li class="m"><label><input type="checkbox"><span><span class="star">★</span> אתם מציעים היום ללקוחות שירות VMI, מגירות מנוהלות או Kanban? איך זה עובד אצלם?</span></label></li>
+    <li class="m"><label><input type="checkbox"><span><span class="star">★</span> מה התנאים: היקף מינימלי, תדירות ביקורים, מודל תמחור?</span></label></li>
+    <li><label><input type="checkbox"><span>איך אתם מטפלים בתעודות ובעקיבות מול לקוחות ממכשור רפואי?</span></label></li>
+    <li><label><input type="checkbox"><span>איך מתבצע החיוב: לפי צריכה, לפי מילוי, או חודשי?</span></label></li>
+    <li><label><input type="checkbox"><span>איזה מידע תצטרכו מאיתנו: צריכה, תחזית, גישה למערכת?</span></label></li>
+  </ul>
+  <div class="notes"><h4>הערות מהשיחה</h4><textarea data-key="notes-sup" placeholder="ציטוטים, מספרים, שמות…"></textarea></div>
+</section>
+
+<section id="s9">
+  <h2><span class="num">9</span>איכות ורגולציה</h2>
+  <p class="goal">החברה מוסמכת ISO 13485:2016 מפברואר 2025, וההסמכה כוללת גם ייצור. זה יכול להגביל שיטות כמו מלאי פתוח ליד הקו או מילוי בידי ספק. כאן שואלים ולא מניחים. האחראית בהנהלה: שירן קונפורטי, סמנכ״לית רגולציה ואבטחת איכות. כדאי לבקש שיחה עם מישהו מהצוות שלה.</p>
+  <ul class="check qs" data-group="qa">
+    <li class="m"><label><input type="checkbox"><span><span class="star">★</span> אילו פריטי C דורשים עקיבות לפי אצווה, ואילו לא?</span></label></li>
+    <li class="m"><label><input type="checkbox"><span><span class="star">★</span> יש בדיקת קבלה לפריטי C? מה בודקים?</span></label></li>
+    <li class="m"><label><input type="checkbox"><span><span class="star">★</span> האם שינוי ספק או שינוי שיטת אספקה מחייב תהליך אישור? כמה זמן זה לוקח?</span></label></li>
+    <li><label><input type="checkbox"><span>ספקי פריטי C חייבים להיות ברשימת ספקים מאושרים?</span></label></li>
+    <li><label><input type="checkbox"><span>יש דרישות ESD, ניקיון או אריזה לפריטים מסוימים?</span></label></li>
+    <li><label><input type="checkbox"><span>איך נרשם בתיעוד הייצור אילו פריטים נכנסו לכל מערכת?</span></label></li>
+  </ul>
+  <div class="notes"><h4>הערות</h4><textarea data-key="notes-qa" placeholder="ציטוטים, מספרים, שמות…"></textarea></div>
+</section>
+
+<section id="s10">
+  <h2><span class="num">10</span>תצפית בשטח</h2>
+  <p>מה לראות, לספור ולמדוד בסיור. <b>מצלמים רק באישור מראש.</b></p>
+  <h4>לראות</h4>
+  <ul class="check" data-group="obs">
+    <li><label><input type="checkbox"><span>איך פריטי C מאוחסנים: מגירות, מדפים, ארגזים. יש סימון ותוויות?</span></label></li>
+    <li><label><input type="checkbox"><span>יש מגירות ריקות, או עודפים גדולים?</span></label></li>
+    <li><label><input type="checkbox"><span>מה יש ליד עמדות ההרכבה, ומה חסר שם</span></label></li>
+    <li><label><input type="checkbox"><span>איך מתבצע ניפוק: טופס, סריקה, הקלדה במערכת?</span></label></li>
+    <li><label><input type="checkbox"><span>מצב 5S: סדר, ניקיון, כל פריט במקום שלו</span></label></li>
+    <li><label><input type="checkbox"><span>ניהול חזותי: שלטים, צבעים, קווים על הרצפה, לוחות</span></label></li>
+  </ul>
+  <h4>לספור ולמדוד</h4>
+  <div class="table-wrap"><table>
+    <thead><tr><th>מה מודדים</th><th>איך</th><th>תוצאה</th></tr></thead>
+    <tbody>
+      <tr><td>מספר מיקומי האחסון של פריטי C</td><td>ספירה בסיור</td><td contenteditable="true" data-key="m-locations" data-ph="להקליד…"></td></tr>
+      <tr><td>המרחק מהמחסן לקו</td><td>צעדים או מטרים</td><td contenteditable="true" data-key="m-distance" data-ph="להקליד…"></td></tr>
+      <tr><td>זמן ניפוק של קיט או של בקשה</td><td>שעון, 2–3 מדידות</td><td contenteditable="true" data-key="m-issue" data-ph="להקליד…"></td></tr>
+      <tr><td>זמן קליטה של משלוח</td><td>שעון</td><td contenteditable="true" data-key="m-receive" data-ph="להקליד…"></td></tr>
+      <tr><td>פריטים עם סימון חסר או שגוי</td><td>מדגם של 20 מיקומים</td><td contenteditable="true" data-key="m-labels" data-ph="להקליד…"></td></tr>
+      <tr><td>הליכות של מרכיב למחסן</td><td>ספירה בפרק זמן קבוע</td><td contenteditable="true" data-key="m-walks" data-ph="להקליד…"></td></tr>
+    </tbody>
+  </table></div>
+  <p>תוך כדי הסיור משרטטים תרשים ספגטי (Spaghetti Diagram) של המסלול מהמחסן לקו.</p>
+</section>
+
+<section id="s11">
+  <h2><span class="num">11</span>בקשת נתונים מה-ERP</h2>
+  <p>זו הבקשה הכי חשובה ביום. משאירים את הטבלה אצל רן, ומסכמים מי מוציא, עד מתי ובאיזה פורמט (Excel או CSV). אם יש בעיית סודיות, אפשר להסתיר מחירים או שמות ספקים.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th class="num">#</th><th>נתון</th><th>שדות</th><th>תקופה</th><th>למה צריך</th></tr></thead>
+    <tbody>
+      <tr><td class="num">1</td><td><b>רשימת פריטי C</b> (Item Master)</td><td>מק״ט, תיאור, קבוצה, יחידת מידה, מחיר, ספק ראשי, זמן אספקה, MOQ, Min/Max או נקודת הזמנה, מיקום, ניהול לפי אצווה</td><td>נכון להיום</td><td>ניתוח ABC, אפיון הפריטים</td></tr>
+      <tr><td class="num">2</td><td><b>תנועות מלאי</b></td><td>תאריך, מק״ט, כמות, סוג תנועה (קבלה, ניפוק, התאמה), פקודת עבודה</td><td>12–24 חודשים</td><td>צריכה, תנודתיות, גודל Kanban</td></tr>
+      <tr><td class="num">3</td><td><b>הזמנות רכש</b></td><td>מספר הזמנה, תאריך, ספק, שורות, כמות, ערך, תאריך מבוקש ותאריך בפועל, סימון דחוף</td><td>12–24 חודשים</td><td>מספר הזמנות, עלות טיפול, אמינות ספקים</td></tr>
+      <tr><td class="num">4</td><td><b>מלאי לפי חודש</b></td><td>מק״ט, כמות, ערך</td><td>12 חודשים</td><td>מלאי עודף, ימי מלאי, תחלופה</td></tr>
+      <tr><td class="num">5</td><td><b>ספירות והתאמות</b></td><td>מק״ט, כמות במערכת, כמות שנספרה, תאריך</td><td>12 חודשים</td><td>דיוק רישום המלאי</td></tr>
+      <tr><td class="num">6</td><td><b>אירועי חוסר</b></td><td>תאריך, מק״ט, פקודת עבודה, משך העיכוב</td><td>מה שקיים</td><td>מדד חוסרים</td></tr>
+      <tr><td class="num">7</td><td><b>עץ מוצר</b> (BOM)</td><td>פריטי C בכל מערכת, וכמות</td><td>נכון להיום</td><td>קשר בין תוכנית הייצור לצריכה</td></tr>
+      <tr><td class="num">8</td><td><b>תוכנית ייצור</b></td><td>מערכות לחודש: בפועל ותחזית</td><td>שנה אחורה ושנה קדימה</td><td>תכנון הכמויות בפתרון</td></tr>
+    </tbody>
+  </table></div>
+  <p>בנוסף: הערכה של הזמן לטיפול בהזמנה אחת, ושל העלות השעתית הממוצעת ברכש ובמחסן (גם טווח מספיק), כדי לחשב עלות טיפול.</p>
+  <div class="fields">
+    <label>אחראי בארגון <span class="field" contenteditable="true" data-key="erp-owner" data-ph="שם"></span></label>
+    <label>תאריך יעד <span class="field" contenteditable="true" data-key="erp-date" data-ph="__/__"></span></label>
+    <label>פורמט <span class="field" contenteditable="true" data-key="erp-format" data-ph="Excel / CSV"></span></label>
+  </div>
+</section>
+
+<section id="s12">
+  <h2><span class="num">12</span>טבלת ממצאים</h2>
+  <p>ממלאים תוך כדי היום. כל שורה: מה ראינו או שמענו, ממי, ומספר אם יש.</p>
+  <div class="table-wrap"><table class="findings">
+    <thead><tr><th class="num">#</th><th>ממצא או ציטוט</th><th>מקור</th><th>סוג</th><th>מספר / כימות</th><th>המשך</th><th class="no-print"></th></tr></thead>
+    <tbody id="findingsBody"></tbody>
+  </table></div>
+  <div class="row-actions no-print">
+    <button class="btn" id="addRow" type="button">+ שורה</button>
+    <button class="btn primary" id="exportCsv" type="button">ייצוא ל-CSV (Excel)</button>
+  </div>
+  <p class="legend-line" style="margin-top:12px">תזכורת, 8 הבזבוזים (TIMWOODS): <bdi>Transport</bdi> הובלה · <bdi>Inventory</bdi> מלאי · <bdi>Motion</bdi> תנועה · <bdi>Waiting</bdi> המתנה · <bdi>Overproduction</bdi> ייצור יתר · <bdi>Overprocessing</bdi> עיבוד יתר · <bdi>Defects</bdi> פגמים · <bdi>Skills</bdi> כישורים לא מנוצלים.</p>
+</section>
+
+<section id="s13">
+  <h2><span class="num">13</span>סגירת היום ופעולות להמשך</h2>
+  <h4>בסגירה עם רן (10 דקות)</h4>
+  <ol>
+    <li>מסכמים במשפט או שניים מה שמענו, ומוודאים שהבנו נכון.</li>
+    <li>מאשרים את בקשת הנתונים: מי, עד מתי, ובאיזה פורמט.</li>
+    <li>קובעים את הביקור הבא ואת הראיונות שלא הספקנו (איכות, ספקים).</li>
+    <li>מבקשים איש קשר יומיומי לשאלות קטנות.</li>
+  </ol>
+  <h4>באותו יום</h4>
+  <ul class="check" data-group="after">
+    <li><label><input type="checkbox"><span>מייל תודה לרן, עם סיכום קצר ורשימת הנתונים שסוכמה</span></label></li>
+    <li><label><input type="checkbox"><span>ייצוא טבלת הממצאים ל-CSV ושמירה בתיקייה 03 נתונים</span></label></li>
+    <li><label><input type="checkbox"><span>להעביר את הממצאים לסיכום הפגישה במסמך הפגישות המשותף</span></label></li>
+    <li><label><input type="checkbox"><span>לשמור צילומים ותרשימים בתיקייה 03 נתונים</span></label></li>
+    <li><label><input type="checkbox"><span>לעדכן את טבלת זרימת הפריט (סעיף 3) לפי מה שראינו</span></label></li>
+    <li><label><input type="checkbox"><span>לרשום שאלות פתוחות לפגישה הבאה</span></label></li>
+  </ul>
+  <h4>נוסח למייל התודה</h4>
+  <div class="email" id="emailText">היי רן,
+תודה על היום ועל הזמן שהקדשתם לנו. בקצרה, מה שלקחנו מהביקור: [2–3 נקודות].
+כפי שסיכמנו, נשמח לקבל את הנתונים הבאים עד [תאריך]: [רשימה].
+הביקור הבא: [תאריך], עם [שמות].
+תודה,
+[שמות הצוות]</div>
+  <button class="btn no-print" type="button" data-copy="emailText">העתקת הנוסח</button>
+</section>
+
+<section id="s14">
+  <h2><span class="num">14</span>מילון: מונחים שתשמעו בשטח</h2>
+  <p class="goal">מונחים שיעלו בשיחות עם רכש, מחסן ואיכות בחברת מכשור רפואי. מונחי Lean (Kanban, 5S, VMI ועוד) מוסברים ב<a href="קורס%20הכנה%20-%20ניהול%20מלאי%20ו-Lean.html">קורס ההכנה</a>. כשעולה מונח שלא מופיע כאן, שואלים: "מה זה אומר אצלכם?"</p>
+  <div class="table-wrap"><table class="gloss">
+    <thead><tr><th>מונח</th><th>מה זה</th><th>למה זה חשוב לנו</th></tr></thead>
+    <tbody>
+      <tr class="sec"><td colspan="3">מלאי ורכש</td></tr>
+      <tr><td>מק״ט<span class="en">Part Number</span></td><td>מספר הזיהוי של פריט במערכת</td><td>כל פריט C הוא מק״ט שמישהו צריך לתחזק, לספור ולהזמין</td></tr>
+      <tr><td>ERP</td><td>המערכת שמנהלת מלאי, רכש וייצור. בישראל נפוצות Priority ו-SAP</td><td>משם מגיעים כל הנתונים. לשאול איזו מערכת ומי יודע להוציא ממנה דוחות</td></tr>
+      <tr><td>עץ מוצר<span class="en">BOM</span></td><td>רשימת כל החלקים והכמויות שנכנסים למערכת או למכלול</td><td>מחבר בין כמה מערכות מייצרים לבין כמה ברגים צורכים</td></tr>
+      <tr><td>פק״ע, פקודת עבודה<span class="en">Work Order</span></td><td>הוראה לייצר מכלול או מערכת. לפיה מנפקים חלקים</td><td>אם מנפקים לפי פק״ע, כל בורג עובר רישום, וזה זמן</td></tr>
+      <tr><td>ניפוק, ליקוט וקיט<span class="en">Kitting</span></td><td>הוצאת חלקים מהמחסן לייצור. קיט: כל החלקים לפק״ע אחת, במגש או בשקית</td><td>בשיטות כמו Two-Bin, פריטי C בדרך כלל יוצאים מהקיט ויושבים ליד העמדה</td></tr>
+      <tr><td>גריעה לאחור<span class="en">Backflush</span></td><td>המערכת מורידה מלאי לפי עץ המוצר כשמדווחים על סיום ייצור, בלי ניפוק פריט־פריט</td><td>דרך נפוצה לרשום צריכה של פריטים שנמצאים במלאי פתוח ליד הקו</td></tr>
+      <tr><td>נקודת הזמנה ורמת מקסימום<span class="en">ROP, Min/Max</span></td><td>רמת המלאי שבה מזמינים, והרמה שאליה משלימים</td><td>אם לא מעדכנים אותן, נוצרים יחד עודפים וחוסרים</td></tr>
+      <tr><td>מלאי ביטחון<span class="en">Safety Stock</span></td><td>מלאי נוסף שמגן מתנודות בצריכה ובזמני האספקה</td><td>בפריטים זולים אפשר להחזיק יותר ממנו, וכך לחסוך הזמנות וחוסרים</td></tr>
+      <tr><td>MOQ</td><td>כמות המינימום שהספק מוכר בהזמנה</td><td>סיבה נפוצה למלאי עודף בפריטים זולים</td></tr>
+      <tr><td>זמן אספקה<span class="en">Lead Time</span></td><td>הזמן מההזמנה ועד שהפריט על המדף</td><td>קובע כמה מלאי צריך להחזיק</td></tr>
+      <tr><td>הזמנת רכש והזמנת מסגרת<span class="en">PO, Blanket PO</span></td><td>הזמנת מסגרת: הזמנה אחת לתקופה ארוכה, עם משיכות לפי הצורך</td><td>מקטינה את מספר ההזמנות גם בלי לשנות שום דבר במחסן</td></tr>
+      <tr><td>ספירה מחזורית<span class="en">Cycle Count</span></td><td>ספירה של חלק מהמק״טים בכל פעם, במקום ספירה שנתית אחת</td><td>המקור לנתונים על דיוק רישום המלאי</td></tr>
+      <tr><td>מלאי קונסיגנציה<span class="en">Consignment</span></td><td>מלאי שיושב אצלכם אבל שייך לספק עד שמשתמשים בו</td><td>קרוב ל-VMI. משנה מי מממן את המלאי</td></tr>
+      <tr><td>נקודת שימוש<span class="en">POU, Point of Use</span></td><td>אחסון החלק ליד העמדה שבה מרכיבים אותו</td><td>הבסיס של Two-Bin ושל מגירות מנוהלות</td></tr>
+      <tr class="sec"><td colspan="3">איכות ורגולציה במכשור רפואי</td></tr>
+      <tr><td>ISO 13485</td><td>תקן מערכת האיכות למכשור רפואי. ForSight מוסמכת מ־2025, כולל ייצור</td><td>כל שינוי בשיטת האספקה צריך להתאים לנהלים שלו</td></tr>
+      <tr><td>אצווה, מספר סידורי ועקיבות<span class="en">Lot, Serial, Traceability</span></td><td>היכולת לדעת מאיזו אספקה הגיע חלק שנכנס למערכת מסוימת</td><td>פריט שדורש עקיבות לא נשפך למגירה משותפת. זו אולי השאלה החשובה ביום</td></tr>
+      <tr><td>DHR<span class="en">Device History Record</span></td><td>התיעוד של מערכת מסוימת שיוצרה: מה נכנס בה, מי עשה ואילו בדיקות</td><td>קובע מה חייבים לרשום על פריטי C בכל מערכת</td></tr>
+      <tr><td>DMR<span class="en">Device Master Record</span></td><td>״המתכון״ של המכשיר: שרטוטים, מפרטים והוראות עבודה</td><td>שינוי בפריט או בספק עשוי לחייב עדכון שלו</td></tr>
+      <tr><td>ספקים מאושרים<span class="en">AVL / ASL</span></td><td>רשימת הספקים שמערכת האיכות אישרה</td><td>מעבר לספק VMI חדש עשוי לדרוש תהליך אישור, ולוקח זמן</td></tr>
+      <tr><td>בדיקת קבלה<span class="en">Incoming Inspection</span></td><td>בדיקה של סחורה שמגיעה, לפני שהיא נכנסת למלאי</td><td>ב-VMI צריך להחליט אם הבדיקה נשארת, ואיך</td></tr>
+      <tr><td>CoC<span class="en">Certificate of Conformance</span></td><td>תעודה מהספק שהפריט עומד במפרט</td><td>לפעמים מחליפה בדיקת קבלה</td></tr>
+      <tr><td>אי־התאמה וועדת חריגים<span class="en">NCR, MRB</span></td><td>רישום של פריט פגום או חריג, וצוות שמחליט מה עושים בו</td><td>מקור למידע על בעיות איכות אצל ספקים</td></tr>
+      <tr><td>שינוי הנדסי<span class="en">ECO / ECN</span></td><td>שינוי בתכנון שמחליף, מוסיף או מוריד חלקים</td><td>בחברה שעדיין מפתחת זה קורה הרבה, ומשאיר במלאי פריטים שכבר לא בשימוש</td></tr>
+      <tr><td>NPI<span class="en">New Product Introduction</span></td><td>המעבר של מוצר מפיתוח לייצור</td><td>השלב שבו ForSight נמצאת. הכמויות עוד ישתנו</td></tr>
+      <tr><td>ESD</td><td>הגנה מפני פריקה של חשמל סטטי: ביגוד, משטחים ואריזות מיוחדות</td><td>משפיע על אחסון ואריזה של חלק מהרכיבים, ועל הכניסה שלכם לאזור</td></tr>
+      <tr><td>חדר נקי<span class="en">Clean Room</span></td><td>אזור עם בקרה על אבק וחלקיקים</td><td>קובע מה נכנס אליו ובאיזו אריזה, וזה רלוונטי גם למגירות ליד הקו</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<footer class="note">מה שמקלידים ומסמנים בדף נשמר רק בדפדפן הזה, במחשב הזה. בסוף היום: ייצוא הממצאים ל-CSV ושמירה בתיקייה 03 נתונים, או הדפסה ל-PDF.</footer>
+</main>
+
+<script>
+/*COMMON_JS*/
+
+(function(){
+  var store=window.fsStore;
+
+  // Free-text fields, notes and editable cells: anything with data-key.
+  var state=store.load(); state.fields=state.fields||{};
+  document.querySelectorAll('[data-key]').forEach(function(el){
+    var k=el.getAttribute('data-key'), v=state.fields[k];
+    var isText=el.tagName==='TEXTAREA';
+    if(v!=null){ if(isText) el.value=v; else el.textContent=v; }
+    el.addEventListener('input',function(){
+      var s=store.load(); s.fields=s.fields||{};
+      s.fields[k]=isText?el.value:el.textContent; store.save(s);
+    });
+  });
+
+  function applyFields(st){
+    var f=(st&&st.fields)||{};
+    document.querySelectorAll('[data-key]').forEach(function(el){
+      if(el===document.activeElement) return;
+      var k=el.getAttribute('data-key'), v=f[k]==null?'':f[k];
+      if(el.tagName==='TEXTAREA'){ if(el.value!==v) el.value=v; } else if(el.textContent!==v) el.textContent=v;
+    });
+  }
+  store.onChange(applyFields);
+
+  // Must-only filter and the must-ask counter.
+  var mustBtn=document.getElementById('mustBtn'), counter=document.getElementById('mustCounter');
+  function updateCounter(){
+    var all=document.querySelectorAll('.qs li.m input'), done=0;
+    all.forEach(function(cb){ if(cb.checked) done++; });
+    counter.textContent='★ נשאלו '+done+' מתוך '+all.length;
+  }
+  document.querySelectorAll('.qs input').forEach(function(cb){ cb.addEventListener('change',updateCounter); });
+  updateCounter();
+  store.onChange(updateCounter);
+  function setMust(on){
+    document.body.classList.toggle('must-only',on);
+    mustBtn.setAttribute('aria-pressed',on?'true':'false');
+  }
+  setMust(!!store.load().mustOnly);
+  mustBtn.addEventListener('click',function(){
+    var on=!document.body.classList.contains('must-only'); setMust(on);
+    var s=store.load(); s.mustOnly=on; store.save(s);
+  });
+
+  // Findings table: rows kept as an array in the page's storage.
+  var TYPES=['','בעיה','נתון','בזבוז','רעיון','שאלה פתוחה'];
+  var COLS=['text','source','type','num','next'];
+  var body=document.getElementById('findingsBody');
+  function getRows(){ var r=store.load().findings; return Array.isArray(r)&&r.length?r:emptyRows(8); }
+  function emptyRows(n){ var a=[]; for(var i=0;i<n;i++) a.push({text:'',source:'',type:'',num:'',next:''}); return a; }
+  function saveRows(rows){ var s=store.load(); s.findings=rows; store.save(s); }
+  function render(){
+    var rows=getRows(); body.innerHTML='';
+    rows.forEach(function(row,i){
+      var tr=document.createElement('tr');
+      var n=document.createElement('td'); n.className='num'; n.textContent=String(i+1); tr.appendChild(n);
+      COLS.forEach(function(c){
+        var td=document.createElement('td');
+        if(c==='type'){
+          var sel=document.createElement('select');
+          TYPES.forEach(function(t){ var o=document.createElement('option'); o.value=t; o.textContent=t||'—'; sel.appendChild(o); });
+          sel.value=row.type||'';
+          sel.addEventListener('change',function(){ var r=getRows(); r[i].type=sel.value; saveRows(r); });
+          td.appendChild(sel);
+        } else {
+          td.contentEditable='true';
+          td.textContent=row[c]||'';
+          td.addEventListener('input',function(){ var r=getRows(); r[i][c]=td.textContent; saveRows(r); });
+        }
+        tr.appendChild(td);
+      });
+      var del=document.createElement('td'); del.className='no-print';
+      var b=document.createElement('button'); b.className='del'; b.type='button'; b.title='מחיקת שורה'; b.textContent='×';
+      b.addEventListener('click',function(){
+        var r=getRows(); var filled=COLS.some(function(c){ return (r[i][c]||'').trim(); });
+        if(filled && !confirm('למחוק את השורה?')) return;
+        r.splice(i,1); saveRows(r.length?r:emptyRows(1)); render();
+      });
+      del.appendChild(b); tr.appendChild(del);
+      body.appendChild(tr);
+    });
+  }
+  render();
+  store.onChange(function(){ if(!body.contains(document.activeElement)) render(); });
+  document.getElementById('addRow').addEventListener('click',function(){
+    var r=getRows(); r.push({text:'',source:'',type:'',num:'',next:''}); saveRows(r); render();
+    var last=body.lastElementChild; if(last && last.children[1]) last.children[1].focus();
+  });
+  document.getElementById('exportCsv').addEventListener('click',function(){
+    var esc=function(v){ v=String(v==null?'':v); return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v; };
+    var lines=[['#','ממצא או ציטוט','מקור','סוג','מספר / כימות','המשך'].join(',')];
+    getRows().forEach(function(r,i){
+      if(!COLS.some(function(c){ return (r[c]||'').trim(); })) return;
+      lines.push([i+1].concat(COLS.map(function(c){ return r[c]; })).map(esc).join(','));
+    });
+    var blob=new Blob(['﻿'+lines.join('\r\n')],{type:'text/csv;charset=utf-8'});
+    var a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+    a.download='ממצאים - יום האפיון.csv'; document.body.appendChild(a); a.click();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); },500);
+  });
+
+  // Copy an email draft: each button names its text block in data-copy.
+  document.querySelectorAll('[data-copy]').forEach(function(btn){
+    var box=document.getElementById(btn.getAttribute('data-copy')), label=btn.textContent;
+    btn.addEventListener('click',function(){
+      function done(){ btn.textContent='הועתק ✓'; setTimeout(function(){ btn.textContent=label; },1600); }
+      function fallback(){
+        var r=document.createRange(); r.selectNodeContents(box);
+        var sel=getSelection(); sel.removeAllRanges(); sel.addRange(r);
+        try{ document.execCommand('copy'); done(); }catch(e){}
+      }
+      if(navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(box.innerText).then(done,fallback);
+      else fallback();
+    });
+  });
+})();
+</script>
+</body>
+</html>
