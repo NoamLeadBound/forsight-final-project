@@ -34,4 +34,20 @@
   }
   applyChecks(window.fsStore.load());
   window.fsStore.onChange(applyChecks);
+
+  // Anything with data-key (an editable span or cell, a textarea, an input) remembers what was typed.
+  var fields=Array.prototype.slice.call(document.querySelectorAll('[data-key]'));
+  function val(el){return (el.tagName==='TEXTAREA'||el.tagName==='INPUT')?el.value:el.textContent}
+  function setVal(el,v){if(el.tagName==='TEXTAREA'||el.tagName==='INPUT'){if(el.value!==v)el.value=v}else if(el.textContent!==v)el.textContent=v}
+  fields.forEach(function(el){
+    el.addEventListener(el.tagName==='INPUT'&&el.type==='date'?'change':'input',function(){
+      var s=window.fsStore.load(); s.fields=s.fields||{}; s.fields[el.getAttribute('data-key')]=val(el); window.fsStore.save(s);
+    });
+  });
+  function applyFields(s){
+    var f=(s&&s.fields)||{};
+    fields.forEach(function(el){ if(el!==document.activeElement){var v=f[el.getAttribute('data-key')];setVal(el,v==null?'':v)} });
+  }
+  applyFields(window.fsStore.load());
+  window.fsStore.onChange(applyFields);
 })();

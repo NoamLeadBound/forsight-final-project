@@ -1,5 +1,5 @@
 {
-  "supabase_url": "",
-  "supabase_anon_key": "",
+  "supabase_url": "https://gbekhmuavluzqemzwnoi.supabase.co",
+  "supabase_anon_key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdiZWtobXVhdmx1enFlbXp3bm9pIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM2OTQyMDUsImV4cCI6MjEwOTI3MDIwNX0.AJ6acdzDKnoHuFQCemOjIVAvV7oij0JwPS4sRirUc1M",
   "site_url": "https://noamleadbound.github.io/forsight-final-project/"
 }

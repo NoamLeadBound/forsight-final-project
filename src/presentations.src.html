@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="he" dir="rtl" data-page="presentations">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>מצגות</title>
+<style>
+/*COMMON_CSS*/
+.decks{display:flex;flex-direction:column;gap:14px}
+.dk{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;box-shadow:var(--shadow);border-inline-start:4px solid var(--border)}
+.dk.ready{border-inline-start-color:var(--ok)}
+.dk.graded{border-inline-start-color:var(--accent)}
+.dk-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px}
+.dk-head h3{margin:0;font-size:19px}
+.dk-head .when{font-size:14px;color:var(--muted);margin-inline-start:auto}
+.dk p{margin:8px 0 0}
+.dk ul{margin:8px 0 0;font-size:15px}
+.dk .row{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;margin-top:12px;padding-top:10px;border-top:1px dashed var(--border)}
+.dk .row .check{display:flex;gap:4px 14px;margin:0;flex-wrap:wrap}
+.dk .row .check label{padding:2px 4px}
+.dk .row .check input{margin-top:5px}
+.dk .row .check input:checked + span{text-decoration:none;color:var(--ok);font-weight:600}
+.weights{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.weights span{font-size:13px;background:var(--surface-2);border-radius:999px;padding:2px 10px}
+.weights b{color:var(--accent)}
+.links{list-style:none;margin:0;padding:0}
+.links li{display:flex;gap:10px;align-items:flex-start;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px 14px;margin:0 0 8px}
+.links .lm{flex:1;min-width:0}
+.links a{font-weight:600}
+.links small{display:block;color:var(--muted);font-size:13px}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="brand">פרויקט גמר · ForSight Robotics</div>
+  <nav class="tabs">
+    <!--NAV-->
+  </nav>
+  <button class="btn" id="printBtn" type="button">הדפסה</button>
+  <button class="btn" id="themeBtn" type="button" aria-label="מצב כהה או בהיר">◐</button>
+</div>
+
+<main>
+<header class="doc">
+  <h1>מצגות</h1>
+  <p class="sub">כל המצגות של השנה: מה מוכן, מה כל אחת צריכה לכלול, ומה כבר הוצג</p>
+  <p class="meta">מצגת חדשה נבנית דרך Claude באותו עיצוב, ונכנסת לרשימה הזו. מצגות שנעשו בכלי אחר (PowerPoint, Canva) מוסיפים כקישור בתחתית.</p>
+</header>
+
+<div class="decks">
+  <article class="dk ready">
+    <div class="dk-head"><h3>מצגת פתיחה ליום האפיון</h3><span class="badge done">מוכנה</span><span class="when">יום האפיון</span></div>
+    <p>9 שקפים ל־20 הדקות הראשונות עם רן עציוני: מי אנחנו, מה הבנו, המטרה, השיטות שנבחן, שלבי העבודה, מה נבקש וסדר היום. עם הערות דובר, מצב הצגה במסך מלא והדפסה ל-PDF.</p>
+    <div class="row"><a class="btn primary" href="@deck">פתיחת המצגת</a><span class="check" data-group="deck-opening"><label><input type="checkbox"><span>חזרנו עליה בקול</span></label><label><input type="checkbox"><span>הוצגה</span></label></span></div>
+  </article>
+
+  <article class="dk">
+    <div class="dk-head"><h3>מצגת אוריינטציה</h3><span class="badge must">בלי ציון · נוכחות חובה</span><span class="when">אמצע סמסטר א׳</span></div>
+    <p>5–6 שקפים, 7 דקות הצגה ו־5 דקות שאלות. כל הצוות מציג.</p>
+    <ul><li>רקע על הארגון</li><li>המצב הקיים</li><li>הבעיות והמטרה</li><li>כיווני פתרון</li></ul>
+    <div class="row"><span class="badge">עוד לא נבנתה</span><span class="check" data-group="deck-orientation"><label><input type="checkbox"><span>מוכנה</span></label><label><input type="checkbox"><span>הוצגה</span></label></span></div>
+  </article>
+
+  <article class="dk graded">
+    <div class="dk-head"><h3>מצגת מסכמת סמסטר א׳</h3><span class="badge graded">בציון</span><span class="when">סוף סמסטר א׳</span></div>
+    <div class="weights"><span><b>30%</b> ניתוח מצב קיים: בעיות, כימות, מידול תהליכים, מדדים</span><span><b>20%</b> ארגון ומצב קיים</span><span><b>20%</b> נתונים, סטטיסטיקה וכיווני פתרון</span><span><b>10%</b> מטרות</span><span><b>10%</b> נראות</span><span><b>10%</b> הצגה</span></div>
+    <div class="row"><span class="badge">עוד לא נבנתה</span><span class="check" data-group="deck-semA"><label><input type="checkbox"><span>מוכנה</span></label><label><input type="checkbox"><span>הוצגה</span></label></span></div>
+  </article>
+
+  <article class="dk">
+    <div class="dk-head"><h3>הצגה לארגון + נספח 1</h3><span class="badge must">תנאי לפרסום הציון</span><span class="when">אחרי מצגת סמסטר א׳</span></div>
+    <p>מציגים לארגון את מצגת סמסטר א׳, וממלאים את נספח 1 (אישור הארגון, עם 5–10 משפטים של הערות). הטופס נשלח למנחה ולרכז. בלעדיו ציון המצגת לא מתפרסם.</p>
+    <div class="row"><span class="check" data-group="deck-org"><label><input type="checkbox"><span>הוצגה לארגון</span></label><label><input type="checkbox"><span>נספח 1 נשלח</span></label></span></div>
+  </article>
+
+  <article class="dk graded">
+    <div class="dk-head"><h3>פוסטר</h3><span class="badge graded">בציון</span><span class="when">היום האקדמי</span></div>
+    <div class="weights"><span><b>20%</b> הפתרון</span><span><b>20%</b> תשובות לשאלות</span><span><b>15%</b> נראות</span><span><b>15%</b> ניתוח נתונים</span><span><b>10%</b> רקע</span><span><b>10%</b> בעיות ומטרות</span><span><b>10%</b> תוצאות</span></div>
+    <div class="row"><span class="badge">עוד לא נבנה</span><span class="check" data-group="deck-poster"><label><input type="checkbox"><span>מוכן</span></label><label><input type="checkbox"><span>הוצג</span></label></span></div>
+  </article>
+
+  <article class="dk graded">
+    <div class="dk-head"><h3>מצגת מסכמת סמסטר ב׳</h3><span class="badge graded">בציון</span><span class="when">סוף סמסטר ב׳</span></div>
+    <p>הדגש: ההשפעה הכמותית והמדדים ששופרו.</p>
+    <div class="weights"><span><b>25%</b> הפתרון הנבחר</span><span><b>15%</b> מצב קיים</span><span><b>15%</b> שאלות</span><span><b>10%</b> חלופות ותועלת כמותית</span><span><b>10%</b> מסקנות</span><span><b>5%</b> מטרה</span><span><b>5%</b> הבעיה ועוצמתה</span><span><b>5%</b> מטרה, מדדים וערכי יעד</span><span><b>5%</b> הטמעה</span><span><b>5%</b> נראות</span></div>
+    <div class="row"><span class="badge">עוד לא נבנתה</span><span class="check" data-group="deck-semB"><label><input type="checkbox"><span>מוכנה</span></label><label><input type="checkbox"><span>הוצגה</span></label></span></div>
+  </article>
+
+  <article class="dk">
+    <div class="dk-head"><h3>מצגת לפגישת המסירה</h3><span class="badge must">חובה</span><span class="when">בסיום</span></div>
+    <p>המצגת המסכמת והחומרים לארגון, כדי שיוכלו ליישם בלעדינו. אחרי הפגישה: סיכום כתוב ומאושר, נספח 2 (אישור קבלה) ונספח 3 (משוב).</p>
+    <div class="row"><span class="check" data-group="deck-handover"><label><input type="checkbox"><span>הוצגה</span></label><label><input type="checkbox"><span>נספחים 2 ו־3 נשלחו</span></label></span></div>
+  </article>
+</div>
+
+<section id="files">
+  <h2><span class="num">+</span>מצגות וקבצים נוספים</h2>
+  <p>קישורים למצגות שנעשו מחוץ לאתר: Google Slides, PowerPoint ב-Drive, Canva. כדאי לוודא שהקובץ משותף עם הצוות.</p>
+  <div class="callout warn gate" id="gate" hidden></div>
+  <p class="live-off">הקישורים גלויים רק לצוות.</p>
+  <div class="live-on">
+    <ul class="links" id="links"></ul>
+    <form class="iform no-print" id="form">
+      <label class="wide">שם המצגת<input name="title" required placeholder="למשל: אוריינטציה, גרסה 2"></label>
+      <label class="wide">קישור<input name="url" type="url" required dir="ltr" placeholder="https://"></label>
+      <label>תאריך<input name="item_date" type="date"></label>
+      <label class="wide">הערה (לא חובה)<input name="body"></label>
+      <div class="actions"><button class="btn primary" type="submit">הוספה</button></div>
+    </form>
+  </div>
+</section>
+</main>
+
+<script>
+/*COMMON_JS*/
+
+(function(){
+  var esc=fsEsc, rows=[], form=document.getElementById('form'), F=function(n){return form.elements[n]};
+  var api=fsItems(['deck'],function(d){rows=d;render()},document.getElementById('gate'));
+  function safeUrl(u){return /^https?:\/\//i.test(u||'')?u:'#'}
+  function render(){
+    var list=rows.slice().sort(function(a,b){return (b.item_date||b.created_at)<(a.item_date||a.created_at)?-1:1});
+    document.getElementById('links').innerHTML=list.length?list.map(function(r){
+      return '<li><div class="lm"><a href="'+esc(safeUrl(r.url))+'" target="_blank" rel="noopener">'+esc(r.title)+'</a><small>'+(r.item_date?fsDate(r.item_date)+' · ':'')+'נוסף על ידי '+esc(r.created_by||'')+(r.body?' · '+esc(r.body):'')+'</small></div><span class="icon-act no-print"><button type="button" data-del="'+r.id+'" title="מחיקה">×</button></span></li>';
+    }).join(''):'<li class="empty" style="border:0;background:none">עוד אין קישורים.</li>';
+  }
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    api.save('deck',{title:F('title').value.trim(),url:F('url').value.trim(),item_date:F('item_date').value||null,body:F('body').value.trim()||null}).then(function(){form.reset()});
+  });
+  document.getElementById('links').addEventListener('click',function(e){
+    var b=e.target.closest('[data-del]'); if(b&&api.ok()&&confirm('להסיר את הקישור?')) api.remove(b.dataset.del);
+  });
+})();
+</script>
+</body>
+</html>

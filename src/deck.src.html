@@ -123,12 +123,7 @@ body.presenting .pres-ui:hover{opacity:1}
 <div class="topbar">
   <div class="brand">פרויקט גמר · ForSight Robotics</div>
   <nav class="tabs">
-    <a href="../ניהול%20הפרויקט.html">ניהול הפרויקט</a>
-    <a href="../טיימליין%20ותוכנית%20הכנה.html">טיימליין</a>
-    <a href="הכרת%20החברה%20-%20ForSight%20Robotics.html">הכרת החברה</a>
-    <a href="תיק%20עבודה%20-%20יום%20האפיון.html">תיק עבודה ליום האפיון</a>
-    <a class="current" href="#">מצגת פתיחה</a>
-    <a href="קורס%20הכנה%20-%20ניהול%20מלאי%20ו-Lean.html">קורס הכנה</a>
+    <!--NAV-->
   </nav>
   <button class="btn" id="printBtn" type="button">הדפסה</button>
   <button class="btn" id="themeBtn" type="button" aria-label="מצב כהה או בהיר">◐</button>
@@ -143,6 +138,7 @@ body.presenting .pres-ui:hover{opacity:1}
     <button class="btn primary" id="startBtn" type="button">▶ הצגה במסך מלא</button>
     <span><kbd>←</kbd> או רווח או קליק: השקף הבא · <kbd>→</kbd>: הקודם · <kbd>Esc</kbd>: יציאה</span>
     <span>הדפסה: שקף לכל עמוד, בלי הערות הדובר. כך שומרים PDF לשליחה לרן.</span>
+    <a href="@presentations">← לכל המצגות</a>
   </div>
 </header>
 
@@ -383,25 +379,6 @@ body.presenting .pres-ui:hover{opacity:1}
 
 (function(){
   var store=window.fsStore;
-  var state=store.load(); state.fields=state.fields||{};
-  document.querySelectorAll('[data-key]').forEach(function(el){
-    var k=el.getAttribute('data-key'), v=state.fields[k];
-    if(v!=null) el.textContent=v;
-    el.addEventListener('input',function(){
-      var s=store.load(); s.fields=s.fields||{}; s.fields[k]=el.textContent; store.save(s);
-    });
-  });
-
-  function applyFields(st){
-    var f=(st&&st.fields)||{};
-    document.querySelectorAll('[data-key]').forEach(function(el){
-      if(el===document.activeElement) return;
-      var k=el.getAttribute('data-key'), v=f[k]==null?'':f[k];
-      if(el.tagName==='TEXTAREA'){ if(el.value!==v) el.value=v; } else if(el.textContent!==v) el.textContent=v;
-    });
-  }
-  store.onChange(applyFields);
-
   var slides=Array.prototype.slice.call(document.querySelectorAll('.slide'));
   var total=slides.length, cur=0, body=document.body;
   slides.forEach(function(s,i){ s.querySelector('.n').textContent=(i+1)+' / '+total; });

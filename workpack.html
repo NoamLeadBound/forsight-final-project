@@ -151,6 +151,30 @@ footer.note{margin-top:56px;padding-top:16px;border-top:1px solid var(--border);
 .fs-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
 @media print{.fs-auth,.fs-bar{display:none!important}}
 
+/* shared lists: visible to signed-in team members only */
+body:not(.signed) .live-on{display:none!important}
+.live-off{display:none}
+body:not(.signed) .live-off{display:block;color:var(--muted);font-size:15px;border:1px dashed var(--border);border-radius:10px;padding:14px 16px;background:var(--surface)}
+.gate{margin:0 0 18px}
+.gate .btn{margin-top:8px}
+.iform{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px 10px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin:10px 0 14px}
+.iform label{display:flex;flex-direction:column;gap:3px;font-size:13px;color:var(--muted)}
+.iform label.wide{grid-column:1/-1}
+.iform input,.iform select,.iform textarea{font:inherit;font-size:15px;color:var(--text);background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:6px 9px;min-height:36px;width:100%}
+.iform textarea{min-height:90px;resize:vertical}
+.iform input:focus,.iform select:focus,.iform textarea:focus{outline:2px solid var(--accent-soft);border-color:var(--accent)}
+.iform .actions{grid-column:1/-1;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.iform.editing{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 12px;align-items:center}
+.chips button{font:inherit;font-size:13.5px;background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:999px;padding:3px 12px;cursor:pointer}
+.chips button[aria-pressed="true"]{background:var(--accent-soft);color:var(--accent);border-color:var(--accent);font-weight:600}
+.icon-act{display:flex;gap:2px;flex:0 0 auto}
+.icon-act button{background:none;border:0;color:var(--muted);cursor:pointer;font-size:15px;padding:2px 6px;border-radius:6px}
+.icon-act button:hover{background:var(--surface-2);color:var(--text)}
+.empty{color:var(--muted);font-size:15px;padding:6px 2px}
+.late{color:var(--no);font-weight:600}
+.pre{white-space:pre-wrap}
+
 .fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px 20px;margin-top:14px;font-size:15px}
 .fields label{display:flex;gap:8px;align-items:baseline;color:var(--muted)}
 .fields .field{flex:1;min-width:0;color:var(--text)}
@@ -170,10 +194,6 @@ body.must-only .qs li:not(.m){display:none}
 .btn[aria-pressed="true"]{background:var(--accent-soft);color:var(--accent);border-color:var(--accent)}
 .del{background:none;border:0;color:var(--muted);cursor:pointer;font-size:16px;padding:0 4px}
 .del:hover{color:var(--no)}
-.gloss td:first-child{font-weight:600;min-width:150px}
-.gloss .en{display:block;direction:ltr;unicode-bidi:isolate;text-align:right;font-weight:400;font-size:13px;color:var(--muted)}
-.gloss td:last-child{color:var(--muted);min-width:180px}
-.gloss tr.sec td{background:var(--surface-2);font-weight:700;font-size:13.5px;color:var(--muted)}
 @media print{
   .findings td:last-child,.findings th:last-child{display:none}
   body.must-only .qs li:not(.m){display:list-item}
@@ -185,12 +205,15 @@ body.must-only .qs li:not(.m){display:none}
 <div class="topbar">
   <div class="brand">פרויקט גמר · ForSight Robotics</div>
   <nav class="tabs">
-    <a href="index.html">ניהול הפרויקט</a>
-    <a href="timeline.html">טיימליין</a>
-    <a href="company.html">הכרת החברה</a>
-    <a class="current" href="#">תיק עבודה ליום האפיון</a>
-    <a href="deck.html">מצגת פתיחה</a>
+    <a href="index.html">טיימליין</a>
+    <a href="tasks.html">משימות</a>
+    <a href="meetings.html">פגישות</a>
+    <a href="notes.html">כתיבה</a>
+    <a href="company.html">מחקר החברה</a>
+    <a class="current" href="#">יום האפיון</a>
+    <a href="presentations.html">מצגות</a>
     <a href="course.html">קורס הכנה</a>
+    <a href="glossary.html">מושגים</a>
   </nav>
   <span class="counter" id="mustCounter"></span>
   <button class="btn" id="mustBtn" type="button" aria-pressed="false" title="להציג רק את שאלות החובה">רק ★</button>
@@ -208,7 +231,7 @@ body.must-only .qs li:not(.m){display:none}
     <label>מהארגון <span class="field" contenteditable="true" data-key="org-people" data-ph="שמות ותפקידים"></span></label>
   </div>
   <nav class="toc no-print" aria-label="תוכן">
-    <a href="#s0">0 לפני הביקור</a><a href="#s1">1 מטרות</a><a href="#s2">2 לו״ז ותפקידים</a><a href="#s3">3 השערות</a><a href="#s4">4 רן</a><a href="#s5">5 רכש</a><a href="#s6">6 מחסן</a><a href="#s7">7 ייצור</a><a href="#s8">8 ספקים</a><a href="#s9">9 איכות</a><a href="#s10">10 תצפית</a><a href="#s11">11 נתוני ERP</a><a href="#s12">12 ממצאים</a><a href="#s13">13 סגירה</a><a href="#s14">14 מילון</a>
+    <a href="#s0">0 לפני הביקור</a><a href="#s1">1 מטרות</a><a href="#s2">2 לו״ז ותפקידים</a><a href="#s3">3 השערות</a><a href="#s4">4 רן</a><a href="#s5">5 רכש</a><a href="#s6">6 מחסן</a><a href="#s7">7 ייצור</a><a href="#s8">8 ספקים</a><a href="#s9">9 איכות</a><a href="#s10">10 תצפית</a><a href="#s11">11 נתוני ERP</a><a href="#s12">12 ממצאים</a><a href="#s13">13 סגירה</a><a href="glossary.html">מושגים</a>
   </nav>
 </header>
 
@@ -223,9 +246,9 @@ body.must-only .qs li:not(.m){display:none}
   <ul class="check" data-group="before">
     <li><label><input type="checkbox"><span>לשלוח לרן את המייל שלמטה, כמה ימים לפני, ולקבל תשובה על סדר היום, המשתתפים והצילום</span></label></li>
     <li><label><input type="checkbox"><span>לקרוא את <a href="company.html">הכרת החברה</a> (כרבע שעה). לדעת להסביר במשפט מה זה JASPER ובאיזה שלב החברה</span></label></li>
-    <li><label><input type="checkbox"><span>לחלק תפקידים (סעיף 2) ולחלק את שקפי <a href="deck.html">מצגת הפתיחה</a> בין הדוברים</span></label></li>
+    <li><label><input type="checkbox"><span>לחלק תפקידים (סעיף 2) ולחלק את שקפי <a href="deck-opening.html">מצגת הפתיחה</a> בין הדוברים</span></label></li>
     <li><label><input type="checkbox"><span>לעבור על המצגת בקול פעם אחת, עם שעון: עד 8 דקות</span></label></li>
-    <li><label><input type="checkbox"><span>לעבור על המילון (סעיף 14), כדי להבין את המונחים שיעלו בשיחה</span></label></li>
+    <li><label><input type="checkbox"><span>לעבור על <a href="glossary.html">דף המושגים</a>, כדי להבין את המונחים שיעלו בשיחה</span></label></li>
     <li><label><input type="checkbox"><span>להדפיס את תיק העבודה (או לפתוח אותו בטאבלט), ועוד שני עותקים של טבלת הנתונים (סעיף 11). אחד נשאר אצל רן</span></label></li>
     <li><label><input type="checkbox"><span>לשמור את המצגת כ-PDF, ולהביא אותה גם בטלפון או בדיסק און קי</span></label></li>
     <li><label><input type="checkbox"><span>ציוד: מחשב טעון ומטען, שעון עצר בטלפון, מטר מתקפל, דפים לתרשים ספגטי</span></label></li>
@@ -551,44 +574,6 @@ body.must-only .qs li:not(.m){display:none}
   <button class="btn no-print" type="button" data-copy="emailText">העתקת הנוסח</button>
 </section>
 
-<section id="s14">
-  <h2><span class="num">14</span>מילון: מונחים שתשמעו בשטח</h2>
-  <p class="goal">מונחים שיעלו בשיחות עם רכש, מחסן ואיכות בחברת מכשור רפואי. מונחי Lean (Kanban, 5S, VMI ועוד) מוסברים ב<a href="course.html">קורס ההכנה</a>. כשעולה מונח שלא מופיע כאן, שואלים: "מה זה אומר אצלכם?"</p>
-  <div class="table-wrap"><table class="gloss">
-    <thead><tr><th>מונח</th><th>מה זה</th><th>למה זה חשוב לנו</th></tr></thead>
-    <tbody>
-      <tr class="sec"><td colspan="3">מלאי ורכש</td></tr>
-      <tr><td>מק״ט<span class="en">Part Number</span></td><td>מספר הזיהוי של פריט במערכת</td><td>כל פריט C הוא מק״ט שמישהו צריך לתחזק, לספור ולהזמין</td></tr>
-      <tr><td>ERP</td><td>המערכת שמנהלת מלאי, רכש וייצור. בישראל נפוצות Priority ו-SAP</td><td>משם מגיעים כל הנתונים. לשאול איזו מערכת ומי יודע להוציא ממנה דוחות</td></tr>
-      <tr><td>עץ מוצר<span class="en">BOM</span></td><td>רשימת כל החלקים והכמויות שנכנסים למערכת או למכלול</td><td>מחבר בין כמה מערכות מייצרים לבין כמה ברגים צורכים</td></tr>
-      <tr><td>פק״ע, פקודת עבודה<span class="en">Work Order</span></td><td>הוראה לייצר מכלול או מערכת. לפיה מנפקים חלקים</td><td>אם מנפקים לפי פק״ע, כל בורג עובר רישום, וזה זמן</td></tr>
-      <tr><td>ניפוק, ליקוט וקיט<span class="en">Kitting</span></td><td>הוצאת חלקים מהמחסן לייצור. קיט: כל החלקים לפק״ע אחת, במגש או בשקית</td><td>בשיטות כמו Two-Bin, פריטי C בדרך כלל יוצאים מהקיט ויושבים ליד העמדה</td></tr>
-      <tr><td>גריעה לאחור<span class="en">Backflush</span></td><td>המערכת מורידה מלאי לפי עץ המוצר כשמדווחים על סיום ייצור, בלי ניפוק פריט־פריט</td><td>דרך נפוצה לרשום צריכה של פריטים שנמצאים במלאי פתוח ליד הקו</td></tr>
-      <tr><td>נקודת הזמנה ורמת מקסימום<span class="en">ROP, Min/Max</span></td><td>רמת המלאי שבה מזמינים, והרמה שאליה משלימים</td><td>אם לא מעדכנים אותן, נוצרים יחד עודפים וחוסרים</td></tr>
-      <tr><td>מלאי ביטחון<span class="en">Safety Stock</span></td><td>מלאי נוסף שמגן מתנודות בצריכה ובזמני האספקה</td><td>בפריטים זולים אפשר להחזיק יותר ממנו, וכך לחסוך הזמנות וחוסרים</td></tr>
-      <tr><td>MOQ</td><td>כמות המינימום שהספק מוכר בהזמנה</td><td>סיבה נפוצה למלאי עודף בפריטים זולים</td></tr>
-      <tr><td>זמן אספקה<span class="en">Lead Time</span></td><td>הזמן מההזמנה ועד שהפריט על המדף</td><td>קובע כמה מלאי צריך להחזיק</td></tr>
-      <tr><td>הזמנת רכש והזמנת מסגרת<span class="en">PO, Blanket PO</span></td><td>הזמנת מסגרת: הזמנה אחת לתקופה ארוכה, עם משיכות לפי הצורך</td><td>מקטינה את מספר ההזמנות גם בלי לשנות שום דבר במחסן</td></tr>
-      <tr><td>ספירה מחזורית<span class="en">Cycle Count</span></td><td>ספירה של חלק מהמק״טים בכל פעם, במקום ספירה שנתית אחת</td><td>המקור לנתונים על דיוק רישום המלאי</td></tr>
-      <tr><td>מלאי קונסיגנציה<span class="en">Consignment</span></td><td>מלאי שיושב אצלכם אבל שייך לספק עד שמשתמשים בו</td><td>קרוב ל-VMI. משנה מי מממן את המלאי</td></tr>
-      <tr><td>נקודת שימוש<span class="en">POU, Point of Use</span></td><td>אחסון החלק ליד העמדה שבה מרכיבים אותו</td><td>הבסיס של Two-Bin ושל מגירות מנוהלות</td></tr>
-      <tr class="sec"><td colspan="3">איכות ורגולציה במכשור רפואי</td></tr>
-      <tr><td>ISO 13485</td><td>תקן מערכת האיכות למכשור רפואי. ForSight מוסמכת מ־2025, כולל ייצור</td><td>כל שינוי בשיטת האספקה צריך להתאים לנהלים שלו</td></tr>
-      <tr><td>אצווה, מספר סידורי ועקיבות<span class="en">Lot, Serial, Traceability</span></td><td>היכולת לדעת מאיזו אספקה הגיע חלק שנכנס למערכת מסוימת</td><td>פריט שדורש עקיבות לא נשפך למגירה משותפת. זו אולי השאלה החשובה ביום</td></tr>
-      <tr><td>DHR<span class="en">Device History Record</span></td><td>התיעוד של מערכת מסוימת שיוצרה: מה נכנס בה, מי עשה ואילו בדיקות</td><td>קובע מה חייבים לרשום על פריטי C בכל מערכת</td></tr>
-      <tr><td>DMR<span class="en">Device Master Record</span></td><td>״המתכון״ של המכשיר: שרטוטים, מפרטים והוראות עבודה</td><td>שינוי בפריט או בספק עשוי לחייב עדכון שלו</td></tr>
-      <tr><td>ספקים מאושרים<span class="en">AVL / ASL</span></td><td>רשימת הספקים שמערכת האיכות אישרה</td><td>מעבר לספק VMI חדש עשוי לדרוש תהליך אישור, ולוקח זמן</td></tr>
-      <tr><td>בדיקת קבלה<span class="en">Incoming Inspection</span></td><td>בדיקה של סחורה שמגיעה, לפני שהיא נכנסת למלאי</td><td>ב-VMI צריך להחליט אם הבדיקה נשארת, ואיך</td></tr>
-      <tr><td>CoC<span class="en">Certificate of Conformance</span></td><td>תעודה מהספק שהפריט עומד במפרט</td><td>לפעמים מחליפה בדיקת קבלה</td></tr>
-      <tr><td>אי־התאמה וועדת חריגים<span class="en">NCR, MRB</span></td><td>רישום של פריט פגום או חריג, וצוות שמחליט מה עושים בו</td><td>מקור למידע על בעיות איכות אצל ספקים</td></tr>
-      <tr><td>שינוי הנדסי<span class="en">ECO / ECN</span></td><td>שינוי בתכנון שמחליף, מוסיף או מוריד חלקים</td><td>בחברה שעדיין מפתחת זה קורה הרבה, ומשאיר במלאי פריטים שכבר לא בשימוש</td></tr>
-      <tr><td>NPI<span class="en">New Product Introduction</span></td><td>המעבר של מוצר מפיתוח לייצור</td><td>השלב שבו ForSight נמצאת. הכמויות עוד ישתנו</td></tr>
-      <tr><td>ESD</td><td>הגנה מפני פריקה של חשמל סטטי: ביגוד, משטחים ואריזות מיוחדות</td><td>משפיע על אחסון ואריזה של חלק מהרכיבים, ועל הכניסה שלכם לאזור</td></tr>
-      <tr><td>חדר נקי<span class="en">Clean Room</span></td><td>אזור עם בקרה על אבק וחלקיקים</td><td>קובע מה נכנס אליו ובאיזו אריזה, וזה רלוונטי גם למגירות ליד הקו</td></tr>
-    </tbody>
-  </table></div>
-</section>
-
 <footer class="note">מה שמקלידים ומסמנים בדף נשמר רק בדפדפן הזה, במחשב הזה. בסוף היום: ייצוא הממצאים ל-CSV ושמירה בתיקייה 03 נתונים, או הדפסה ל-PDF.</footer>
 </main>
 
@@ -597,7 +582,7 @@ body.must-only .qs li:not(.m){display:none}
    Signed in as a team member: state lives in Supabase and changes from others arrive live.
    Otherwise: state stays in this browser only (localStorage). Pages talk to window.fsStore either way. */
 (function(){
-  var CFG={url:'__SUPABASE_URL__',key:'__SUPABASE_ANON_KEY__'};
+  var CFG={url:'https://gbekhmuavluzqemzwnoi.supabase.co',key:'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdiZWtobXVhdmx1enFlbXp3bm9pIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM2OTQyMDUsImV4cCI6MjEwOTI3MDIwNX0.AJ6acdzDKnoHuFQCemOjIVAvV7oij0JwPS4sRirUc1M'};
   var configured=CFG.url.indexOf('__')!==0 && !!window.supabase;
   var root=document.documentElement;
   var PAGE=root.getAttribute('data-page')||document.title;
@@ -775,6 +760,73 @@ body.must-only .qs li:not(.m){display:none}
   }
 })();
 
+/* Shared lists (tasks, meetings, writing, presentation links, terms) in the Supabase table "items".
+   fsItems(kinds, onData, gateEl) loads the rows of those kinds once a team member is signed in,
+   keeps them live, and returns {save, remove, ok, who}. */
+(function(){
+  var esc=window.fsEsc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
+  window.fsToday=function(){var d=new Date();return new Date(d-d.getTimezoneOffset()*60000).toISOString().slice(0,10)};
+  window.fsDate=function(d){if(!d)return'';var p=String(d).slice(0,10).split('-');return (+p[2])+'.'+(+p[1])+'.'+p[0]};
+  window.fsWhen=function(ts){if(!ts)return'';var d=new Date(ts);return d.getDate()+'.'+(d.getMonth()+1)+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')};
+
+  window.fsItems=function(kinds,onData,gateEl){
+    var S=window.fsSync, sub=null;
+    function ok(){return !!(S&&S.configured&&S.member())}
+    function who(){var u=S.user();return u?(u.name||u.email):''}
+    function gate(){
+      document.body.classList.toggle('signed',ok());
+      if(!gateEl) return;
+      if(ok()){gateEl.hidden=true;return}
+      gateEl.hidden=false;
+      if(!S||!S.configured){gateEl.innerHTML='<strong>השמירה המשותפת לא מחוברת</strong>התוכן כאן יופיע אחרי חיבור מסד הנתונים.';return}
+      if(S.user()){gateEl.innerHTML='<strong>המייל <bdi>'+esc(S.user().email)+'</bdi> עוד לא ברשימת הצוות</strong>בקשו מנועם להוסיף אותו, ואז רעננו את הדף.';return}
+      gateEl.innerHTML='<strong>צריך להתחבר</strong>התוכן כאן גלוי רק לצוות. <button class="btn primary" type="button">התחברות</button>';
+      gateEl.querySelector('button').onclick=function(){S.login()};
+    }
+    function load(){
+      S.client().from('items').select('*').in('kind',kinds).order('created_at',{ascending:true}).then(function(r){
+        if(r.error){console.error(r.error);return}
+        onData(r.data||[]);
+      });
+    }
+    var api={
+      ok:ok,
+      who:function(){return ok()?who():''},
+      reload:load,
+      save:function(kind,rec,id){
+        if(!ok()) return Promise.reject(new Error('not signed in'));
+        rec=Object.assign({},rec,{updated_by:who()});
+        var q=id?S.client().from('items').update(rec).eq('id',id).select()
+                :S.client().from('items').insert(Object.assign({kind:kind,created_by:who()},rec)).select();
+        return q.then(function(r){
+          if(r.error){alert('השמירה נכשלה: '+r.error.message);throw r.error}
+          load(); return r.data&&r.data[0];
+        });
+      },
+      remove:function(id){
+        return S.client().from('items').delete().eq('id',id).then(function(r){
+          if(r.error) alert('המחיקה נכשלה: '+r.error.message);
+          load();
+        });
+      }
+    };
+    gate();
+    if(S&&S.configured){
+      S.onAuth(function(){
+        gate();
+        if(ok()){
+          load();
+          if(!sub) sub=S.client().channel('items:'+kinds.join('-')).on('postgres_changes',{event:'*',schema:'public',table:'items'},function(p){
+            var k=(p.new&&p.new.kind)||(p.old&&p.old.kind);
+            if(!k||kinds.indexOf(k)>=0) load();
+          }).subscribe();
+        } else onData([]);
+      });
+    } else onData([]);
+    return api;
+  };
+})();
+
 (function(){
   var root=document.documentElement;
   function load(k){try{var v=localStorage.getItem(k);return v?JSON.parse(v):null}catch(e){return null}}
@@ -811,33 +863,27 @@ body.must-only .qs li:not(.m){display:none}
   }
   applyChecks(window.fsStore.load());
   window.fsStore.onChange(applyChecks);
+
+  // Anything with data-key (an editable span or cell, a textarea, an input) remembers what was typed.
+  var fields=Array.prototype.slice.call(document.querySelectorAll('[data-key]'));
+  function val(el){return (el.tagName==='TEXTAREA'||el.tagName==='INPUT')?el.value:el.textContent}
+  function setVal(el,v){if(el.tagName==='TEXTAREA'||el.tagName==='INPUT'){if(el.value!==v)el.value=v}else if(el.textContent!==v)el.textContent=v}
+  fields.forEach(function(el){
+    el.addEventListener(el.tagName==='INPUT'&&el.type==='date'?'change':'input',function(){
+      var s=window.fsStore.load(); s.fields=s.fields||{}; s.fields[el.getAttribute('data-key')]=val(el); window.fsStore.save(s);
+    });
+  });
+  function applyFields(s){
+    var f=(s&&s.fields)||{};
+    fields.forEach(function(el){ if(el!==document.activeElement){var v=f[el.getAttribute('data-key')];setVal(el,v==null?'':v)} });
+  }
+  applyFields(window.fsStore.load());
+  window.fsStore.onChange(applyFields);
 })();
 
 
 (function(){
   var store=window.fsStore;
-
-  // Free-text fields, notes and editable cells: anything with data-key.
-  var state=store.load(); state.fields=state.fields||{};
-  document.querySelectorAll('[data-key]').forEach(function(el){
-    var k=el.getAttribute('data-key'), v=state.fields[k];
-    var isText=el.tagName==='TEXTAREA';
-    if(v!=null){ if(isText) el.value=v; else el.textContent=v; }
-    el.addEventListener('input',function(){
-      var s=store.load(); s.fields=s.fields||{};
-      s.fields[k]=isText?el.value:el.textContent; store.save(s);
-    });
-  });
-
-  function applyFields(st){
-    var f=(st&&st.fields)||{};
-    document.querySelectorAll('[data-key]').forEach(function(el){
-      if(el===document.activeElement) return;
-      var k=el.getAttribute('data-key'), v=f[k]==null?'':f[k];
-      if(el.tagName==='TEXTAREA'){ if(el.value!==v) el.value=v; } else if(el.textContent!==v) el.textContent=v;
-    });
-  }
-  store.onChange(applyFields);
 
   // Must-only filter and the must-ask counter.
   var mustBtn=document.getElementById('mustBtn'), counter=document.getElementById('mustCounter');

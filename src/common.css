@@ -142,3 +142,27 @@ footer.note{margin-top:56px;padding-top:16px;border-top:1px solid var(--border);
 .fs-msg{min-height:22px;font-size:14px;color:var(--no);margin:10px 0 4px}
 .fs-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
 @media print{.fs-auth,.fs-bar{display:none!important}}
+
+/* shared lists: visible to signed-in team members only */
+body:not(.signed) .live-on{display:none!important}
+.live-off{display:none}
+body:not(.signed) .live-off{display:block;color:var(--muted);font-size:15px;border:1px dashed var(--border);border-radius:10px;padding:14px 16px;background:var(--surface)}
+.gate{margin:0 0 18px}
+.gate .btn{margin-top:8px}
+.iform{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px 10px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin:10px 0 14px}
+.iform label{display:flex;flex-direction:column;gap:3px;font-size:13px;color:var(--muted)}
+.iform label.wide{grid-column:1/-1}
+.iform input,.iform select,.iform textarea{font:inherit;font-size:15px;color:var(--text);background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:6px 9px;min-height:36px;width:100%}
+.iform textarea{min-height:90px;resize:vertical}
+.iform input:focus,.iform select:focus,.iform textarea:focus{outline:2px solid var(--accent-soft);border-color:var(--accent)}
+.iform .actions{grid-column:1/-1;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.iform.editing{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 12px;align-items:center}
+.chips button{font:inherit;font-size:13.5px;background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:999px;padding:3px 12px;cursor:pointer}
+.chips button[aria-pressed="true"]{background:var(--accent-soft);color:var(--accent);border-color:var(--accent);font-weight:600}
+.icon-act{display:flex;gap:2px;flex:0 0 auto}
+.icon-act button{background:none;border:0;color:var(--muted);cursor:pointer;font-size:15px;padding:2px 6px;border-radius:6px}
+.icon-act button:hover{background:var(--surface-2);color:var(--text)}
+.empty{color:var(--muted);font-size:15px;padding:6px 2px}
+.late{color:var(--no);font-weight:600}
+.pre{white-space:pre-wrap}

@@ -25,10 +25,6 @@ body.must-only .qs li:not(.m){display:none}
 .btn[aria-pressed="true"]{background:var(--accent-soft);color:var(--accent);border-color:var(--accent)}
 .del{background:none;border:0;color:var(--muted);cursor:pointer;font-size:16px;padding:0 4px}
 .del:hover{color:var(--no)}
-.gloss td:first-child{font-weight:600;min-width:150px}
-.gloss .en{display:block;direction:ltr;unicode-bidi:isolate;text-align:right;font-weight:400;font-size:13px;color:var(--muted)}
-.gloss td:last-child{color:var(--muted);min-width:180px}
-.gloss tr.sec td{background:var(--surface-2);font-weight:700;font-size:13.5px;color:var(--muted)}
 @media print{
   .findings td:last-child,.findings th:last-child{display:none}
   body.must-only .qs li:not(.m){display:list-item}
@@ -39,12 +35,7 @@ body.must-only .qs li:not(.m){display:none}
 <div class="topbar">
   <div class="brand">פרויקט גמר · ForSight Robotics</div>
   <nav class="tabs">
-    <a href="../ניהול%20הפרויקט.html">ניהול הפרויקט</a>
-    <a href="../%D7%98%D7%99%D7%99%D7%9E%D7%9C%D7%99%D7%99%D7%9F%20%D7%95%D7%AA%D7%95%D7%9B%D7%A0%D7%99%D7%AA%20%D7%94%D7%9B%D7%A0%D7%94.html">טיימליין</a>
-    <a href="הכרת%20החברה%20-%20ForSight%20Robotics.html">הכרת החברה</a>
-    <a class="current" href="#">תיק עבודה ליום האפיון</a>
-    <a href="מצגת%20פתיחה%20-%20יום%20האפיון.html">מצגת פתיחה</a>
-    <a href="%D7%A7%D7%95%D7%A8%D7%A1%20%D7%94%D7%9B%D7%A0%D7%94%20-%20%D7%A0%D7%99%D7%94%D7%95%D7%9C%20%D7%9E%D7%9C%D7%90%D7%99%20%D7%95-Lean.html">קורס הכנה</a>
+    <!--NAV-->
   </nav>
   <span class="counter" id="mustCounter"></span>
   <button class="btn" id="mustBtn" type="button" aria-pressed="false" title="להציג רק את שאלות החובה">רק ★</button>
@@ -62,7 +53,7 @@ body.must-only .qs li:not(.m){display:none}
     <label>מהארגון <span class="field" contenteditable="true" data-key="org-people" data-ph="שמות ותפקידים"></span></label>
   </div>
   <nav class="toc no-print" aria-label="תוכן">
-    <a href="#s0">0 לפני הביקור</a><a href="#s1">1 מטרות</a><a href="#s2">2 לו״ז ותפקידים</a><a href="#s3">3 השערות</a><a href="#s4">4 רן</a><a href="#s5">5 רכש</a><a href="#s6">6 מחסן</a><a href="#s7">7 ייצור</a><a href="#s8">8 ספקים</a><a href="#s9">9 איכות</a><a href="#s10">10 תצפית</a><a href="#s11">11 נתוני ERP</a><a href="#s12">12 ממצאים</a><a href="#s13">13 סגירה</a><a href="#s14">14 מילון</a>
+    <a href="#s0">0 לפני הביקור</a><a href="#s1">1 מטרות</a><a href="#s2">2 לו״ז ותפקידים</a><a href="#s3">3 השערות</a><a href="#s4">4 רן</a><a href="#s5">5 רכש</a><a href="#s6">6 מחסן</a><a href="#s7">7 ייצור</a><a href="#s8">8 ספקים</a><a href="#s9">9 איכות</a><a href="#s10">10 תצפית</a><a href="#s11">11 נתוני ERP</a><a href="#s12">12 ממצאים</a><a href="#s13">13 סגירה</a><a href="@glossary">מושגים</a>
   </nav>
 </header>
 
@@ -76,10 +67,10 @@ body.must-only .qs li:not(.m){display:none}
   <p class="goal">מה עושים בימים שלפני, כדי להגיע מוכנים.</p>
   <ul class="check" data-group="before">
     <li><label><input type="checkbox"><span>לשלוח לרן את המייל שלמטה, כמה ימים לפני, ולקבל תשובה על סדר היום, המשתתפים והצילום</span></label></li>
-    <li><label><input type="checkbox"><span>לקרוא את <a href="הכרת%20החברה%20-%20ForSight%20Robotics.html">הכרת החברה</a> (כרבע שעה). לדעת להסביר במשפט מה זה JASPER ובאיזה שלב החברה</span></label></li>
-    <li><label><input type="checkbox"><span>לחלק תפקידים (סעיף 2) ולחלק את שקפי <a href="מצגת%20פתיחה%20-%20יום%20האפיון.html">מצגת הפתיחה</a> בין הדוברים</span></label></li>
+    <li><label><input type="checkbox"><span>לקרוא את <a href="@company">הכרת החברה</a> (כרבע שעה). לדעת להסביר במשפט מה זה JASPER ובאיזה שלב החברה</span></label></li>
+    <li><label><input type="checkbox"><span>לחלק תפקידים (סעיף 2) ולחלק את שקפי <a href="@deck">מצגת הפתיחה</a> בין הדוברים</span></label></li>
     <li><label><input type="checkbox"><span>לעבור על המצגת בקול פעם אחת, עם שעון: עד 8 דקות</span></label></li>
-    <li><label><input type="checkbox"><span>לעבור על המילון (סעיף 14), כדי להבין את המונחים שיעלו בשיחה</span></label></li>
+    <li><label><input type="checkbox"><span>לעבור על <a href="@glossary">דף המושגים</a>, כדי להבין את המונחים שיעלו בשיחה</span></label></li>
     <li><label><input type="checkbox"><span>להדפיס את תיק העבודה (או לפתוח אותו בטאבלט), ועוד שני עותקים של טבלת הנתונים (סעיף 11). אחד נשאר אצל רן</span></label></li>
     <li><label><input type="checkbox"><span>לשמור את המצגת כ-PDF, ולהביא אותה גם בטלפון או בדיסק און קי</span></label></li>
     <li><label><input type="checkbox"><span>ציוד: מחשב טעון ומטען, שעון עצר בטלפון, מטר מתקפל, דפים לתרשים ספגטי</span></label></li>
@@ -199,7 +190,7 @@ body.must-only .qs li:not(.m){display:none}
     <li><label><input type="checkbox"><span>אילו מדדים התפעול מדווח להנהלה היום?</span></label></li>
   </ul>
   <h4>מהמחקר על החברה</h4>
-  <p class="legend-line">שאלות שהמקורות הפומביים לא עונים עליהן. הרקע בדף <a href="הכרת%20החברה%20-%20ForSight%20Robotics.html">הכרת החברה</a>.</p>
+  <p class="legend-line">שאלות שהמקורות הפומביים לא עונים עליהן. הרקע בדף <a href="@company">הכרת החברה</a>.</p>
   <ul class="check qs" data-group="ran-research">
     <li class="m"><label><input type="checkbox"><span><span class="star">★</span> מה מייצרים ומרכיבים כאן, ומה מגיע מקבלני משנה? ההרכבה הסופית של JASPER נעשית אצלכם?</span></label></li>
     <li><label><input type="checkbox"><span>מתי עברתם לקיסריה? מה יש באתר: הרכבה, בדיקות, מחסן? נשארה פעילות ביקנעם?</span></label></li>
@@ -405,44 +396,6 @@ body.must-only .qs li:not(.m){display:none}
   <button class="btn no-print" type="button" data-copy="emailText">העתקת הנוסח</button>
 </section>
 
-<section id="s14">
-  <h2><span class="num">14</span>מילון: מונחים שתשמעו בשטח</h2>
-  <p class="goal">מונחים שיעלו בשיחות עם רכש, מחסן ואיכות בחברת מכשור רפואי. מונחי Lean (Kanban, 5S, VMI ועוד) מוסברים ב<a href="קורס%20הכנה%20-%20ניהול%20מלאי%20ו-Lean.html">קורס ההכנה</a>. כשעולה מונח שלא מופיע כאן, שואלים: "מה זה אומר אצלכם?"</p>
-  <div class="table-wrap"><table class="gloss">
-    <thead><tr><th>מונח</th><th>מה זה</th><th>למה זה חשוב לנו</th></tr></thead>
-    <tbody>
-      <tr class="sec"><td colspan="3">מלאי ורכש</td></tr>
-      <tr><td>מק״ט<span class="en">Part Number</span></td><td>מספר הזיהוי של פריט במערכת</td><td>כל פריט C הוא מק״ט שמישהו צריך לתחזק, לספור ולהזמין</td></tr>
-      <tr><td>ERP</td><td>המערכת שמנהלת מלאי, רכש וייצור. בישראל נפוצות Priority ו-SAP</td><td>משם מגיעים כל הנתונים. לשאול איזו מערכת ומי יודע להוציא ממנה דוחות</td></tr>
-      <tr><td>עץ מוצר<span class="en">BOM</span></td><td>רשימת כל החלקים והכמויות שנכנסים למערכת או למכלול</td><td>מחבר בין כמה מערכות מייצרים לבין כמה ברגים צורכים</td></tr>
-      <tr><td>פק״ע, פקודת עבודה<span class="en">Work Order</span></td><td>הוראה לייצר מכלול או מערכת. לפיה מנפקים חלקים</td><td>אם מנפקים לפי פק״ע, כל בורג עובר רישום, וזה זמן</td></tr>
-      <tr><td>ניפוק, ליקוט וקיט<span class="en">Kitting</span></td><td>הוצאת חלקים מהמחסן לייצור. קיט: כל החלקים לפק״ע אחת, במגש או בשקית</td><td>בשיטות כמו Two-Bin, פריטי C בדרך כלל יוצאים מהקיט ויושבים ליד העמדה</td></tr>
-      <tr><td>גריעה לאחור<span class="en">Backflush</span></td><td>המערכת מורידה מלאי לפי עץ המוצר כשמדווחים על סיום ייצור, בלי ניפוק פריט־פריט</td><td>דרך נפוצה לרשום צריכה של פריטים שנמצאים במלאי פתוח ליד הקו</td></tr>
-      <tr><td>נקודת הזמנה ורמת מקסימום<span class="en">ROP, Min/Max</span></td><td>רמת המלאי שבה מזמינים, והרמה שאליה משלימים</td><td>אם לא מעדכנים אותן, נוצרים יחד עודפים וחוסרים</td></tr>
-      <tr><td>מלאי ביטחון<span class="en">Safety Stock</span></td><td>מלאי נוסף שמגן מתנודות בצריכה ובזמני האספקה</td><td>בפריטים זולים אפשר להחזיק יותר ממנו, וכך לחסוך הזמנות וחוסרים</td></tr>
-      <tr><td>MOQ</td><td>כמות המינימום שהספק מוכר בהזמנה</td><td>סיבה נפוצה למלאי עודף בפריטים זולים</td></tr>
-      <tr><td>זמן אספקה<span class="en">Lead Time</span></td><td>הזמן מההזמנה ועד שהפריט על המדף</td><td>קובע כמה מלאי צריך להחזיק</td></tr>
-      <tr><td>הזמנת רכש והזמנת מסגרת<span class="en">PO, Blanket PO</span></td><td>הזמנת מסגרת: הזמנה אחת לתקופה ארוכה, עם משיכות לפי הצורך</td><td>מקטינה את מספר ההזמנות גם בלי לשנות שום דבר במחסן</td></tr>
-      <tr><td>ספירה מחזורית<span class="en">Cycle Count</span></td><td>ספירה של חלק מהמק״טים בכל פעם, במקום ספירה שנתית אחת</td><td>המקור לנתונים על דיוק רישום המלאי</td></tr>
-      <tr><td>מלאי קונסיגנציה<span class="en">Consignment</span></td><td>מלאי שיושב אצלכם אבל שייך לספק עד שמשתמשים בו</td><td>קרוב ל-VMI. משנה מי מממן את המלאי</td></tr>
-      <tr><td>נקודת שימוש<span class="en">POU, Point of Use</span></td><td>אחסון החלק ליד העמדה שבה מרכיבים אותו</td><td>הבסיס של Two-Bin ושל מגירות מנוהלות</td></tr>
-      <tr class="sec"><td colspan="3">איכות ורגולציה במכשור רפואי</td></tr>
-      <tr><td>ISO 13485</td><td>תקן מערכת האיכות למכשור רפואי. ForSight מוסמכת מ־2025, כולל ייצור</td><td>כל שינוי בשיטת האספקה צריך להתאים לנהלים שלו</td></tr>
-      <tr><td>אצווה, מספר סידורי ועקיבות<span class="en">Lot, Serial, Traceability</span></td><td>היכולת לדעת מאיזו אספקה הגיע חלק שנכנס למערכת מסוימת</td><td>פריט שדורש עקיבות לא נשפך למגירה משותפת. זו אולי השאלה החשובה ביום</td></tr>
-      <tr><td>DHR<span class="en">Device History Record</span></td><td>התיעוד של מערכת מסוימת שיוצרה: מה נכנס בה, מי עשה ואילו בדיקות</td><td>קובע מה חייבים לרשום על פריטי C בכל מערכת</td></tr>
-      <tr><td>DMR<span class="en">Device Master Record</span></td><td>״המתכון״ של המכשיר: שרטוטים, מפרטים והוראות עבודה</td><td>שינוי בפריט או בספק עשוי לחייב עדכון שלו</td></tr>
-      <tr><td>ספקים מאושרים<span class="en">AVL / ASL</span></td><td>רשימת הספקים שמערכת האיכות אישרה</td><td>מעבר לספק VMI חדש עשוי לדרוש תהליך אישור, ולוקח זמן</td></tr>
-      <tr><td>בדיקת קבלה<span class="en">Incoming Inspection</span></td><td>בדיקה של סחורה שמגיעה, לפני שהיא נכנסת למלאי</td><td>ב-VMI צריך להחליט אם הבדיקה נשארת, ואיך</td></tr>
-      <tr><td>CoC<span class="en">Certificate of Conformance</span></td><td>תעודה מהספק שהפריט עומד במפרט</td><td>לפעמים מחליפה בדיקת קבלה</td></tr>
-      <tr><td>אי־התאמה וועדת חריגים<span class="en">NCR, MRB</span></td><td>רישום של פריט פגום או חריג, וצוות שמחליט מה עושים בו</td><td>מקור למידע על בעיות איכות אצל ספקים</td></tr>
-      <tr><td>שינוי הנדסי<span class="en">ECO / ECN</span></td><td>שינוי בתכנון שמחליף, מוסיף או מוריד חלקים</td><td>בחברה שעדיין מפתחת זה קורה הרבה, ומשאיר במלאי פריטים שכבר לא בשימוש</td></tr>
-      <tr><td>NPI<span class="en">New Product Introduction</span></td><td>המעבר של מוצר מפיתוח לייצור</td><td>השלב שבו ForSight נמצאת. הכמויות עוד ישתנו</td></tr>
-      <tr><td>ESD</td><td>הגנה מפני פריקה של חשמל סטטי: ביגוד, משטחים ואריזות מיוחדות</td><td>משפיע על אחסון ואריזה של חלק מהרכיבים, ועל הכניסה שלכם לאזור</td></tr>
-      <tr><td>חדר נקי<span class="en">Clean Room</span></td><td>אזור עם בקרה על אבק וחלקיקים</td><td>קובע מה נכנס אליו ובאיזו אריזה, וזה רלוונטי גם למגירות ליד הקו</td></tr>
-    </tbody>
-  </table></div>
-</section>
-
 <footer class="note">מה שמקלידים ומסמנים בדף נשמר רק בדפדפן הזה, במחשב הזה. בסוף היום: ייצוא הממצאים ל-CSV ושמירה בתיקייה 03 נתונים, או הדפסה ל-PDF.</footer>
 </main>
 
@@ -451,28 +404,6 @@ body.must-only .qs li:not(.m){display:none}
 
 (function(){
   var store=window.fsStore;
-
-  // Free-text fields, notes and editable cells: anything with data-key.
-  var state=store.load(); state.fields=state.fields||{};
-  document.querySelectorAll('[data-key]').forEach(function(el){
-    var k=el.getAttribute('data-key'), v=state.fields[k];
-    var isText=el.tagName==='TEXTAREA';
-    if(v!=null){ if(isText) el.value=v; else el.textContent=v; }
-    el.addEventListener('input',function(){
-      var s=store.load(); s.fields=s.fields||{};
-      s.fields[k]=isText?el.value:el.textContent; store.save(s);
-    });
-  });
-
-  function applyFields(st){
-    var f=(st&&st.fields)||{};
-    document.querySelectorAll('[data-key]').forEach(function(el){
-      if(el===document.activeElement) return;
-      var k=el.getAttribute('data-key'), v=f[k]==null?'':f[k];
-      if(el.tagName==='TEXTAREA'){ if(el.value!==v) el.value=v; } else if(el.textContent!==v) el.textContent=v;
-    });
-  }
-  store.onChange(applyFields);
 
   // Must-only filter and the must-ask counter.
   var mustBtn=document.getElementById('mustBtn'), counter=document.getElementById('mustCounter');

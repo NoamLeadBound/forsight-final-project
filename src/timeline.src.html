@@ -25,7 +25,17 @@
 .tl-item{position:relative;padding-inline-start:40px;margin:0 0 10px}
 .tl-item .dot{position:absolute;inset-inline-start:4px;top:17px;width:16px;height:16px;border-radius:50%;border:2px solid var(--accent);background:var(--surface)}
 .tl-item.graded .dot{background:var(--accent)}
-.tl-item.done .dot{background:var(--ok);border-color:var(--ok)}
+.tl-item.done .dot,.tl-item.happened .dot{background:var(--ok);border-color:var(--ok)}
+.tl-item.happened .tl-card{border-color:var(--ok)}
+.tl-mark{display:flex;flex-wrap:wrap;align-items:center;gap:4px 14px;margin-top:6px;padding-top:6px;border-top:1px dashed var(--border);font-size:13.5px;color:var(--muted)}
+.tl-mark .check{margin:0;display:inline-block}
+.tl-mark .check label{padding:0;gap:6px;align-items:center}
+.tl-mark .check input{margin:0}
+.tl-mark .check input:checked + span{text-decoration:none;color:var(--ok);font-weight:600}
+.tl-date{display:inline-flex;align-items:center;gap:6px}
+.tl-date input{font:inherit;font-size:13px;color:var(--text);background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:1px 6px}
+.tl-item:not(.happened) .tl-date{display:none}
+@media print{.tl-mark .check input{display:none}.tl-item:not(.happened) .tl-mark{display:none}}
 .tl-item.quiet .dot{border-color:var(--muted);width:12px;height:12px;inset-inline-start:6px;top:19px}
 .tl-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px 14px}
 .tl-item.quiet .tl-card{background:transparent;border-style:dashed}
@@ -59,12 +69,7 @@
 <div class="topbar">
   <div class="brand">פרויקט גמר · ForSight Robotics</div>
   <nav class="tabs">
-    <a href="ניהול%20הפרויקט.html">ניהול הפרויקט</a>
-    <a class="current" href="#">טיימליין</a>
-    <a href="01%20הכנה%20לאפיון/הכרת%20החברה%20-%20ForSight%20Robotics.html">הכרת החברה</a>
-    <a href="01%20הכנה%20לאפיון/תיק%20עבודה%20-%20יום%20האפיון.html">תיק עבודה ליום האפיון</a>
-    <a href="01%20הכנה%20לאפיון/מצגת%20פתיחה%20-%20יום%20האפיון.html">מצגת פתיחה</a>
-    <a href="01%20הכנה%20לאפיון/קורס%20הכנה%20-%20ניהול%20מלאי%20ו-Lean.html">קורס הכנה</a>
+    <!--NAV-->
   </nav>
   <button class="btn" id="printBtn" type="button">הדפסה</button>
   <button class="btn" id="themeBtn" type="button" aria-label="מצב כהה או בהיר">◐</button>
@@ -97,7 +102,7 @@
 <section id="year">
   <h2><span class="num">1</span>השנה במבט אחד</h2>
   <div class="legend">
-    <span><i class="d"></i>הושלם</span>
+    <span><i class="d"></i>קרה (מסמנים ✓ בכרטיס)</span>
     <span><i class="f"></i>הגשה עם ציון</span>
     <span><i></i>הגשה או חובה בלי ציון</span>
     <span><i class="q"></i>עבודה שוטפת</span>
@@ -109,43 +114,54 @@
       <div class="tl-meta">20.7.2026 · הצעת פרויקט חתומה על ידי הארגון</div></div></li>
 
     <li class="tl-band">סמסטר א׳</li>
-    <li class="tl-item next"><span class="dot"></span><div class="tl-card">
-      <div class="tl-head"><b>פגישת אפיון ראשונה בארגון</b><span class="badge next">הבא בתור</span><a href="01%20הכנה%20לאפיון/תיק%20עבודה%20-%20יום%20האפיון.html">לתיק העבודה ←</a></div>
-      <div class="tl-meta">תחילת הסמסטר · <span class="tbd">תאריך: יעודכן</span></div></div></li>
-    <li class="tl-item quiet"><span class="dot"></span><div class="tl-card">
+    <li class="tl-item" data-ms="visit"><span class="dot"></span><div class="tl-card">
+      <div class="tl-head"><b>פגישת אפיון ראשונה בארגון</b><a href="@workpack">לתיק העבודה ←</a></div>
+      <div class="tl-meta">תחילת הסמסטר · <span class="tbd">תאריך: יעודכן</span></div>
+      <div class="tl-mark"><span class="check" data-group="ms-visit"><label><input type="checkbox"><span>קרה</span></label></span><label class="tl-date">מתי <input type="date" data-key="ms-date-visit"></label></div></div></li>
+    <li class="tl-item quiet" data-ms="data"><span class="dot"></span><div class="tl-card">
       <div class="tl-head"><b>איסוף נתונים: ראיונות, תצפיות, ERP</b></div>
-      <div class="tl-meta">לאורך הסמסטר</div></div></li>
-    <li class="tl-item"><span class="dot"></span><div class="tl-card">
+      <div class="tl-meta">לאורך הסמסטר</div>
+      <div class="tl-mark"><span class="check" data-group="ms-data"><label><input type="checkbox"><span>קרה</span></label></span><label class="tl-date">מתי <input type="date" data-key="ms-date-data"></label></div></div></li>
+    <li class="tl-item" data-ms="orientation"><span class="dot"></span><div class="tl-card">
       <div class="tl-head"><b>מצגת אוריינטציה</b><span class="badge must">בלי ציון · נוכחות חובה</span><a href="#d-orientation">פירוט ←</a></div>
-      <div class="tl-meta">אמצע הסמסטר · <span class="tbd">תאריך: יעודכן</span> · מצגת של 5–6 שקפים</div></div></li>
-    <li class="tl-item graded"><span class="dot"></span><div class="tl-card">
+      <div class="tl-meta">אמצע הסמסטר · <span class="tbd">תאריך: יעודכן</span> · מצגת של 5–6 שקפים</div>
+      <div class="tl-mark"><span class="check" data-group="ms-orientation"><label><input type="checkbox"><span>קרה</span></label></span><label class="tl-date">מתי <input type="date" data-key="ms-date-orientation"></label></div></div></li>
+    <li class="tl-item graded" data-ms="semA"><span class="dot"></span><div class="tl-card">
       <div class="tl-head"><b>מצגת מסכמת סמסטר א׳</b><span class="badge graded">בציון</span><a href="#d-semA">פירוט ←</a></div>
-      <div class="tl-meta">סוף הסמסטר · <span class="tbd">תאריך: יעודכן</span></div></div></li>
-    <li class="tl-item"><span class="dot"></span><div class="tl-card">
+      <div class="tl-meta">סוף הסמסטר · <span class="tbd">תאריך: יעודכן</span></div>
+      <div class="tl-mark"><span class="check" data-group="ms-semA"><label><input type="checkbox"><span>קרה</span></label></span><label class="tl-date">מתי <input type="date" data-key="ms-date-semA"></label></div></div></li>
+    <li class="tl-item" data-ms="org"><span class="dot"></span><div class="tl-card">
       <div class="tl-head"><b>הצגה לארגון + נספח 1</b><span class="badge must">תנאי לפרסום הציון</span><a href="#d-org">פירוט ←</a></div>
-      <div class="tl-meta">אחרי מצגת סמסטר א׳ · <span class="tbd">תאריך: יעודכן</span> · הטופס נשלח למנחה ולרכז</div></div></li>
-    <li class="tl-item graded"><span class="dot"></span><div class="tl-card">
+      <div class="tl-meta">אחרי מצגת סמסטר א׳ · <span class="tbd">תאריך: יעודכן</span> · הטופס נשלח למנחה ולרכז</div>
+      <div class="tl-mark"><span class="check" data-group="ms-org"><label><input type="checkbox"><span>קרה</span></label></span><label class="tl-date">מתי <input type="date" data-key="ms-date-org"></label></div></div></li>
+    <li class="tl-item graded" data-ms="interim"><span class="dot"></span><div class="tl-card">
       <div class="tl-head"><b>דוח ביניים</b><span class="badge graded">בציון</span><a href="#d-interim">פירוט ←</a></div>
-      <div class="tl-meta">סוף הסמסטר · <span class="tbd">תאריך: יעודכן</span> · דוח הנדסי + סקירת ספרות</div></div></li>
+      <div class="tl-meta">סוף הסמסטר · <span class="tbd">תאריך: יעודכן</span> · דוח הנדסי + סקירת ספרות</div>
+      <div class="tl-mark"><span class="check" data-group="ms-interim"><label><input type="checkbox"><span>קרה</span></label></span><label class="tl-date">מתי <input type="date" data-key="ms-date-interim"></label></div></div></li>
 
     <li class="tl-band">סמסטר ב׳</li>
-    <li class="tl-item quiet"><span class="dot"></span><div class="tl-card">
+    <li class="tl-item quiet" data-ms="analysis"><span class="dot"></span><div class="tl-card">
       <div class="tl-head"><b>ניתוח חלופות ותכנון הפתרון</b></div>
-      <div class="tl-meta">לאורך הסמסטר</div></div></li>
-    <li class="tl-item graded"><span class="dot"></span><div class="tl-card">
+      <div class="tl-meta">לאורך הסמסטר</div>
+      <div class="tl-mark"><span class="check" data-group="ms-analysis"><label><input type="checkbox"><span>קרה</span></label></span><label class="tl-date">מתי <input type="date" data-key="ms-date-analysis"></label></div></div></li>
+    <li class="tl-item graded" data-ms="poster"><span class="dot"></span><div class="tl-card">
       <div class="tl-head"><b>פוסטר</b><span class="badge graded">בציון</span><a href="#d-poster">פירוט ←</a></div>
-      <div class="tl-meta">היום האקדמי · <span class="tbd">תאריך: יעודכן</span> · פוסטר + הצגה בעל פה</div></div></li>
-    <li class="tl-item graded"><span class="dot"></span><div class="tl-card">
+      <div class="tl-meta">היום האקדמי · <span class="tbd">תאריך: יעודכן</span> · פוסטר + הצגה בעל פה</div>
+      <div class="tl-mark"><span class="check" data-group="ms-poster"><label><input type="checkbox"><span>קרה</span></label></span><label class="tl-date">מתי <input type="date" data-key="ms-date-poster"></label></div></div></li>
+    <li class="tl-item graded" data-ms="semB"><span class="dot"></span><div class="tl-card">
       <div class="tl-head"><b>מצגת מסכמת סמסטר ב׳</b><span class="badge graded">בציון</span><a href="#d-semB">פירוט ←</a></div>
-      <div class="tl-meta">סוף הסמסטר · <span class="tbd">תאריך: יעודכן</span></div></div></li>
-    <li class="tl-item graded"><span class="dot"></span><div class="tl-card">
+      <div class="tl-meta">סוף הסמסטר · <span class="tbd">תאריך: יעודכן</span></div>
+      <div class="tl-mark"><span class="check" data-group="ms-semB"><label><input type="checkbox"><span>קרה</span></label></span><label class="tl-date">מתי <input type="date" data-key="ms-date-semB"></label></div></div></li>
+    <li class="tl-item graded" data-ms="final"><span class="dot"></span><div class="tl-card">
       <div class="tl-head"><b>דוח מסכם</b><span class="badge graded">בציון</span><a href="#d-final">פירוט ←</a></div>
-      <div class="tl-meta">סוף הסמסטר · <span class="tbd">תאריך: יעודכן</span></div></div></li>
+      <div class="tl-meta">סוף הסמסטר · <span class="tbd">תאריך: יעודכן</span></div>
+      <div class="tl-mark"><span class="check" data-group="ms-final"><label><input type="checkbox"><span>קרה</span></label></span><label class="tl-date">מתי <input type="date" data-key="ms-date-final"></label></div></div></li>
 
     <li class="tl-band">סיום</li>
-    <li class="tl-item"><span class="dot"></span><div class="tl-card">
+    <li class="tl-item" data-ms="handover"><span class="dot"></span><div class="tl-card">
       <div class="tl-head"><b>מסירה לארגון</b><span class="badge must">חובה</span><a href="#d-handover">פירוט ←</a></div>
-      <div class="tl-meta">אחרי אישור המנחה · <span class="tbd">תאריך: יעודכן</span> · סיכום פגישה + נספחים 2 ו־3</div></div></li>
+      <div class="tl-meta">אחרי אישור המנחה · <span class="tbd">תאריך: יעודכן</span> · סיכום פגישה + נספחים 2 ו־3</div>
+      <div class="tl-mark"><span class="check" data-group="ms-handover"><label><input type="checkbox"><span>קרה</span></label></span><label class="tl-date">מתי <input type="date" data-key="ms-date-handover"></label></div></div></li>
   </ol>
 </section>
 
@@ -341,11 +357,40 @@
   </table></div>
 </section>
 
+<section id="how">
+  <h2><span class="num">★</span>איך עובדים באתר</h2>
+  <ul>
+    <li><b>כניסה:</b> כפתור "התחברות" בסרגל העליון. בפעם הראשונה בוחרים "הרשמה" עם המייל שלכם וסיסמה, ומאשרים את המייל שמגיע. רק מיילים שברשימת הצוות רואים ושומרים.</li>
+    <li><b>מה משותף:</b> כל סימון, שדה ורשימה בכל העמודים: אבני הדרך כאן, משימות, פגישות, כתיבה, טבלת הממצאים ביום האפיון ועוד. מה שאחד מסמן מופיע אצל כולם תוך שנייה או שתיים.</li>
+    <li><b>מה אישי:</b> מצב כהה או בהיר, הכפתור "רק ★" ביום האפיון, וההתקדמות בקורס ההכנה.</li>
+    <li><b>תוכן קבוע</b> (טקסטים, שאלות, שקפים): מעדכנים דרך Claude אצל נועם, וזה מתפרסם באתר תוך דקה או שתיים.</li>
+    <li><b>פרטיות:</b> הדפים פתוחים למי שיש לו את הקישור, ולכן אין בהם טלפונים ומיילים. כל מה ששומרים גלוי רק למי שמחובר ומורשה. קבצי ERP וצילומים נשמרים בתיקייה המקומית, לא כאן.</li>
+  </ul>
+</section>
+
 <footer class="note">המקור לסדר, לתוכן ולמשקלות: ספר ההנחיות של ההתמחות (תיקייה 00). התאריכים: מקובץ הטיימליין של הקורס, כשיגיע.</footer>
 </main>
 
 <script>
 /*COMMON_JS*/
+
+// Milestones marked as happened turn green; the first open one is "next".
+(function(){
+  var items=[].slice.call(document.querySelectorAll('.tl-item[data-ms]'));
+  function badge(li,cls,text){var b=document.createElement('span');b.className='badge '+cls;b.textContent=text;li.querySelector('.tl-head b').insertAdjacentElement('afterend',b)}
+  function paint(){
+    var s=window.fsStore.load(), c=s.checks||{}, f=s.fields||{}, next=false;
+    items.forEach(function(li){
+      var k=li.getAttribute('data-ms'), done=!!c['ms-'+k+':0'];
+      li.querySelectorAll('.badge.next,.badge.hap').forEach(function(b){b.remove()});
+      li.classList.toggle('happened',done); li.classList.remove('next');
+      if(done){var d=f['ms-date-'+k];badge(li,'done hap','קרה'+(d?' · '+fsDate(d):''))}
+      else if(!next&&!li.classList.contains('quiet')){next=true;li.classList.add('next');badge(li,'next','הבא בתור')}
+    });
+  }
+  document.querySelectorAll('.tl-mark input').forEach(function(i){i.addEventListener('change',function(){setTimeout(paint,0)})});
+  window.fsStore.onChange(paint); paint();
+})();
 </script>
 </body>
 </html>

@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="he" dir="rtl" data-page="notes">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>כתיבה והערות</title>
+<style>
+/*COMMON_CSS*/
+main{max-width:1180px}
+.wrap{display:grid;grid-template-columns:280px 1fr;gap:16px;align-items:start}
+.side{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px;position:sticky;top:72px;max-height:calc(100vh - 90px);overflow:auto}
+.side .btn.primary{width:100%;margin-bottom:8px}
+.side input{width:100%;font:inherit;font-size:14px;color:var(--text);background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:5px 9px;margin-bottom:6px}
+.grp{font-size:12.5px;font-weight:700;color:var(--muted);margin:12px 4px 4px}
+.doc-link{display:block;width:100%;text-align:start;font:inherit;background:none;border:0;border-radius:8px;padding:6px 8px;cursor:pointer;color:var(--text)}
+.doc-link:hover{background:var(--surface-2)}
+.doc-link.on{background:var(--accent-soft);color:var(--accent)}
+.doc-link b{display:block;font-size:14.5px;font-weight:600;line-height:1.35}
+.doc-link small{display:block;font-size:12px;color:var(--muted)}
+.doc-link.empty-doc b::after{content:" · ריק";font-weight:400;color:var(--muted);font-size:12px}
+.editor{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px 22px;min-height:60vh}
+.ed-top{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center}
+.ed-title{flex:1;min-width:220px;font:inherit;font-size:24px;font-weight:700;color:var(--text);background:transparent;border:0;border-bottom:1px solid transparent;padding:2px 0}
+.ed-title:focus{outline:none;border-bottom-color:var(--accent)}
+.ed-top select{font:inherit;font-size:14px;color:var(--text);background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:3px 8px}
+.hint{background:var(--accent-soft);border-radius:8px;padding:9px 12px;font-size:14.5px;margin:12px 0 0;color:var(--text)}
+.hint b{color:var(--accent)}
+.ed-body{display:block;width:100%;min-height:52vh;margin-top:12px;font:inherit;font-size:16.5px;line-height:1.8;color:var(--text);background:transparent;border:0;resize:vertical;padding:0}
+.ed-body:focus{outline:none}
+.ed-meta{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px;align-items:center;border-top:1px solid var(--border);margin-top:10px;padding-top:8px;font-size:13px;color:var(--muted)}
+.ed-meta .saved{color:var(--ok)}
+.ed-meta .saving{color:var(--warn)}
+.remote{display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:var(--warn-soft);border-radius:8px;padding:8px 12px;font-size:14px;margin-top:10px}
+.placeholder{color:var(--muted);text-align:center;padding:80px 20px}
+@media (max-width:820px){.wrap{grid-template-columns:1fr}.side{position:static;max-height:none}}
+@media print{.side,.ed-top select,.ed-meta,.remote{display:none!important}.wrap{display:block}.editor{border:0;padding:0}.ed-body{min-height:0}}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="brand">פרויקט גמר · ForSight Robotics</div>
+  <nav class="tabs">
+    <!--NAV-->
+  </nav>
+  <button class="btn" id="printBtn" type="button">הדפסה</button>
+  <button class="btn" id="themeBtn" type="button" aria-label="מצב כהה או בהיר">◐</button>
+</div>
+
+<main>
+<header class="doc">
+  <h1>כתיבה והערות</h1>
+  <p class="sub">טיוטות לפרקי הדוחות, הערות מהמנחה, החלטות ורעיונות</p>
+  <p class="meta">כל אחד מהצוות יכול להוסיף ולערוך. השמירה אוטומטית, והשינויים מופיעים אצל כולם.</p>
+</header>
+
+<div class="callout warn gate" id="gate" hidden></div>
+<p class="live-off">המסמכים גלויים רק לצוות. מתחברים עם הכפתור "התחברות" למעלה.</p>
+
+<div class="wrap live-on">
+  <aside class="side no-print">
+    <button class="btn primary" type="button" id="newDoc">+ מסמך חדש</button>
+    <input type="search" id="q" placeholder="חיפוש…" aria-label="חיפוש במסמכים">
+    <div id="docs"></div>
+  </aside>
+  <section class="editor" id="editor" style="margin-top:0"><p class="placeholder">בוחרים מסמך מהרשימה, או יוצרים מסמך חדש.</p></section>
+</div>
+</main>
+
+<script>
+/*COMMON_JS*/
+
+(function(){
+  var esc=fsEsc, CATS=['טיוטה לדוח','הערות מנחה','החלטה','רעיון','כללי'];
+  var rows=[], cur=null, timer=null, mine={}, dirty=false;
+  var ed=document.getElementById('editor');
+  var api=fsItems(['note'],onData,document.getElementById('gate'));
+
+  function byId(id){for(var i=0;i<rows.length;i++)if(rows[i].id===id)return rows[i]}
+  function onData(d){
+    rows=d; side();
+    if(!cur&&location.hash.length>1&&byId(location.hash.slice(1))) select(location.hash.slice(1));
+    if(!cur) return;
+    var r=byId(cur);
+    if(!r){cur=null;ed.innerHTML='<p class="placeholder">המסמך נמחק.</p>';return}
+    if(r.updated_at===mine[cur]) return;            // our own save coming back
+    var typing=ed.contains(document.activeElement)&&dirty;
+    if(!typing) fill(r); else showRemote(r);
+  }
+  function side(){
+    var q=(document.getElementById('q').value||'').trim();
+    var list=rows.filter(function(r){return !q||(r.title+' '+(r.body||'')).indexOf(q)>=0});
+    var html='';
+    CATS.concat(['']).forEach(function(c){
+      var g=list.filter(function(r){return c?(r.category||'כללי')===c:CATS.indexOf(r.category||'כללי')<0});
+      if(!g.length) return;
+      g.sort(function(a,b){if(a.sort!=null||b.sort!=null)return (a.sort==null?999:a.sort)-(b.sort==null?999:b.sort);return a.updated_at<b.updated_at?1:-1});
+      html+='<div class="grp">'+esc(c||'אחר')+'</div>'+g.map(function(r){
+        return '<button type="button" class="doc-link'+(r.id===cur?' on':'')+(r.body?'':' empty-doc')+'" data-id="'+r.id+'"><b>'+esc(r.title)+'</b><small>'+(r.body?'עודכן '+fsWhen(r.updated_at)+' · '+esc(r.updated_by||r.created_by||''):'עוד לא נכתב')+'</small></button>';
+      }).join('');
+    });
+    document.getElementById('docs').innerHTML=html||'<p class="empty">אין מסמכים.</p>';
+  }
+  function select(id){
+    if(dirty) flush();
+    cur=id; history.replaceState(null,'','#'+id);
+    var r=byId(id); if(r) fill(r); side();
+  }
+  function fill(r){
+    dirty=false;
+    ed.innerHTML=
+      '<div class="ed-top"><input class="ed-title" id="t" aria-label="כותרת"><select id="c" aria-label="קטגוריה">'+CATS.map(function(c){return '<option>'+c+'</option>'}).join('')+'</select></div>'+
+      (r.details?'<div class="hint"><b>מה נכנס כאן:</b> '+esc(r.details)+'</div>':'')+
+      '<div id="remote"></div>'+
+      '<textarea class="ed-body" id="b" placeholder="כותבים כאן…"></textarea>'+
+      '<div class="ed-meta"><span id="st">'+(r.updated_by?'נערך לאחרונה על ידי '+esc(r.updated_by)+' · '+fsWhen(r.updated_at):'')+'</span><span class="icon-act"><button type="button" id="del" title="מחיקת המסמך">מחיקה ×</button></span></div>';
+    var t=ed.querySelector('#t'), c=ed.querySelector('#c'), b=ed.querySelector('#b');
+    t.value=r.title||''; c.value=CATS.indexOf(r.category)>=0?r.category:'כללי'; b.value=r.body||'';
+    grow(b);
+    [t,b].forEach(function(el){el.addEventListener('input',function(){dirty=true;status('saving','שומר…');if(el===b)grow(b);clearTimeout(timer);timer=setTimeout(flush,800)})});
+    c.addEventListener('change',function(){dirty=true;flush()});
+    b.addEventListener('blur',function(){if(dirty)flush()});
+    ed.querySelector('#del').onclick=function(){if(confirm('למחוק את המסמך "'+(t.value||'')+'"?')){var id=cur;cur=null;dirty=false;api.remove(id);ed.innerHTML='<p class="placeholder">המסמך נמחק.</p>';history.replaceState(null,'',location.pathname)}};
+  }
+  function grow(b){b.style.height='auto';b.style.height=Math.max(b.scrollHeight+4,window.innerHeight*0.5)+'px'}
+  function status(cls,text){var s=ed.querySelector('#st');if(s){s.className=cls;s.textContent=text}}
+  function flush(){
+    clearTimeout(timer); if(!cur||!dirty) return;
+    var id=cur, t=ed.querySelector('#t'), c=ed.querySelector('#c'), b=ed.querySelector('#b'); if(!t) return;
+    var rec={title:t.value.trim()||'ללא כותרת',category:c.value,body:b.value};
+    dirty=false;
+    api.save('note',rec,id).then(function(row){
+      if(row){mine[id]=row.updated_at}
+      if(cur===id&&!dirty) status('saved','נשמר ✓ · '+fsWhen(row&&row.updated_at));
+    }).catch(function(){dirty=true;status('saving','השמירה נכשלה, מנסה שוב כשתמשיכו לכתוב')});
+  }
+  function showRemote(r){
+    var box=ed.querySelector('#remote'); if(!box) return;
+    box.innerHTML='<div class="remote"><span>'+esc(r.updated_by||'מישהו')+' עדכן את המסמך הזה עכשיו.</span><button class="btn" type="button">לטעון את הגרסה שלו</button><span class="small muted">(מה שכתבת מאז ייעלם)</span></div>';
+    box.querySelector('button').onclick=function(){fill(r)};
+  }
+
+  document.getElementById('docs').addEventListener('click',function(e){var b=e.target.closest('.doc-link');if(b) select(b.dataset.id)});
+  document.getElementById('q').addEventListener('input',side);
+  document.getElementById('newDoc').onclick=function(){
+    if(!api.ok()) return;
+    api.save('note',{title:'מסמך חדש',category:'כללי',body:''}).then(function(row){if(row){select(row.id);var t=ed.querySelector('#t');if(t){t.focus();t.select()}}});
+  };
+  window.addEventListener('beforeunload',function(e){if(dirty){flush();e.preventDefault();e.returnValue=''}});
+})();
+</script>
+</body>
+</html>

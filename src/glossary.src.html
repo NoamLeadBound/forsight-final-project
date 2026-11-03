@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="he" dir="rtl" data-page="glossary">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>מושגים</title>
+<style>
+/*COMMON_CSS*/
+.search{position:sticky;top:56px;z-index:5;background:var(--bg);padding:10px 0 6px}
+.search input{width:100%;font:inherit;font-size:17px;color:var(--text);background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:9px 14px}
+.search input:focus{outline:2px solid var(--accent-soft);border-color:var(--accent)}
+.count{font-size:13px;color:var(--muted);margin:4px 2px 0}
+.cat h2{margin-top:34px}
+.terms{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:10px}
+.term{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 14px}
+.term h3{margin:0;font-size:16.5px;display:flex;justify-content:space-between;gap:8px}
+.term .en{display:block;direction:ltr;unicode-bidi:isolate;text-align:right;font-size:13px;color:var(--muted);font-weight:400;margin-top:1px}
+.term p{margin:6px 0 0;font-size:15px}
+.term .why{font-size:14px;color:var(--muted);margin-top:6px}
+.term .why b{color:var(--accent);font-weight:600}
+.term.custom{border-style:dashed}
+.term .by{font-size:12px;color:var(--muted);margin-top:6px}
+mark{background:var(--warn-soft);color:inherit;border-radius:3px;padding:0 1px}
+@media print{.search,#add{display:none}.term{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="brand">פרויקט גמר · ForSight Robotics</div>
+  <nav class="tabs">
+    <!--NAV-->
+  </nav>
+  <button class="btn" id="printBtn" type="button">הדפסה</button>
+  <button class="btn" id="themeBtn" type="button" aria-label="מצב כהה או בהיר">◐</button>
+</div>
+
+<main>
+<header class="doc">
+  <h1>מושגים</h1>
+  <p class="sub">כל המונחים שיעלו לאורך הפרויקט: Lean, ניהול מלאי, רכש, מדדים, ואיכות במכשור רפואי</p>
+  <p class="meta">לכל מושג: מה זה, ולמה זה חשוב לפרויקט שלנו. ההסבר המלא של השיטות נמצא ב<a href="@course">קורס ההכנה</a>.</p>
+</header>
+
+<div class="search no-print">
+  <input type="search" id="q" placeholder="חיפוש מושג, בעברית או באנגלית…" aria-label="חיפוש מושג">
+  <div class="chips" id="cats" style="margin:8px 0 0"></div>
+  <p class="count" id="count"></p>
+</div>
+
+<div id="out"></div>
+
+<section id="add">
+  <h2><span class="num">+</span>הוספת מושג</h2>
+  <p>נתקלתם במונח חדש בשטח או בקריאה? מוסיפים אותו כאן, וכל הצוות רואה.</p>
+  <div class="callout warn gate" id="gate" hidden></div>
+  <p class="live-off">הוספת מושגים פתוחה לצוות בלבד.</p>
+  <form class="iform no-print live-on" id="form">
+    <label>מושג<input name="title" required></label>
+    <label>באנגלית (לא חובה)<input name="people" dir="ltr"></label>
+    <label>קטגוריה<select name="category"></select></label>
+    <label class="wide">מה זה<textarea name="body" required rows="2" style="min-height:56px"></textarea></label>
+    <label class="wide">למה זה חשוב לנו (לא חובה)<input name="details"></label>
+    <div class="actions"><button class="btn primary" type="submit">הוספה</button><button class="btn" type="button" id="cancel" hidden>ביטול עריכה</button></div>
+  </form>
+</section>
+</main>
+
+<script>
+/*COMMON_JS*/
+
+(function(){
+  var esc=fsEsc;
+  var CATS=['Lean ובזבוזים','שיטות לניהול פריטי C','מלאי ורכש','מדדים וכלי ניתוח','איכות ורגולציה במכשור רפואי'];
+  // [category index, term, English, what it is, why it matters to us]
+  var T=[
+    [0,'Lean','Lean','גישת ניהול שמטרתה לייצר ערך ללקוח עם כמה שפחות בזבוז.','המסגרת של כל הפרויקט: כל שלב בטיפול בפריטי C נבחן לפי השאלה אם הוא מוסיף ערך.'],
+    [0,'פעילות שמוסיפה ערך, ושאינה מוסיפה ערך','VA / NVA','VA: פעולה שהלקוח מוכן לשלם עליה. NVA: כל השאר, כמו ספירה, חיפוש, המתנה והזמנה חוזרת.','ספירות, הזמנות קטנות וחיפוש ברגים הם NVA. את זה הפרויקט מצמצם.'],
+    [0,'שמונת הבזבוזים','TIMWOODS','הובלה, מלאי, תנועה, המתנה, ייצור יתר, עיבוד יתר, פגמים, כישורים לא מנוצלים.','רשימת בדיקה לתצפית ביום האפיון.'],
+    [0,'גמבה','Gemba','המקום שבו העבודה קורית בפועל: המחסן, רצפת הייצור.','הולכים לראות במקום, ולא מסתפקים בתיאור בחדר הישיבות.'],
+    [0,'5S','Sort, Set in order, Shine, Standardize, Sustain','מיון, סידור, ניקיון, תקנון ושימור של סביבת העבודה.','הבסיס לכל פתרון חזותי ליד הקו.'],
+    [0,'ניהול חזותי','Visual Management','סימון, צבעים, שלטים ומיקום קבוע, שמראים את המצב במבט אחד.','מאפשר לראות מיד מה חסר, בלי לספור. אחת החלופות בפרויקט.'],
+    [0,'קייזן','Kaizen','שיפור מתמיד בצעדים קטנים.','הפתרון צריך לכלול בקרה ושיפור גם אחרי ההטמעה.'],
+    [0,'מיפוי זרם ערך','VSM, Value Stream Mapping','תרשים של כל שלבי התהליך, הזמנים, וזרימת החומר והמידע.','כלי למידול המצב הקיים בסמסטר א׳.'],
+    [0,'תרשים ספגטי','Spaghetti Diagram','שרטוט של המסלול שאדם או חומר עוברים בפועל.','מראה כמה הליכה יש בין המחסן לקו.'],
+    [0,'5 למה','5 Whys','שואלים "למה?" שוב ושוב, עד שמגיעים לשורש הבעיה.','לכל חוסר: למה חסר? כי לא הוזמן. למה לא הוזמן? וכן הלאה.'],
+    [0,'משיכה ודחיפה','Pull / Push','משיכה: מחדשים לפי צריכה בפועל. דחיפה: מחדשים לפי תחזית ותוכנית.','Kanban ו-Two-Bin הן שיטות משיכה.'],
+    [0,'בדיוק בזמן','JIT, Just in Time','לספק את מה שצריך, כשצריך, בכמות שצריך.','העיקרון שמאחורי אספקה תכופה ומלאי קטן ליד הקו.'],
+    [1,'ניתוח ABC ופריטי C','ABC Analysis','מיון פריטים לפי ערך הצריכה השנתי. A: מעט פריטים ורוב הערך. C: רוב הפריטים ומעט מהערך.','הבסיס להגדרת היקף הפרויקט. בודקים אותו בנתוני ה-ERP.'],
+    [1,'VMI','Vendor Managed Inventory','הספק אחראי על רמות המלאי אצל הלקוח: מבקר, סופר ומשלים לפי הצריכה בפועל.','אחת החלופות המרכזיות בפרויקט.'],
+    [1,'מגירות מנוהלות','Bin service','הספק מתקין מגירות או מיכלים מסומנים ליד הקו, ומשלים אותם בביקורים קבועים.','הצורה המעשית של VMI לפריטי C, כפי שהיא מתוארת בהצעת הפרויקט.'],
+    [1,'Kanban','Kanban','כרטיס או אות שמפעיל חידוש מלאי רק כשהפריט נצרך.','חלופה. צריך לקבוע את גודל הכמות בכל כרטיס ואת נקודת החידוש.'],
+    [1,'שני מיכלים','Two-Bin','שני מיכלים לכל פריט. כשהראשון מתרוקן מזמינים, ובינתיים עובדים מהשני.','חלופה פשוטה וזולה במיוחד לפריטי C.'],
+    [1,'מלאי קונסיגנציה','Consignment','מלאי שיושב אצלכם אבל שייך לספק, עד שמשתמשים בו.','קרוב ל-VMI. משנה מי מממן את המלאי.'],
+    [1,'נקודת שימוש','POU, Point of Use','אחסון החלק ליד העמדה שבה מרכיבים אותו.','הבסיס של Two-Bin ושל מגירות מנוהלות.'],
+    [2,'מק״ט','Part Number','מספר הזיהוי של פריט במערכת.','כל פריט C הוא מק״ט שמישהו צריך לתחזק, לספור ולהזמין.'],
+    [2,'ERP','ERP','המערכת שמנהלת מלאי, רכש וייצור. בישראל נפוצות Priority ו-SAP.','משם מגיעים כל הנתונים. שואלים איזו מערכת, ומי יודע להוציא ממנה דוחות.'],
+    [2,'עץ מוצר','BOM','רשימת כל החלקים והכמויות שנכנסים למערכת או למכלול.','מחבר בין כמה מערכות מייצרים לבין כמה ברגים צורכים.'],
+    [2,'פק״ע, פקודת עבודה','Work Order','הוראה לייצר מכלול או מערכת. לפיה מנפקים חלקים.','אם מנפקים לפי פק״ע, כל בורג עובר רישום, וזה לוקח זמן.'],
+    [2,'ניפוק, ליקוט וקיט','Kitting','הוצאת חלקים מהמחסן לייצור. קיט: כל החלקים לפק״ע אחת, במגש או בשקית.','בשיטות כמו Two-Bin, פריטי C בדרך כלל יוצאים מהקיט ויושבים ליד העמדה.'],
+    [2,'גריעה לאחור','Backflush','המערכת מורידה מלאי לפי עץ המוצר כשמדווחים על סיום ייצור, בלי ניפוק פריט אחר פריט.','דרך נפוצה לרשום צריכה של פריטים שנמצאים במלאי פתוח ליד הקו.'],
+    [2,'נקודת הזמנה ורמת מקסימום','ROP, Min/Max','רמת המלאי שבה מזמינים, והרמה שאליה משלימים.','אם לא מעדכנים אותן, נוצרים עודפים וחוסרים באותו זמן.'],
+    [2,'מלאי ביטחון','Safety Stock','מלאי נוסף שמגן מתנודות בצריכה ובזמני האספקה.','בפריטים זולים אפשר להחזיק יותר ממנו, וכך לחסוך הזמנות וחוסרים.'],
+    [2,'כמות מינימום להזמנה','MOQ','הכמות הקטנה ביותר שהספק מוכר בהזמנה אחת.','סיבה נפוצה למלאי עודף בפריטים זולים.'],
+    [2,'זמן אספקה','Lead Time','הזמן מההזמנה ועד שהפריט על המדף.','קובע כמה מלאי צריך להחזיק.'],
+    [2,'הזמנת רכש והזמנת מסגרת','PO, Blanket PO','הזמנת מסגרת: הזמנה אחת לתקופה ארוכה, עם משיכות לפי הצורך.','מקטינה את מספר ההזמנות גם בלי לשנות שום דבר במחסן.'],
+    [2,'ספירה מחזורית','Cycle Count','ספירה של חלק מהמק״טים בכל פעם, במקום ספירה שנתית אחת.','המקור לנתונים על דיוק רישום המלאי.'],
+    [2,'כמות הזמנה כלכלית','EOQ, Economic Order Quantity','הכמות שמאזנת בין עלות ההזמנה לבין עלות החזקת המלאי.','בפריטי C עלות ההזמנה גבוהה ביחס לערך הפריט, ולכן כדאי להזמין יותר, בפחות פעמים.'],
+    [2,'עלות החזקת מלאי','Holding Cost','מה עולה להחזיק פריט במלאי: הון, מקום, ביטוח, התיישנות.','בפריטי C היא נמוכה, ולכן מלאי גדול יותר הוא בדרך כלל לא בעיה.'],
+    [2,'עלות טיפול בהזמנה','Ordering Cost','הזמן והכסף שעולה כל הזמנה: הכנה, אישור, מעקב, קליטה וחשבונית.','הלב של הבעיה בפריטי C. נמדדת בראיון הרכש ובנתוני ה-ERP.'],
+    [2,'מלאי מת','Dead Stock','פריטים שלא זזו תקופה ארוכה.','חלק מהמלאי העודף. מחפשים אותם בתנועות המלאי.'],
+    [3,'מדד ביצוע','KPI','מספר שמראה כמה טוב תהליך עובד.','בסמסטר א׳ מגדירים מדדים וערך נוכחי, ובסמסטר ב׳ מראים כמה הם השתפרו.'],
+    [3,'ערך יעד','Target','הערך שרוצים להגיע אליו בכל מדד.','חלק מפרק המטרות, בשתי המצגות המסכמות.'],
+    [3,'תחלופת מלאי','Inventory Turnover','כמה פעמים בשנה המלאי מתחלף: צריכה שנתית חלקי מלאי ממוצע.','מדד למלאי עודף.'],
+    [3,'ימי מלאי','Days of Inventory','לכמה ימי צריכה מספיק המלאי הנוכחי.','מראה מהר אילו פריטים מוחזקים ביותר מדי.'],
+    [3,'רמת שירות וזמינות','Service Level, Fill Rate','איזה חלק מהבקשות סופק מיד מהמלאי.','מדד ההצלחה העיקרי מצד רצפת הייצור.'],
+    [3,'חוסר','Stockout','מצב שבו פריט נדרש ואין אותו במלאי.','סופרים כמה חוסרים היו, ומה כל אחד גרם לייצור.'],
+    [3,'מצב קיים ומצב רצוי','As-Is / To-Be','As-Is: איך התהליך עובד היום. To-Be: איך הוא יעבוד אחרי השינוי.','סמסטר א׳ הוא As-Is, וסמסטר ב׳ הוא To-Be.'],
+    [3,'מטריצת החלטה','Weighted Decision Matrix','טבלה שמדרגת חלופות לפי קריטריונים עם משקלות.','הדרך לבחירה מנומקת בין VMI, Kanban, Two-Bin ושילובים. חובה בכל פרויקט.'],
+    [3,'תועלת כמותית','Quantitative Benefit','ההבדל במספרים בין לפני לאחרי: שעות, הזמנות, כסף, חוסרים.','חובה בכל פרויקט, ומשקל כבד בציון של סמסטר ב׳.'],
+    [3,'ניתוח רגישות','Sensitivity Analysis','בודקים אם המסקנה נשארת נכונה כשמשנים הנחה, למשל עלות שעת עבודה.','מחזק את ההמלצה מול שאלות בהצגה.'],
+    [4,'ISO 13485','ISO 13485','תקן מערכת האיכות למכשור רפואי. ForSight מוסמכת לפיו מ־2025, כולל ייצור.','כל שינוי בשיטת האספקה צריך להתאים לנהלים שלו.'],
+    [4,'אצווה, מספר סידורי ועקיבות','Lot, Serial, Traceability','היכולת לדעת מאיזו אספקה הגיע חלק שנכנס למערכת מסוימת.','פריט שדורש עקיבות לא נשפך למגירה משותפת. אולי השאלה החשובה ביותר ביום האפיון.'],
+    [4,'DHR','Device History Record','התיעוד של מערכת מסוימת שיוצרה: מה נכנס בה, מי עשה, ואילו בדיקות.','קובע מה חייבים לרשום על פריטי C בכל מערכת.'],
+    [4,'DMR','Device Master Record','״המתכון״ של המכשיר: שרטוטים, מפרטים והוראות עבודה.','שינוי בפריט או בספק עשוי לחייב לעדכן אותו.'],
+    [4,'ספקים מאושרים','AVL / ASL','רשימת הספקים שמערכת האיכות אישרה.','מעבר לספק VMI חדש עשוי לדרוש תהליך אישור, וזה לוקח זמן.'],
+    [4,'בדיקת קבלה','Incoming Inspection','בדיקה של סחורה שמגיעה, לפני שהיא נכנסת למלאי.','ב-VMI צריך להחליט אם הבדיקה נשארת, ואיך.'],
+    [4,'תעודת התאמה','CoC, Certificate of Conformance','תעודה מהספק שהפריט עומד במפרט.','לפעמים היא מחליפה בדיקת קבלה.'],
+    [4,'אי־התאמה וועדת חריגים','NCR, MRB','רישום של פריט פגום או חריג, וצוות שמחליט מה עושים בו.','מקור למידע על בעיות איכות אצל ספקים.'],
+    [4,'שינוי הנדסי','ECO / ECN','שינוי בתכנון שמחליף, מוסיף או מוריד חלקים.','בחברה שעדיין מפתחת זה קורה הרבה, ומשאיר במלאי פריטים שכבר לא בשימוש.'],
+    [4,'העברה לייצור','NPI, New Product Introduction','המעבר של מוצר מפיתוח לייצור.','השלב שבו ForSight נמצאת. הכמויות עוד ישתנו.'],
+    [4,'ESD','Electrostatic Discharge','הגנה מפני פריקה של חשמל סטטי: ביגוד, משטחים ואריזות מיוחדות.','משפיע על אחסון ואריזה של חלק מהרכיבים, ועל הכניסה שלכם לאזור.'],
+    [4,'חדר נקי','Clean Room','אזור עם בקרה על אבק וחלקיקים.','קובע מה נכנס אליו ובאיזו אריזה. רלוונטי גם למגירות ליד הקו.']
+  ];
+  var custom=[], cat=-1, form=document.getElementById('form'), F=function(n){return form.elements[n]};
+  F('category').innerHTML=CATS.map(function(c,i){return '<option value="'+i+'">'+c+'</option>'}).join('');
+  document.getElementById('cats').innerHTML='<button type="button" data-c="-1" aria-pressed="true">הכול</button>'+CATS.map(function(c,i){return '<button type="button" data-c="'+i+'" aria-pressed="false">'+c+'</button>'}).join('');
+
+  var api=fsItems(['term'],function(d){custom=d;render()},document.getElementById('gate'));
+
+  function hl(text,q){var t=esc(text);if(!q)return t;var i=t.toLowerCase().indexOf(esc(q).toLowerCase());return i<0?t:t.slice(0,i)+'<mark>'+t.slice(i,i+esc(q).length)+'</mark>'+t.slice(i+esc(q).length)}
+  function render(){
+    var q=document.getElementById('q').value.trim(), ql=q.toLowerCase(), shown=0;
+    var all=T.map(function(t){return {c:t[0],term:t[1],en:t[2],what:t[3],why:t[4]}}).concat(custom.map(function(r){return {c:+r.category||0,term:r.title,en:r.people,what:r.body,why:r.details,id:r.id,by:r.created_by}}));
+    var html=CATS.map(function(name,ci){
+      if(cat>=0&&cat!==ci) return '';
+      var list=all.filter(function(t){return t.c===ci&&(!ql||[t.term,t.en,t.what,t.why].join(' ').toLowerCase().indexOf(ql)>=0)});
+      if(!list.length) return '';
+      shown+=list.length;
+      return '<section class="cat"><h2>'+esc(name)+'</h2><div class="terms">'+list.map(function(t){
+        return '<div class="term'+(t.id?' custom':'')+'"><h3><span>'+hl(t.term,q)+(t.en&&t.en!==t.term?'<span class="en">'+hl(t.en,q)+'</span>':'')+'</span>'+
+          (t.id?'<span class="icon-act no-print"><button type="button" data-edit="'+t.id+'" title="עריכה">✎</button><button type="button" data-del="'+t.id+'" title="מחיקה">×</button></span>':'')+'</h3>'+
+          '<p>'+hl(t.what,q)+'</p>'+(t.why?'<p class="why"><b>לנו:</b> '+hl(t.why,q)+'</p>':'')+(t.id?'<p class="by">נוסף על ידי '+esc(t.by||'')+'</p>':'')+'</div>';
+      }).join('')+'</div></section>';
+    }).join('');
+    document.getElementById('out').innerHTML=html||'<p class="empty" style="margin-top:20px">לא נמצא מושג כזה. אפשר להוסיף אותו למטה.</p>';
+    document.getElementById('count').textContent=shown+' מושגים'+(q?' תואמים':'');
+  }
+  document.getElementById('q').addEventListener('input',render);
+  document.getElementById('cats').addEventListener('click',function(e){
+    var b=e.target.closest('button'); if(!b) return;
+    this.querySelectorAll('button').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false')});
+    cat=+b.dataset.c; render();
+  });
+  function reset(){form.reset();form.removeAttribute('data-id');form.classList.remove('editing');form.querySelector('[type=submit]').textContent='הוספה';document.getElementById('cancel').hidden=true}
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    api.save('term',{title:F('title').value.trim(),people:F('people').value.trim()||null,category:F('category').value,body:F('body').value.trim(),details:F('details').value.trim()||null},form.getAttribute('data-id')).then(reset);
+  });
+  document.getElementById('cancel').onclick=reset;
+  document.getElementById('out').addEventListener('click',function(e){
+    var b=e.target.closest('button'); if(!b||!api.ok()) return;
+    var r=custom.filter(function(x){return x.id===(b.dataset.edit||b.dataset.del)})[0]; if(!r) return;
+    if(b.dataset.del){if(confirm('למחוק את המושג?')) api.remove(r.id);return}
+    F('title').value=r.title||'';F('people').value=r.people||'';F('category').value=r.category||'0';F('body').value=r.body||'';F('details').value=r.details||'';
+    form.setAttribute('data-id',r.id);form.classList.add('editing');form.querySelector('[type=submit]').textContent='שמירת השינויים';document.getElementById('cancel').hidden=false;
+    form.scrollIntoView({block:'center'});
+  });
+  render();
+})();
+</script>
+</body>
+</html>
