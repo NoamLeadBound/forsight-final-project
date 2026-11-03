@@ -30,7 +30,7 @@
   }
 
   var cache=lsGet(), synced={}, listeners=[], authListeners=[];
-  var sb=null, me=null, member=false, timer=null, state='local', stateMsg='';
+  var sb=null, me=null, member=false, known=false, timer=null, state='local', stateMsg='';
 
   function notify(){var s=clone(cache);listeners.forEach(function(cb){try{cb(s)}catch(e){console.error(e)}})}
 
@@ -86,7 +86,7 @@
     btn.textContent=label();
     btn.className='btn fs-auth'+(member?(state==='error'?' err':' on'):'');
     btn.title=member?(state==='error'?'השמירה נכשלה: '+stateMsg:'שמירה משותפת פעילה'):(me?'המייל לא ברשימת הצוות':'התחברו כדי לשתף את הסימונים עם הצוות');
-    if(bar) bar.hidden=!!member || sessionStorage.getItem('fs-bar-off')==='1';
+    if(bar) bar.hidden=!known || member || sessionStorage.getItem('fs-bar-off')==='1';
     if(bar&&me&&!member) bar.querySelector('span').textContent='החשבון '+me.email+' עוד לא ברשימת הצוות. בקשו מנועם להוסיף אותו, ועד אז הסימונים נשמרים רק אצלכם.';
   }
   function openDialog(){
@@ -139,7 +139,7 @@
     var anchor=document.getElementById('printBtn');
     if(anchor) top.insertBefore(btn,anchor); else top.appendChild(btn);
     dlg=document.createElement('dialog'); dlg.className='fs-dialog'; document.body.appendChild(dlg);
-    bar=document.createElement('div'); bar.className='fs-bar no-print';
+    bar=document.createElement('div'); bar.className='fs-bar no-print'; bar.hidden=true;
     bar.innerHTML='<span>הסימונים בדף הזה נשמרים כרגע רק בדפדפן שלך. כדי לשתף אותם עם הצוות צריך להתחבר.</span><button class="btn" type="button">התחברות</button><button class="fs-x" type="button" aria-label="סגירה">×</button>';
     bar.querySelector('.btn').onclick=openDialog;
     bar.querySelector('.fs-x').onclick=function(){sessionStorage.setItem('fs-bar-off','1');bar.hidden=true};
@@ -153,9 +153,9 @@
     var u=session?session.user:null, id=u?u.id:null;
     if(id===seenUser) return; seenUser=id;
     me=u?{id:u.id,email:(u.email||'').toLowerCase()}:null; member=false; synced={};
-    if(!me){setState('local');fire();return}
+    if(!me){known=true;setState('local');fire();return}
     sb.from('members').select('name').eq('email',me.email).maybeSingle().then(function(res){
-      member=!!res.data; if(res.data) me.name=res.data.name;
+      member=!!res.data; known=true; if(res.data) me.name=res.data.name;
       setState(member?'shared':'local'); fire();
       if(member) pull().then(subscribe).catch(function(e){setState('error',e.message)});
     });

@@ -28,6 +28,7 @@
   --shadow:none; color-scheme:dark;
 }
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 html{-webkit-text-size-adjust:100%;scroll-padding-top:72px}
 body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Arial Hebrew",Arial,sans-serif;font-size:17px;line-height:1.7}
 a{color:var(--accent)}
@@ -582,7 +583,7 @@ body:not(.signed) .live-off{display:block;color:var(--muted);font-size:15px;bord
   }
 
   var cache=lsGet(), synced={}, listeners=[], authListeners=[];
-  var sb=null, me=null, member=false, timer=null, state='local', stateMsg='';
+  var sb=null, me=null, member=false, known=false, timer=null, state='local', stateMsg='';
 
   function notify(){var s=clone(cache);listeners.forEach(function(cb){try{cb(s)}catch(e){console.error(e)}})}
 
@@ -638,7 +639,7 @@ body:not(.signed) .live-off{display:block;color:var(--muted);font-size:15px;bord
     btn.textContent=label();
     btn.className='btn fs-auth'+(member?(state==='error'?' err':' on'):'');
     btn.title=member?(state==='error'?'השמירה נכשלה: '+stateMsg:'שמירה משותפת פעילה'):(me?'המייל לא ברשימת הצוות':'התחברו כדי לשתף את הסימונים עם הצוות');
-    if(bar) bar.hidden=!!member || sessionStorage.getItem('fs-bar-off')==='1';
+    if(bar) bar.hidden=!known || member || sessionStorage.getItem('fs-bar-off')==='1';
     if(bar&&me&&!member) bar.querySelector('span').textContent='החשבון '+me.email+' עוד לא ברשימת הצוות. בקשו מנועם להוסיף אותו, ועד אז הסימונים נשמרים רק אצלכם.';
   }
   function openDialog(){
@@ -691,7 +692,7 @@ body:not(.signed) .live-off{display:block;color:var(--muted);font-size:15px;bord
     var anchor=document.getElementById('printBtn');
     if(anchor) top.insertBefore(btn,anchor); else top.appendChild(btn);
     dlg=document.createElement('dialog'); dlg.className='fs-dialog'; document.body.appendChild(dlg);
-    bar=document.createElement('div'); bar.className='fs-bar no-print';
+    bar=document.createElement('div'); bar.className='fs-bar no-print'; bar.hidden=true;
     bar.innerHTML='<span>הסימונים בדף הזה נשמרים כרגע רק בדפדפן שלך. כדי לשתף אותם עם הצוות צריך להתחבר.</span><button class="btn" type="button">התחברות</button><button class="fs-x" type="button" aria-label="סגירה">×</button>';
     bar.querySelector('.btn').onclick=openDialog;
     bar.querySelector('.fs-x').onclick=function(){sessionStorage.setItem('fs-bar-off','1');bar.hidden=true};
@@ -705,9 +706,9 @@ body:not(.signed) .live-off{display:block;color:var(--muted);font-size:15px;bord
     var u=session?session.user:null, id=u?u.id:null;
     if(id===seenUser) return; seenUser=id;
     me=u?{id:u.id,email:(u.email||'').toLowerCase()}:null; member=false; synced={};
-    if(!me){setState('local');fire();return}
+    if(!me){known=true;setState('local');fire();return}
     sb.from('members').select('name').eq('email',me.email).maybeSingle().then(function(res){
-      member=!!res.data; if(res.data) me.name=res.data.name;
+      member=!!res.data; known=true; if(res.data) me.name=res.data.name;
       setState(member?'shared':'local'); fire();
       if(member) pull().then(subscribe).catch(function(e){setState('error',e.message)});
     });
