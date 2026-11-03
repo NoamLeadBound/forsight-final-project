@@ -148,7 +148,7 @@ footer.note{margin-top:56px;padding-top:16px;border-top:1px solid var(--border);
 .fs-dialog label{display:block;font-size:14px;color:var(--muted);margin:10px 0 0}
 .fs-dialog input{display:block;width:100%;font:inherit;font-size:16px;color:var(--text);background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:7px 10px;margin-top:4px;text-align:left}
 .fs-dialog input:focus{outline:2px solid var(--accent-soft);border-color:var(--accent)}
-.fs-msg{min-height:22px;font-size:14px;color:var(--no);margin:10px 0 4px}
+.fs-msg{min-height:22px;font-size:14px;color:var(--text);margin:10px 0 4px}
 .fs-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
 @media print{.fs-auth,.fs-bar{display:none!important}}
 
@@ -665,18 +665,39 @@ body.presenting .pres-ui:hover{opacity:1}
     q('fsClose').onclick=function(){dlg.close()};
     if(!me){
       var msg=q('fsMsg');
+      var back=location.protocol==='file:'?'https://noamleadbound.github.io/forsight-final-project/':location.href.split('#')[0];
+      var say=function(text,resend){
+        msg.textContent=text;
+        if(resend){
+          var b=document.createElement('button'); b.type='button'; b.className='btn'; b.style.marginTop='8px'; b.textContent='שליחת מייל האישור שוב';
+          b.onclick=function(){
+            var email=q('fsEmail').value.trim().toLowerCase(); if(!email){msg.textContent='צריך מייל.';return}
+            msg.textContent='שולח…';
+            sb.auth.resend({type:'signup',email:email,options:{emailRedirectTo:back}}).then(function(r){
+              say(r.error?explain(r.error):'נשלח מייל אישור חדש ל-'+email+'. אם לא הגיע תוך כמה דקות, בדקו בספאם.',!!r.error);
+            });
+          };
+          msg.appendChild(document.createElement('br')); msg.appendChild(b);
+        }
+      };
+      var explain=function(err){
+        var m=(err&&err.message)||'', c=(err&&err.code)||'';
+        if(/Invalid login/i.test(m)) return 'מייל או סיסמה שגויים. בפעם הראשונה צריך קודם "הרשמה".';
+        if(/not confirmed/i.test(m)||c==='email_not_confirmed') return 'המייל עוד לא אושר. פתחו את מייל האישור (בדקו גם בספאם), או שלחו אותו שוב.';
+        if(/rate limit|over_email_send_rate_limit/i.test(m+' '+c)) return 'נשלחו יותר מדי מיילים מהאתר בשעה האחרונה. נסו שוב בעוד שעה, או בקשו מנועם לאשר אתכם ידנית.';
+        if(/security purposes|after \d+ seconds/i.test(m)) return 'צריך לחכות דקה לפני ניסיון נוסף.';
+        if(/already registered/i.test(m)) return 'המייל כבר רשום. נסו "כניסה".';
+        if(/at least 6|weak/i.test(m)) return 'הסיסמה צריכה לפחות 6 תווים.';
+        return 'שגיאה: '+m;
+      };
       var go=function(up){
         var email=q('fsEmail').value.trim().toLowerCase(), pass=q('fsPass').value;
         if(!email||!pass){msg.textContent='צריך מייל וסיסמה.';return}
         msg.textContent='רגע…';
-        var call=up?sb.auth.signUp({email:email,password:pass}):sb.auth.signInWithPassword({email:email,password:pass});
+        var call=up?sb.auth.signUp({email:email,password:pass,options:{emailRedirectTo:back}}):sb.auth.signInWithPassword({email:email,password:pass});
         call.then(function(res){
-          if(res.error){
-            var m=res.error.message||'';
-            msg.textContent=/Invalid login/i.test(m)?'מייל או סיסמה שגויים.':/already registered/i.test(m)?'המייל כבר רשום. נסו "כניסה".':/at least 6/i.test(m)?'הסיסמה צריכה לפחות 6 תווים.':'שגיאה: '+m;
-            return;
-          }
-          if(up&&!res.data.session){msg.textContent='נשלח מייל לאישור החשבון. אחרי האישור חוזרים לכאן ונכנסים.';return}
+          if(res.error){var e=explain(res.error);say(e,/לא אושר|יותר מדי/.test(e));return}
+          if(up&&!res.data.session){say('נשלח מייל לאישור החשבון אל '+email+'. לוחצים על הקישור במייל (בדקו גם בספאם), ואז חוזרים לכאן ונכנסים.',true);return}
           dlg.close();
         });
       };

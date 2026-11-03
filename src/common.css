@@ -140,7 +140,7 @@ footer.note{margin-top:56px;padding-top:16px;border-top:1px solid var(--border);
 .fs-dialog label{display:block;font-size:14px;color:var(--muted);margin:10px 0 0}
 .fs-dialog input{display:block;width:100%;font:inherit;font-size:16px;color:var(--text);background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:7px 10px;margin-top:4px;text-align:left}
 .fs-dialog input:focus{outline:2px solid var(--accent-soft);border-color:var(--accent)}
-.fs-msg{min-height:22px;font-size:14px;color:var(--no);margin:10px 0 4px}
+.fs-msg{min-height:22px;font-size:14px;color:var(--text);margin:10px 0 4px}
 .fs-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
 @media print{.fs-auth,.fs-bar{display:none!important}}
 
