@@ -6,6 +6,9 @@ In the sources:
   <!--NAV-->            the top-bar links, generated per page
   href="@key#frag"      a link to another page, resolved per copy (key = a PAGES key)
   <span data-private="name"></span>   a contact detail, filled only in the local copy
+  <!--CONF--> ... <!--/CONF-->        information from the company. The local copy keeps it; the site copy gets an
+                        empty <div data-conf="N"> instead, and the blocks go to conf/<key>.json, to be stored in
+                        Supabase (kv, page "conf:<key>") where only team members can read them.
 
 Usage: python3 build.py            (all pages)
        python3 build.py tasks      (one page by key)
@@ -35,8 +38,8 @@ PAGES = {
     'workpack': ('workpack.src.html', PREP / 'תיק עבודה - יום האפיון.html', 'workpack.html', True),
     'presentations': ('presentations.src.html', OUT / 'מצגות.html', 'presentations.html', True),
     'deck': ('deck.src.html', OUT / 'מצגת פתיחה - יום האפיון.html', 'deck-opening.html', True),
-    # site file None: local only. Holds information from the company, so it never goes to the public site.
-    'orientation': ('orientation.src.html', OUT / 'מצגת אוריינטציה - 24.11.2026.html', None, True),
+    # the slides hold information from the company: on the site they load from Supabase for team members only
+    'orientation': ('orientation.src.html', OUT / 'מצגת אוריינטציה - 24.11.2026.html', 'deck-orientation.html', True),
     'course': ('course.src.html', PREP / 'קורס הכנה - ניהול מלאי ו-Lean.html', 'course.html', False),
     'glossary': ('glossary.src.html', PROJECT / 'מושגים.html', 'glossary.html', True),
 }
@@ -47,6 +50,7 @@ NAV_HOME = {'deck': 'presentations', 'orientation': 'presentations'}  # pages th
 
 PRIVATE_SPAN = re.compile(r'<span data-private="([a-z_]+)"></span>')
 PAGE_LINK = re.compile(r'href="@([a-z]+)(#[^"]*)?"')
+CONF = re.compile(r'<!--CONF-->(.*?)<!--/CONF-->', re.S)
 # Anything that looks like a phone number or an email must never reach the public site.
 FORBIDDEN = [re.compile(p) for p in (r'0\d{1,2}-?\d{7}\b', r'\+972', r'[\w.+-]+@[\w-]+\.[a-z]{2,}')]
 
@@ -114,12 +118,20 @@ def build(key):
 
     local_only = site_file is None
     site = '' if local_only else resolve(PRIVATE_SPAN.sub('', html), key, True)
+    blocks = CONF.findall(site)
+    if blocks:
+        n = iter(range(len(blocks)))
+        site = CONF.sub(lambda m: f'<div data-conf="{next(n)}"></div>', site)
+        (HERE / 'conf').mkdir(exist_ok=True)
+        (HERE / 'conf' / f'{key}.json').write_text(json.dumps(
+            {'page': f'conf:{key}', 'blocks': {str(i): b for i, b in enumerate(blocks)}}, ensure_ascii=False), encoding='utf-8')
     for rx in FORBIDDEN:
         hit = rx.search(site)
         if hit:
             raise SystemExit(f'{src}: "{hit.group(0)}" would be published. Wrap it in a data-private span.')
     site = site.replace('<meta charset="utf-8">', '<meta charset="utf-8">\n<meta name="robots" content="noindex, nofollow">', 1)
     local = resolve(PRIVATE_SPAN.sub(lambda m: private.get(m.group(1), ''), html), key, False)
+    local = local.replace('<!--CONF-->', '').replace('<!--/CONF-->', '')
     if uses_common:  # the library goes in after the scan: its source mentions package@version strings
         tag = '<script>' + vendor + '</script>\n</head>'
         site, local = site.replace('</head>', tag, 1), local.replace('</head>', tag, 1)
@@ -128,7 +140,8 @@ def build(key):
     local_out.write_text(local, encoding='utf-8')
     if not local_only:
         (HERE / site_file).write_text(site, encoding='utf-8')
-    print(f'{key:13} local: {local_out.relative_to(PROJECT)}  ·  site: {site_file or "— (local only)"}')
+    extra = f'  ·  {len(blocks)} team-only blocks → conf/{key}.json' if blocks else ''
+    print(f'{key:13} local: {local_out.relative_to(PROJECT)}  ·  site: {site_file or "— (local only)"}{extra}')
 
 
 for k in sys.argv[1:] or PAGES:

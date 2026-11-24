@@ -4,3 +4,4 @@ __pycache__/
 
 # pages with information from the company: built only into the local project folders
 src/orientation.src.html
+conf/
