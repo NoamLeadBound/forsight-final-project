@@ -279,6 +279,7 @@ body.presenting .pres-ui:hover{opacity:1}
 .pres-ui .btn{font-size:13px;padding:3px 10px}
 
 @media print{
+  .appx-h{display:none}
   @page{size:A4 landscape;margin:0}
   body{background:#fff}
   header.doc,.say,.after,footer.note,.pres-ui{display:none!important}
@@ -330,6 +331,12 @@ body.presenting .pres-ui:hover{opacity:1}
 .slide .cols3 .box p{font-size:.8em}
 .slide .cols3 .box h3{margin-bottom:.15em}
 .conf-gate{margin:0 0 30px}
+.appx-h{margin:34px 0 14px;padding-top:14px;border-top:2px dashed var(--border);font-weight:700;color:var(--muted)}
+body.presenting .appx-h{display:none}
+.slide.backup::before{background:var(--muted)}
+.slide.backup .s-kick{color:var(--muted)}
+.when-tag{font-size:.7em!important;color:var(--accent)!important;font-weight:600;margin:-.1em 0 .4em!important}
+
 .box.ask{background:var(--warn-soft);border-inline-start:.35cqw solid var(--warn)}
 .box.ask h3{color:var(--warn)}
 @media (max-width:700px){
@@ -365,7 +372,7 @@ body.presenting .pres-ui:hover{opacity:1}
 <header class="doc">
   <h1>מצגת אוריינטציה</h1>
   <p class="sub">ההצגה הראשונה מול שופטים: הרקע, הדרישות, תוכנית העבודה והוכחת ההיתכנות</p>
-  <p class="meta">24.11.2026 · 16:15–16:30 · זום, חדר 2 · שופטים: פרופ׳ אדר קליר ויוסי אנגליסטר · מנחה: יוסף זילבר</p>
+  <p class="meta">24.11.2026 · 16:15–16:30 · זום, חדר 2 · שופטים: פרופ׳ אדר קליר ויוסי אנגליסטר · מנחה: יוסף זילבר · 6 שקפים ועוד 2 נספחים לשאלות</p>
   <div class="howto no-print">
     <button class="btn primary" id="startBtn" type="button">▶ הצגה במסך מלא</button>
     <span><kbd>←</kbd> או רווח או קליק: השקף הבא · <kbd>→</kbd>: הקודם · <kbd>Esc</kbd>: יציאה</span>
@@ -738,13 +745,14 @@ body.presenting .pres-ui:hover{opacity:1}
 
 function initDeck(){
   var slides=Array.prototype.slice.call(document.querySelectorAll('.slide'));
-  var total=slides.length, cur=0, body=document.body;
-  slides.forEach(function(s,i){ s.querySelector('.n').textContent=(i+1)+' / '+total; });
+  var total=slides.filter(function(s){return !s.classList.contains('backup')}).length, cur=0, body=document.body;
+  function label(s,i){ return s.classList.contains('backup')?s.getAttribute('data-label'):(i+1)+' / '+total; }
+  slides.forEach(function(s,i){ s.querySelector('.n').textContent=label(s,i); });
 
   function show(i){
-    cur=Math.max(0,Math.min(total-1,i));
+    cur=Math.max(0,Math.min(slides.length-1,i));
     slides.forEach(function(s,j){ s.classList.toggle('active',j===cur); });
-    document.getElementById('counter').textContent=(cur+1)+' / '+total;
+    document.getElementById('counter').textContent=label(slides[cur],cur);
   }
   function start(i,full){
     body.classList.add('presenting'); show(i||0);
