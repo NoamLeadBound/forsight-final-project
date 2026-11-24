@@ -35,13 +35,15 @@ PAGES = {
     'workpack': ('workpack.src.html', PREP / 'תיק עבודה - יום האפיון.html', 'workpack.html', True),
     'presentations': ('presentations.src.html', OUT / 'מצגות.html', 'presentations.html', True),
     'deck': ('deck.src.html', OUT / 'מצגת פתיחה - יום האפיון.html', 'deck-opening.html', True),
+    # site file None: local only. Holds information from the company, so it never goes to the public site.
+    'orientation': ('orientation.src.html', OUT / 'מצגת אוריינטציה - 24.11.2026.html', None, True),
     'course': ('course.src.html', PREP / 'קורס הכנה - ניהול מלאי ו-Lean.html', 'course.html', False),
     'glossary': ('glossary.src.html', PROJECT / 'מושגים.html', 'glossary.html', True),
 }
 NAV = [('timeline', 'טיימליין'), ('tasks', 'משימות'), ('meetings', 'פגישות'), ('notes', 'כתיבה'),
        ('company', 'מחקר החברה'), ('workpack', 'יום האפיון'), ('presentations', 'מצגות'),
        ('course', 'קורס הכנה'), ('glossary', 'מושגים')]
-NAV_HOME = {'deck': 'presentations'}  # pages that sit under another tab
+NAV_HOME = {'deck': 'presentations', 'orientation': 'presentations'}  # pages that sit under another tab
 
 PRIVATE_SPAN = re.compile(r'<span data-private="([a-z_]+)"></span>')
 PAGE_LINK = re.compile(r'href="@([a-z]+)(#[^"]*)?"')
@@ -67,6 +69,8 @@ vendor = vendor.replace(PUBLIC_PATH_THROW, 'if(!e)e="./";')
 
 def href(target, here, site):
     if site:
+        if PAGES[target][2] is None:
+            raise SystemExit(f'{here}: @{target} is local only and cannot be linked from the site')
         return PAGES[target][2]
     rel = os.path.relpath(PAGES[target][1], PAGES[here][1].parent)
     return urllib.parse.quote(rel)
@@ -97,6 +101,9 @@ def resolve(html, here, site):
 
 def build(key):
     src, local_out, site_file, uses_common = PAGES[key]
+    if site_file is None and not (SRC / src).exists():
+        print(f'{key:13} skipped: {src} is local only and not on this computer')
+        return
     html = (SRC / src).read_text(encoding='utf-8')
     if uses_common:
         assert '/*COMMON_CSS*/' in html and '/*COMMON_JS*/' in html, f'{src}: missing placeholders'
@@ -105,7 +112,8 @@ def build(key):
     if leftover:
         raise SystemExit(f'{src}: write page links as href="@key", found {leftover.group(0)}')
 
-    site = resolve(PRIVATE_SPAN.sub('', html), key, True)
+    local_only = site_file is None
+    site = '' if local_only else resolve(PRIVATE_SPAN.sub('', html), key, True)
     for rx in FORBIDDEN:
         hit = rx.search(site)
         if hit:
@@ -118,8 +126,9 @@ def build(key):
 
     local_out.parent.mkdir(parents=True, exist_ok=True)
     local_out.write_text(local, encoding='utf-8')
-    (HERE / site_file).write_text(site, encoding='utf-8')
-    print(f'{key:13} local: {local_out.relative_to(PROJECT)}  ·  site: {site_file}')
+    if not local_only:
+        (HERE / site_file).write_text(site, encoding='utf-8')
+    print(f'{key:13} local: {local_out.relative_to(PROJECT)}  ·  site: {site_file or "— (local only)"}')
 
 
 for k in sys.argv[1:] or PAGES:
